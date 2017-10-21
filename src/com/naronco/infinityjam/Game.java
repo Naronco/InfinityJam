@@ -50,7 +50,7 @@ public class Game extends Eggine {
 		street.load();
 		casino.load();
 
-		currentScene = new AlleyChallenge();
+		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -101,6 +101,20 @@ public class Game extends Eggine {
 
 	@Override
 	public void render(Screen screen) {
+		screen.fillScreen(0xF2F2F2);
+
+		currentScene.renderBackground(screen);
+
+		if (currentScene.showsPlayer()) {
+			if (player.flipX)
+				screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
+			else
+				screen.renderAnimatedSprite(player.getSpritePosition(), player);
+			player.nextFrame();
+		}
+
+		currentScene.renderForeground(screen);
+
 		screen.renderSprite(0, 0, ui);
 
 		int mx = (int) getMouse().getLocation().getX();
@@ -136,18 +150,6 @@ public class Game extends Eggine {
 		prevMouseDown = mouseDown;
 
 		mixButton(screen, mode);
-
-		currentScene.renderBackground(screen);
-
-		if (currentScene.showsPlayer()) {
-			if (player.flipX)
-				screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
-			else
-				screen.renderAnimatedSprite(player.getSpritePosition(), player);
-			player.nextFrame();
-		}
-
-		currentScene.renderForeground(screen);
 
 		if (detailTextArea != null) {
 			detailTextArea.render(screen);
