@@ -105,7 +105,7 @@ public abstract class PointAndClickScene implements IScene {
 						break;
 					default:
 						if (i instanceof Door)
-							Game.instance.player.walkTo(((Door) i).walkTo);
+							i.take(x, y);
 						else
 							Game.instance.showMessage(i.getNameWithArticle() + ".");
 						break;

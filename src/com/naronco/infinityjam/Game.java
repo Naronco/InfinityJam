@@ -50,7 +50,7 @@ public class Game extends Eggine {
 		street.load();
 		casino.load();
 
-		currentScene = new AlleyChallenge();
+		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
