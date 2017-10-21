@@ -1,32 +1,28 @@
 package com.naronco.infinityjam.interactables;
 
-import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Polygon2d;
-import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.Interactable;
 import com.naronco.infinityjam.Item;
 
-import java.awt.*;
-
-import static com.naronco.infinityjam.Item.KEY;
-
-public class Bed implements Interactable {
+public class Door implements Interactable {
 	private Polygon2d outline;
+	public Vector2d walkTo;
 
-	public Bed(Polygon2d outline) {
+	public Door(Vector2d walkTo, Polygon2d outline) {
+		this.walkTo = walkTo;
 		this.outline = outline;
 	}
 
 	@Override
 	public String getName() {
-		return "Bett";
+		return "Tür";
 	}
 
 	@Override
 	public String getNameWithArticle() {
-		return "ein Bett";
+		return "eine Tür";
 	}
 
 	@Override
@@ -56,30 +52,30 @@ public class Bed implements Interactable {
 
 	@Override
 	public void look(int x, int y) {
-		Game.instance.showMessage("Enthält Krabbeltierchen falls ich Nachts hungrig werde.");
+		Game.instance.showMessage("Hinter dieser Tür könnte sich alles verbergen.");
 	}
 
 	@Override
 	public void use(int x, int y) {
-		Game.instance.showMessage("Nein Danke, ich bin schon ausgeschlafen.");
+		Game.instance.player.walkTo(walkTo);
 	}
 
 	@Override
 	public void take(int x, int y) {
-		Game.instance.showMessage("Sehe ich aus wie Chuck Norris?");
+		Game.instance.player.walkTo(walkTo);
 
 	}
 
 	@Override
 	public void punch(int x, int y) {
-		Game.instance.showMessage("Das nützt nichts");
+		Game.instance.showMessage("Sicherheitstest bestanden.");
 	}
 
 	@Override
 	public void interact(int x, int y, Item item) {
 		switch (item) {
 			case KEY:
-				Game.instance.showMessage("Der Schlüssel zum Erfolg ist definitiv nicht schlafen.");
+				Game.instance.showMessage("Der passt hier nicht.");
 				break;
 		}
 	}

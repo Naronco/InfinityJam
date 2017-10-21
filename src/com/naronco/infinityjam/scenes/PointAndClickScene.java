@@ -8,6 +8,7 @@ import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Interactable;
 import com.naronco.infinityjam.StepArea;
+import com.naronco.infinityjam.interactables.Door;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public abstract class PointAndClickScene implements IScene {
 			if (targetArea != null) {
 				boolean movable = true;
 
-				if (movementAreaAt((int)playerPos.getX(), (int)playerPos.getY()) != null) {
+				if (movementAreaAt((int) playerPos.getX(), (int) playerPos.getY()) != null) {
 					double dx = x - playerPos.getX();
 					double dy = y - playerPos.getY();
 
@@ -103,7 +104,10 @@ public abstract class PointAndClickScene implements IScene {
 							i.punch(x, y);
 						break;
 					default:
-						Game.instance.showMessage(i.getNameWithArticle() + ".");
+						if (i instanceof Door)
+							Game.instance.player.walkTo(((Door) i).walkTo);
+						else
+							Game.instance.showMessage(i.getNameWithArticle() + ".");
 						break;
 				}
 				return;

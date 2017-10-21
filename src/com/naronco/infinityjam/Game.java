@@ -64,6 +64,9 @@ public class Game extends Eggine {
 		itemSprites.add(new Sprite(new File("res/key.png")));
 		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Leaf
 		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Coins
+		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Drug
+		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Saw
+		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Knife
 		if (itemSprites.size() != (int) Item.values().length)
 			throw new Error("Programmers were retards and didn't add sprites for every item");
 
@@ -249,6 +252,31 @@ public class Game extends Eggine {
 		messageTextArea.showText(message);
 	}
 
+	public void addQuest(IQuest quest) {
+		quest.activate();
+		quests.add(quest);
+	}
+
+	public void finishQuest(IQuest quest) {
+		items.addAll(quest.getRewards());
+		quests.remove(quest);
+		finishedQuests.add(quest);
+	}
+
+	public IQuest getQuest(Class<?> t) {
+		for (IQuest q : quests)
+			if (t.isInstance(q))
+				return q;
+		return null;
+	}
+
+	public boolean isQuestFinished(Class<?> t) {
+		for (IQuest q : finishedQuests)
+			if (t.isInstance(q))
+				return true;
+		return false;
+	}
+
 	public Random random;
 
 	IScene currentScene;
@@ -286,6 +314,8 @@ public class Game extends Eggine {
 
 	public List<Sprite> itemSprites = new ArrayList<>();
 	public List<Item> items = new ArrayList<>();
+	public List<IQuest> quests = new ArrayList<>();
+	public List<IQuest> finishedQuests = new ArrayList<>();
 	public int selectedItem = -1;
 
 	SpriteSheet clickSheet;

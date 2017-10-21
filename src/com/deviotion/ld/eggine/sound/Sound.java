@@ -12,6 +12,7 @@ public class Sound {
 		this.clip = AudioSystem.getClip();
 
 		AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+
 		clip.open(inputStream);
 	}
 

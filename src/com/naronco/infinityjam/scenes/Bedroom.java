@@ -11,10 +11,7 @@ import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
-import com.naronco.infinityjam.interactables.Bed;
-import com.naronco.infinityjam.interactables.Bottle;
-import com.naronco.infinityjam.interactables.Bucket;
-import com.naronco.infinityjam.interactables.Hole;
+import com.naronco.infinityjam.interactables.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,6 +53,13 @@ public class Bedroom extends PointAndClickScene {
 				new Vector2d(158, 28),
 				new Vector2d(158, 48),
 				new Vector2d(146, 32)
+		)));
+
+		interactables.add(new Door(new Vector2d(132, 34), new Polygon2d(
+				new Vector2d(133, -10),
+				new Vector2d(145, 5),
+				new Vector2d(140, 42),
+				new Vector2d(130, 27)
 		)));
 
 		addMovementArea(new Polygon2d(new Vector2d(86, 30), new Vector2d(130, 20), new Vector2d(149, 57), new Vector2d(103, 65)));

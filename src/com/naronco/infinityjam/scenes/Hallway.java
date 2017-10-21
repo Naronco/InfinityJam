@@ -11,7 +11,9 @@ import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.interactables.Bed;
+import com.naronco.infinityjam.interactables.Door;
 import com.naronco.infinityjam.interactables.DrugPlant;
+import com.naronco.infinityjam.interactables.Walkway;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +42,48 @@ public class Hallway extends PointAndClickScene {
 		));
 
 		interactables.add(plant);
+
+		interactables.add(new Door(new Vector2d(25, 58), new Polygon2d(
+				new Vector2d(11, 14),
+				new Vector2d(39, 16),
+				new Vector2d(42, 57),
+				new Vector2d(9, 56)
+		)));
+
+		interactables.add(new Door(new Vector2d(75, 58), new Polygon2d(
+				new Vector2d(61, 16),
+				new Vector2d(89, 18),
+				new Vector2d(89, 54),
+				new Vector2d(60, 55)
+		)));
+
+		interactables.add(new Door(new Vector2d(130, 58), new Polygon2d(
+				new Vector2d(114, 17),
+				new Vector2d(146, 19),
+				new Vector2d(145, 55),
+				new Vector2d(114, 54)
+		)));
+
+		interactables.add(new Door(new Vector2d(170, 58), new Polygon2d(
+				new Vector2d(158, 16),
+				new Vector2d(185, 18),
+				new Vector2d(186, 54),
+				new Vector2d(156, 54)
+		)));
+
+		interactables.add(new Walkway("Richtung Aufzug", new Vector2d(0, 70), new Polygon2d(
+				new Vector2d(-5, 0),
+				new Vector2d(10, 0),
+				new Vector2d(10, 85),
+				new Vector2d(-5, 85)
+		)));
+
+		interactables.add(new Walkway("Endloser Gang", new Vector2d(200, 70), new Polygon2d(
+				new Vector2d(190, 0),
+				new Vector2d(205, 0),
+				new Vector2d(205, 85),
+				new Vector2d(190, 85)
+		)));
 
 		addMovementArea(new Polygon2d(new Vector2d(-5, 55), new Vector2d(205, 55), new Vector2d(205, 86), new Vector2d(-5, 86)));
 
