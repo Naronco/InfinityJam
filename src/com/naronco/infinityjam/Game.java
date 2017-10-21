@@ -29,6 +29,7 @@ public class Game extends Eggine {
 		ui = new Sprite(new File("res/ui.png"));
 
 		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
+		messageTextArea.setMaxLineCount(2);
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
