@@ -132,11 +132,15 @@ public class Game extends Eggine {
 		mixButton(screen, mode);
 
 		currentScene.renderBackground(screen);
-		if (player.flipX)
-			screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
-		else
-			screen.renderAnimatedSprite(player.getSpritePosition(), player);
-		player.nextFrame();
+
+		if (currentScene.showsPlayer()) {
+			if (player.flipX)
+				screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
+			else
+				screen.renderAnimatedSprite(player.getSpritePosition(), player);
+			player.nextFrame();
+		}
+
 		currentScene.renderForeground(screen);
 
 		if (detailTextArea != null) {

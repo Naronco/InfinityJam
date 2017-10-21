@@ -137,6 +137,11 @@ public abstract class PointAndClickScene implements IScene {
 		}
 	}
 
+	@Override
+	public boolean showsPlayer() {
+		return true;
+	}
+
 	private Polygon2d movementAreaAt(int x, int y) {
 		for (Polygon2d area : movementAreas) {
 			if (area.intersects(x, y)) {

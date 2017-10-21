@@ -13,4 +13,5 @@ public interface IScene {
     void renderForeground(Screen screen);
     void update();
     Sound getBackgroundMusic();
+    boolean showsPlayer();
 }

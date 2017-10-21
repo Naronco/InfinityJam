@@ -181,6 +181,11 @@ public class ShellGame implements IScene {
 		return Sounds.casino;
 	}
 
+	@Override
+	public boolean showsPlayer() {
+		return false;
+	}
+
 	public void swap(int a, int b) {
 		animating = true;
 		huts[a].swapTo(huts[b].getPosition(), true);
