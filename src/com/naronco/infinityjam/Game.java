@@ -143,7 +143,11 @@ public class Game extends Eggine {
 					mixButton(screen, MODE_USE);
 				}
 			} else if (mx > 200 - 22 && my > 150 - 22) {
-				setScene(new Inventory(new Dimension2d(200, 86)));
+				if (currentScene instanceof Inventory) {
+					setScene(((Inventory)currentScene).getPrevScene());
+				} else {
+					setScene(new Inventory(new Dimension2d(200, 86)));
+				}
 			}
 
 			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);

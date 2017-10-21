@@ -4,9 +4,7 @@ import com.deviotion.ld.eggine.graphics.Font;
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.sound.Sound;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IQuest;
-import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.*;
 
 import java.util.List;
 
@@ -52,6 +50,15 @@ public class Inventory implements IScene {
 			} else {
 				setPage(PAGE_OPTIONS);
 			}
+		} else {
+			switch (page) {
+				case PAGE_OPTIONS:
+					if (y >= 14 && y < 24)
+						Options.musicEnabled = !Options.musicEnabled;
+					if (y >= 24 && y < 34)
+						Options.soundsEnabled = !Options.soundsEnabled;
+					break;
+			}
 		}
 	}
 
@@ -87,29 +94,23 @@ public class Inventory implements IScene {
 
 		switch (page) {
 			case PAGE_QUESTS:
-				int halfWidth = (int)(size.getWidth() / 2);
-
-				screen.renderText(1, 13, Font.standard, "Offen");
-				screen.renderRectangle(1, 21,  halfWidth - 7, 1, 0xA0A0A0);
+//				screen.renderRectangle(1, 22, (int)(size.getWidth()) - 2, 1, 0xA0A0A0);
 
 				List<IQuest> quests = Game.instance.getQuests();
-				if (quests.isEmpty()) {
-					screen.renderText(1, 23, Font.standard, "Keine");
-				} else {
-					for (int i = 0; i < quests.size(); ++i) {
-						screen.renderText(1, 23 + i * 9, Font.standard, quests.get(i).getDescription());
-					}
-				}
-
-				screen.renderText(1 + halfWidth, 13, Font.standard, "Abgeschlossen");
-				screen.renderRectangle(1 + halfWidth, 21, halfWidth - 7, 1, 0xA0A0A0);
-
 				List<IQuest> finishedQuests = Game.instance.getFinishedQuests();
-				if (finishedQuests.isEmpty()) {
-					screen.renderText(1 + halfWidth, 23, Font.standard, "Keine");
+				if (quests.isEmpty() && finishedQuests.isEmpty()) {
+					screen.renderText(1, 15, Font.standard, "Keine");
 				} else {
 					for (int i = 0; i < finishedQuests.size(); ++i) {
-						screen.renderText(1 + halfWidth, 23 + i * 9, Font.standard, finishedQuests.get(i).getDescription());
+						int y = 15 + i * 9;
+						screen.renderSprite(1, y - 1, Sprites.CHECKBOX_ON);
+						screen.renderText(12, y, Font.standard, finishedQuests.get(i).getDescription());
+					}
+
+					for (int i = 0; i < quests.size(); ++i) {
+						int y = 15 + (finishedQuests.size() + i) * 9;
+						screen.renderSprite(1, y - 1, Sprites.CHECKBOX_OFF);
+						screen.renderText(12, y, Font.standard, quests.get(i).getDescription());
 					}
 				}
 
@@ -117,6 +118,12 @@ public class Inventory implements IScene {
 			case PAGE_INVENTORY:
 				break;
 			case PAGE_OPTIONS:
+				screen.renderSprite(1, 14, Options.musicEnabled ? Sprites.CHECKBOX_ON : Sprites.CHECKBOX_OFF);
+				screen.renderText(12, 15, Font.standard, "Musik");
+
+				screen.renderSprite(1, 24, Options.soundsEnabled ? Sprites.CHECKBOX_ON : Sprites.CHECKBOX_OFF);
+				screen.renderText(12, 25, Font.standard, "Sounds");
+
 				break;
 		}
 	}
@@ -142,5 +149,9 @@ public class Inventory implements IScene {
 	public void setPage(int page) {
 		if (page == this.page) return;
 		this.page = page;
+	}
+
+	public IScene getPrevScene() {
+		return prevScene;
 	}
 }
