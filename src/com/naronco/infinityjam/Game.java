@@ -82,7 +82,10 @@ public class Game extends Eggine {
 					focusedButton = MODE_USE;
 				mixButton(screen, MODE_USE);
 			}
-		} else focusedButton = MODE_WALK;
+		} else {
+			if (getMouse().isLeftClicking())
+				focusedButton = MODE_WALK;
+		}
 
 		mixButton(screen, focusedButton);
 
@@ -116,9 +119,28 @@ public class Game extends Eggine {
 		currentScene.update();
 
 		String lastDetail = currentDetail;
-		if (prevMy < 86)
-			currentDetail = currentScene.detailAt(prevMx, prevMy);
-		else
+		if (prevMy < 86) {
+			String detail = currentScene.detailAt(prevMx, prevMy);
+
+			if (detail != null && focusedButton != MODE_WALK) {
+				switch (focusedButton) {
+					case MODE_TAKE:
+						currentDetail = "Nehme " + detail;
+						break;
+					case MODE_LOOK:
+						currentDetail = "Siehe " + detail + " an";
+						break;
+					case MODE_USE:
+						currentDetail = "Benutze " + detail;
+						break;
+					case MODE_PUNCH:
+						currentDetail = "Schlage " + detail;
+						break;
+				}
+			} else {
+				currentDetail = detail;
+			}
+		} else
 			currentDetail = null;
 
 		if (lastDetail != null && currentDetail == null) {
