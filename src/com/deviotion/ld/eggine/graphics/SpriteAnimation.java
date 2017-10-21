@@ -5,47 +5,57 @@ package com.deviotion.ld.eggine.graphics;
  * A last minute game engine for Ludum Dare.
  *
  * @author Alex Nicholson (TechnoCF)
- *
  */
 
 public class SpriteAnimation {
 
-    private SpriteSheet spriteSheet;
-    private int animationFps;
-    private int startTile;
-    private int endTile;
-    private int currentTile;
-    private int tiles;
-    private long lastTile;
+	private SpriteSheet spriteSheet;
+	private int animationFps;
+	private int startTile;
+	private int endTile;
+	private int currentTile;
+	private int tiles;
+	private long lastTile;
 
-    public SpriteAnimation (SpriteSheet spriteSheet, int startTile, int
-            endTile, int fps) {
-        this.spriteSheet = spriteSheet;
-        this.animationFps = fps;
-        this.startTile = startTile;
-        this.endTile = endTile;
-        this.currentTile = startTile;
+	public SpriteAnimation(SpriteSheet spriteSheet, int startTile, int
+			endTile, int fps) {
+		this.spriteSheet = spriteSheet;
+		this.animationFps = fps;
+		this.startTile = startTile;
+		this.endTile = endTile;
+		this.currentTile = startTile;
 
-        this.tiles = this.endTile - this.startTile;
-    }
+		this.tiles = this.endTile - this.startTile;
+	}
 
-    public SpriteSheet getSpriteSheet () {
-        return this.spriteSheet;
-    }
-    public int getTile () {
-        return this.currentTile;
-    }
+	public SpriteSheet getSpriteSheet() {
+		return this.spriteSheet;
+	}
 
-    public void nextFrame () {
-        long now = System.nanoTime();
-        if (now >= this.lastTile + (1000000000f / this.animationFps)) {
-            this.lastTile = now;
-            this.currentTile++;
+	public int getTile() {
+		return this.currentTile;
+	}
 
-            if (this.currentTile > this.startTile + this.tiles) {
-                this.currentTile = this.startTile;
-            }
-        }
-    }
+	public void setStartTile(int tile) {
+		startTile = tile;
+		tiles = endTile - startTile;
+	}
+
+	public void setEndTile(int tile) {
+		endTile = tile;
+		tiles = endTile - startTile;
+	}
+
+	public void nextFrame() {
+		long now = System.nanoTime();
+		if (now >= this.lastTile + (1000000000f / this.animationFps)) {
+			this.lastTile = now;
+			this.currentTile++;
+
+			if (this.currentTile > this.startTile + this.tiles) {
+				this.currentTile = this.startTile;
+			}
+		}
+	}
 
 }
