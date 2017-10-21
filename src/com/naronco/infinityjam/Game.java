@@ -99,34 +99,35 @@ public class Game extends Eggine {
 
 		int mx = (int) getMouse().getLocation().getX();
 		int my = (int) getMouse().getLocation().getY();
-		if (mx < 63) {
-			if (my > 123) {
-				if (getMouse().isLeftClicking())
-					mode = MODE_TAKE;
-				if (mode != MODE_TAKE)
-					mixButton(screen, MODE_TAKE);
-			} else if (my > 96) {
-				if (getMouse().isLeftClicking())
-					mode = MODE_LOOK;
-				if (mode != MODE_LOOK)
-					mixButton(screen, MODE_LOOK);
-			}
-		} else if (mx < 122) {
-			if (my > 123) {
-				if (getMouse().isLeftClicking())
-					mode = MODE_PUNCH;
-				if (mode != MODE_PUNCH)
-					mixButton(screen, MODE_PUNCH);
-			} else if (my > 96) {
-				if (getMouse().isLeftClicking())
-					mode = MODE_USE;
-				if (mode != MODE_USE)
-					mixButton(screen, MODE_USE);
-			}
-		} else {
-			if (getMouse().isLeftClicking())
+
+		boolean mouseDown = getMouse().isLeftClicking();
+		if (mouseDown && !prevMouseDown) {
+			if (my < 86) {
+				currentScene.click(mx, my, mode);
 				mode = MODE_WALK;
+			} else if (mx < 63) {
+				if (my > 123) {
+					mode = MODE_TAKE;
+					mixButton(screen, MODE_TAKE);
+				} else if (my > 96) {
+					mode = MODE_LOOK;
+					mixButton(screen, MODE_LOOK);
+				}
+			} else if (mx < 122) {
+				if (my > 123) {
+					mode = MODE_PUNCH;
+					mixButton(screen, MODE_PUNCH);
+				} else if (my > 96) {
+					mode = MODE_USE;
+					mixButton(screen, MODE_USE);
+				}
+			}
+
+			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
+			lastClickX = mx;
+			lastClickY = my;
 		}
+		prevMouseDown = mouseDown;
 
 		mixButton(screen, mode);
 
@@ -158,19 +159,6 @@ public class Game extends Eggine {
 				itemX += 10;
 			}
 		}
-
-		boolean mouseDown = getMouse().isLeftClicking();
-		if (mouseDown && !prevMouseDown) {
-			if (my < 86) {
-				currentScene.click(mx, my, mode);
-				mode = MODE_WALK;
-			}
-
-			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
-			lastClickX = mx;
-			lastClickY = my;
-		}
-		prevMouseDown = mouseDown;
 
 		if (clickAnimation != null) {
 			if (clickAnimation.nextFrame()) {
@@ -276,7 +264,7 @@ public class Game extends Eggine {
 	/**
 	 * @param item
 	 * @param count
-	 * @param max Maximum count of this item in inventory
+	 * @param max   Maximum count of this item in inventory
 	 * @return true if at least one item has been given.
 	 */
 	public boolean giveItems(Item item, int count, int max) {
