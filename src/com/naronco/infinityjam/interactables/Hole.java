@@ -48,6 +48,11 @@ public class Hole implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Quasi meine Spühlung.");
 
@@ -76,5 +81,10 @@ public class Hole implements Interactable {
 				Game.instance.showMessage("Ich brauche diesen Schlüssel noch, nur wofür...");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }

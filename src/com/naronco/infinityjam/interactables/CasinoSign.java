@@ -48,6 +48,11 @@ public class CasinoSign implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Der Name dieses Casinos ist so lang, der volle Name passt nicht mal im Screen rein.");
 	}
@@ -75,5 +80,10 @@ public class CasinoSign implements Interactable {
 				Game.instance.showMessage("Lieber Spieler, das Schild stellt keine Tür da. Die Tür ist direkt unten drunter!");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }

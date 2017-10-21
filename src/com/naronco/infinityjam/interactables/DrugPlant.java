@@ -66,6 +66,11 @@ public class DrugPlant implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Man erkennt die tadellosen Fraktalstrukturen auf den einzelnen Blättern");
 	}
@@ -129,5 +134,10 @@ public class DrugPlant implements Interactable {
 				Game.instance.showMessage("Schlüssel unter Planzentöpfen zu verstecken ist zu offensichtlich.");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }

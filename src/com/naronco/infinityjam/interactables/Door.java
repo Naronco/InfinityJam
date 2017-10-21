@@ -51,6 +51,11 @@ public class Door implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return true;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Hinter dieser Tür könnte sich alles verbergen.");
 	}
@@ -79,5 +84,10 @@ public class Door implements Interactable {
 				Game.instance.showMessage("Der passt hier nicht.");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+		take(x, y);
 	}
 }

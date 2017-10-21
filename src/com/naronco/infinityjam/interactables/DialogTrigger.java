@@ -1,25 +1,41 @@
 package com.naronco.infinityjam.interactables;
 
 import com.deviotion.ld.eggine.math.Polygon2d;
+import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.Interactable;
 import com.naronco.infinityjam.Item;
+import com.naronco.infinityjam.dialog.Dialog;
 
-public class Bucket implements Interactable {
-	private Polygon2d outline;
+public class DialogTrigger implements Interactable {
+	public String name;
+	public Polygon2d outline;
+	public Dialog trigger;
 
-	public Bucket(Polygon2d outline) {
+	public DialogTrigger(String name, Polygon2d outline, Dialog trigger) {
+		this.name = name;
 		this.outline = outline;
+		this.trigger = trigger;
+	}
+
+	@Override
+	public boolean hasPunch() {
+		return true;
+	}
+
+	@Override
+	public boolean hasImplicitClick() {
+		return true;
 	}
 
 	@Override
 	public String getName() {
-		return "Eimer";
+		return name;
 	}
 
 	@Override
 	public String getNameWithArticle() {
-		return "ein Eimer";
+		return getName();
 	}
 
 	@Override
@@ -43,47 +59,32 @@ public class Bucket implements Interactable {
 	}
 
 	@Override
-	public boolean hasPunch() {
-		return true;
-	}
-
-	@Override
-	public boolean hasImplicitClick() {
-		return false;
-	}
-
-	@Override
 	public void look(int x, int y) {
-		Game.instance.showMessage("In diesem Eimer kommt mein Schei...uhm, Ko...uhm, Obama rein.");
+		Game.instance.showMessage("Sieht aus wie jeder andere");
 	}
 
 	@Override
 	public void use(int x, int y) {
-		Game.instance.showMessage("Gerade muss ich nicht.");
+		Game.instance.pushDialog(trigger);
 	}
 
 	@Override
 	public void take(int x, int y) {
-		Game.instance.showMessage("Lieber nicht, den brauche ich lieber noch für Zuhause.");
-
+		Game.instance.showMessage("Ich glaub das würde er nicht wollen.");
 	}
 
 	@Override
 	public void punch(int x, int y) {
-		Game.instance.showMessage("Absolut Ekelhaft.");
+		Game.instance.showMessage("Er hat mir doch nichts getan.");
 	}
 
 	@Override
 	public void interact(int x, int y, Item item) {
-		switch (item) {
-			case KEY:
-				Game.instance.showMessage("...Es wäre nicht schlecht, wenn der Schlüssel noch benutztbar wäre.");
-				break;
-		}
+		Game.instance.showMessage("Das behalt ich lieber.");
 	}
 
 	@Override
 	public void implicit(int x, int y) {
-
+		use(x, y);
 	}
 }

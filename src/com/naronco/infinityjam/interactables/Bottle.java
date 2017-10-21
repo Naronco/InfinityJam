@@ -48,6 +48,11 @@ public class Bottle implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Eine offene Flasche, die mit Alkohol gefüllt ist.");
 	}
@@ -75,5 +80,10 @@ public class Bottle implements Interactable {
 				Game.instance.showMessage("Die Flasche ist schon offen.");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }

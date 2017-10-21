@@ -38,6 +38,14 @@ public abstract class PointAndClickScene implements IScene {
 
 	@Override
 	public void click(int x, int y, int mode) {
+		if (mode == Game.MODE_WALK)
+			for (Interactable i : interactables) {
+				if (i.hasImplicitClick() && i.intersects(x, y)) {
+					i.implicit(x, y);
+					return;
+				}
+			}
+
 		if (mode == Game.MODE_WALK) {
 			Vector2d playerPos = Game.instance.player.getPosition();
 
@@ -104,10 +112,7 @@ public abstract class PointAndClickScene implements IScene {
 							i.punch(x, y);
 						break;
 					default:
-						if (i instanceof Door)
-							i.take(x, y);
-						else
-							Game.instance.showMessage(i.getNameWithArticle() + ".");
+						Game.instance.showMessage(i.getNameWithArticle() + ".");
 						break;
 				}
 				return;

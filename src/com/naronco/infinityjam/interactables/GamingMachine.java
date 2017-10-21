@@ -49,6 +49,11 @@ public class GamingMachine implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("TEAM:TEXT EINFÜGEN");
 	}
@@ -70,5 +75,10 @@ public class GamingMachine implements Interactable {
 
 	@Override
 	public void interact(int x, int y, Item item) {
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }

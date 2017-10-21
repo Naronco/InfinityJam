@@ -4,6 +4,8 @@ import com.deviotion.ld.eggine.Eggine;
 import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.sound.Sound;
+import com.naronco.infinityjam.dialog.Dialog;
+import com.naronco.infinityjam.dialog.IAnswer;
 import com.naronco.infinityjam.scenes.*;
 import com.naronco.infinityjam.scenes.inventory.Inventory;
 
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game extends Eggine {
-	Sprite ui;
+	Sprite ui, uiLite;
 
 	public static Game instance;
 
@@ -55,7 +57,7 @@ public class Game extends Eggine {
 		street.load();
 		casino.load();
 
-		currentScene = bedroom;
+		currentScene = elevator;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -65,6 +67,7 @@ public class Game extends Eggine {
 		player = new Character(90, 40);
 
 		ui = new Sprite(new File("res/ui.png"));
+		uiLite = new Sprite(new File("res/ui-lite.png"));
 
 		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
 		messageTextArea.setMaxLineCount(2);
@@ -116,41 +119,66 @@ public class Game extends Eggine {
 
 		currentScene.renderForeground(screen);
 
-		screen.renderSprite(0, 0, ui);
-
 		int mx = (int) getMouse().getLocation().getX();
 		int my = (int) getMouse().getLocation().getY();
 
 		boolean mouseDown = getMouse().isLeftClicking();
 		if (mouseDown && !prevMouseDown) {
-			if (my < 86) {
-				currentScene.click(mx, my, mode);
-				mode = MODE_WALK;
-			} else if (mx < 63) {
-				if (my > 123) {
-					mode = MODE_TAKE;
-					mixButton(screen, MODE_TAKE);
-				} else if (my > 96) {
-					mode = MODE_LOOK;
-					mixButton(screen, MODE_LOOK);
+			if (!animationPlaying && queuedDialogs.size() == 0 && activeDialog == null) {
+				if (my < 86) {
+					currentScene.click(mx, my, mode);
+					mode = MODE_WALK;
+				} else if (mx < 63) {
+					if (my > 123) {
+						mode = MODE_TAKE;
+						mixButton(screen, MODE_TAKE);
+					} else if (my > 96) {
+						mode = MODE_LOOK;
+						mixButton(screen, MODE_LOOK);
+					}
+				} else if (mx < 122) {
+					if (my > 123) {
+						mode = MODE_PUNCH;
+						mixButton(screen, MODE_PUNCH);
+					} else if (my > 96) {
+						mode = MODE_USE;
+						mixButton(screen, MODE_USE);
+					}
+				} else if (mx > 200 - 22 && my > 150 - 22) {
+					setScene(new Inventory(new Dimension2d(200, 86)));
 				}
-			} else if (mx < 122) {
-				if (my > 123) {
-					mode = MODE_PUNCH;
-					mixButton(screen, MODE_PUNCH);
-				} else if (my > 96) {
-					mode = MODE_USE;
-					mixButton(screen, MODE_USE);
-				}
-			} else if (mx > 200 - 22 && my > 150 - 22) {
-				setScene(new Inventory(new Dimension2d(200, 86)));
+			} else if (queuedDialogs.size() > 0 && activeDialog == null) {
+				Dialog d = queuedDialogs.remove(queuedDialogs.size() - 1);
+				showMessage(d.title);
+				if (d.answers != null && d.answers.length > 0)
+					activeDialog = d;
 			}
 
 			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
 			lastClickX = mx;
 			lastClickY = my;
 		}
-		prevMouseDown = mouseDown;
+
+		if (activeDialog == null) {
+			if (queuedDialogs.size() == 0)
+				screen.renderSprite(0, 0, ui);
+			else
+				screen.renderSprite(0, 0, uiLite);
+		} else {
+			screen.renderSprite(0, 0, uiLite);
+			int y = 0;
+			for (IAnswer answer : activeDialog.answers) {
+				boolean hovered = my >= 106 + y * 10 && my < 116 + y * 10;
+				if (hovered)
+					screen.mixRectangle(0, 106 + y * 10, 200, 10, 0x40000000);
+				screen.renderText(2, 107 + y++ * 10, Font.standard, answer.getTitle());
+				if (hovered && mouseDown && !prevMouseDown) {
+					activeDialog = null;
+					answer.run();
+					break;
+				}
+			}
+		}
 
 		mixButton(screen, mode);
 
@@ -162,6 +190,7 @@ public class Game extends Eggine {
 
 		prevMx = mx;
 		prevMy = my;
+		prevMouseDown = mouseDown;
 
 		int itemX = 124, itemY = 106;
 		int itemN = 0;
@@ -304,6 +333,8 @@ public class Game extends Eggine {
 	int prevMx, prevMy;
 	boolean prevMouseDown;
 
+	public boolean animationPlaying = false;
+
 	int mode = -1;
 
 	/**
@@ -325,16 +356,6 @@ public class Game extends Eggine {
 		return true;
 	}
 
-	public List<Sprite> itemSprites = new ArrayList<>();
-	public List<Item> items = new ArrayList<>();
-	public List<IQuest> quests = new ArrayList<>();
-	public List<IQuest> finishedQuests = new ArrayList<>();
-	public int selectedItem = -1;
-
-	SpriteSheet clickSheet;
-	SpriteAnimation clickAnimation;
-	int lastClickX, lastClickY;
-
 	public Character getPlayer() {
 		return player;
 	}
@@ -346,4 +367,20 @@ public class Game extends Eggine {
 	public List<IQuest> getFinishedQuests() {
 		return finishedQuests;
 	}
+
+	public void pushDialog(Dialog child) {
+		queuedDialogs.add(child);
+	}
+
+	public List<Sprite> itemSprites = new ArrayList<>();
+	public List<Item> items = new ArrayList<>();
+	public List<IQuest> quests = new ArrayList<>();
+	public List<IQuest> finishedQuests = new ArrayList<>();
+	public List<Dialog> queuedDialogs = new ArrayList<>();
+	Dialog activeDialog = null;
+	public int selectedItem = -1;
+
+	SpriteSheet clickSheet;
+	SpriteAnimation clickAnimation;
+	int lastClickX, lastClickY;
 }

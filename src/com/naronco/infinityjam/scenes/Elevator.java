@@ -7,6 +7,9 @@ import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.Character;
+import com.naronco.infinityjam.dialog.Dialog;
+import com.naronco.infinityjam.dialog.StaticAnswer;
+import com.naronco.infinityjam.interactables.DialogTrigger;
 import com.naronco.infinityjam.interactables.Walkway;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
 import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
@@ -65,14 +68,25 @@ public class Elevator extends PointAndClickScene {
 		super.update();
 		if (showRandomDude && !randomDudeTalked && randomDude.walkingEnded()) {
 			randomDudeTalked = true;
-			Game.instance.showMessage("Ich hab gehört der Drogen Dealer weiß wie man hier durch kommt. Er wohnt in Raum 153013");
+			Game.instance.showMessage("I hob gehört da Drogn Deala woass wia ma do duach kimmd. Ea wohnt in Raum 153013");
+			Game.instance.animationPlaying = false;
+			interactables.add(new DialogTrigger("Random Dude", new Polygon2d(
+					randomDude.getSpritePosition(),
+					randomDude.getSpritePosition().add(new Vector2d(20, 0)),
+					randomDude.getSpritePosition().add(new Vector2d(20, 33)),
+					randomDude.getSpritePosition().add(new Vector2d(0, 33))
+			), new Dialog(
+					"Servus, wos wuist du?",
+					new StaticAnswer("Wo finde ich den Drogen Dealer?", new Dialog("Ea wohnt in Raum 153013, hob i doch schonmoi gsogt")),
+					new StaticAnswer("Servus", new Dialog("Was soll der schlechte Akzent?"))
+			)));
 		}
 	}
 
 	public void triggerDude() {
 		showRandomDude = true;
 		randomDude.walkTo(64, 64);
-		// TODO: lock character during this animation
+		Game.instance.animationPlaying = true;
 	}
 
 	@Override

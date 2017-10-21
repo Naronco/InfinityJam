@@ -55,6 +55,11 @@ public class Bed implements Interactable {
 	}
 
 	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
 	public void look(int x, int y) {
 		Game.instance.showMessage("Enthält Krabbeltierchen falls ich Nachts hungrig werde.");
 	}
@@ -82,5 +87,10 @@ public class Bed implements Interactable {
 				Game.instance.showMessage("Der Schlüssel zum Erfolg ist definitiv nicht schlafen.");
 				break;
 		}
+	}
+
+	@Override
+	public void implicit(int x, int y) {
+
 	}
 }
