@@ -35,8 +35,6 @@ public class Game extends Eggine {
 
 	@Override
 	public void render(Screen screen) {
-		screen.fillScreen(0x000000);
-
 		screen.renderSprite(0, 0, ui);
 
 		int mx = (int)getMouse().getLocation().getX();
@@ -78,8 +76,6 @@ public class Game extends Eggine {
 			mode = focusedButton;
 		}
 		prevMouseDown = mouseDown;
-
-		screen.setPixel(mx, my, 0x000000);
 	}
 
 	@Override
