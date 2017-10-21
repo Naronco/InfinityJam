@@ -199,7 +199,9 @@ public class Game extends Eggine {
 	}
 
 	public void setScene(IScene scene) {
+		currentScene.leave();
 		currentScene = scene;
+		currentScene.enter();
 	}
 
 	public void showMessage(String message) {
