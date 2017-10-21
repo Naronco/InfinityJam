@@ -44,26 +44,30 @@ public class PointAndClickScene implements IScene {
 
 			Polygon2d targetArea = movementAreaAt(x, y);
 			if (targetArea != null) {
-				double dx = x - playerPos.getX();
-				double dy = y - playerPos.getY();
-
-				double dist = Math.sqrt(dx * dx + dy * dy);
-				dx /= dist;
-				dy /= dist;
-
-				double tx = playerPos.getX();
-				double ty = playerPos.getY();
-
-				double step = 4.0;
-
 				boolean movable = true;
 
-				for (double p = 0; p < dist; p += step) {
-					tx += dx * step;
-					ty += dy * step;
+				if (movementAreaAt((int)playerPos.getX(), (int)playerPos.getY()) != null) {
+					double dx = x - playerPos.getX();
+					double dy = y - playerPos.getY();
 
-					if (movementAreaAt((int)tx, (int)ty) == null)
-						movable = false;
+					double dist = Math.sqrt(dx * dx + dy * dy);
+					dx /= dist;
+					dy /= dist;
+
+					double tx = playerPos.getX();
+					double ty = playerPos.getY();
+
+					double step = 4.0;
+
+					for (double p = 0; p < dist; p += step) {
+						tx += dx * step;
+						ty += dy * step;
+
+						if (movementAreaAt((int) tx, (int) ty) == null) {
+							movable = false;
+							break;
+						}
+					}
 				}
 
 				if (movable) {
