@@ -1,7 +1,5 @@
 package com.naronco.infinityjam.scenes;
 
-import com.deviotion.ld.eggine.graphics.Font;
-import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
@@ -46,15 +44,17 @@ class ElevatorQuest extends ExitStepArea {
 	}
 
 	@Override
-	public void stepOn(int x, int y) {
+	public boolean stepOn(int x, int y) {
 		if (Game.instance.isQuestFinished(DrugDealerQuest.class))
-			super.stepOn(x, y);
-		else {
+			return super.stepOn(x, y);
+		else if (area.intersects(x, y)) {
 			Game.instance.showMessage("Scheint als wäre der Aufzug kaputt. Ich muss einen Weg finden ihn trotzdem benutzen zu können");
 			if (!questGiven) {
 				Game.instance.addQuest(new DrugDealerVisitQuest());
 				questGiven = true;
 			}
+			return true;
 		}
+		return false;
 	}
 }

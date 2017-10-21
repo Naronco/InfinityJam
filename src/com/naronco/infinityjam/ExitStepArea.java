@@ -12,9 +12,11 @@ public class ExitStepArea implements StepArea {
 	}
 
 	@Override
-	public void stepOn(int x, int y) {
+	public boolean stepOn(int x, int y) {
 		if (area.intersects(x, y)) {
 			Game.instance.setScene(transitionTo);
+			return true;
 		}
+		return false;
 	}
 }

@@ -13,10 +13,11 @@ public class QuestExitStepArea extends ExitStepArea {
 	}
 
 	@Override
-	public void stepOn(int x, int y) {
+	public boolean stepOn(int x, int y) {
 		if (Game.instance.isQuestFinished(quest))
 			super.stepOn(x, y);
 		else if (unfulfillMsg != null)
 			Game.instance.showMessage(unfulfillMsg);
+		return false;
 	}
 }
