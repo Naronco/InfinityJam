@@ -14,6 +14,7 @@ public class Game extends Eggine {
 
 	public static Game instance;
 
+	public static final int MODE_WALK = -1;
 	public static final int MODE_LOOK = 0;
 	public static final int MODE_USE = 1;
 	public static final int MODE_TAKE = 2;
@@ -25,6 +26,8 @@ public class Game extends Eggine {
 		instance = this;
 
 		currentScene = new Bedroom();
+
+		player = new Character(80, 40);
 
 		ui = new Sprite(new File("res/ui.png"));
 
@@ -39,8 +42,8 @@ public class Game extends Eggine {
 	public void render(Screen screen) {
 		screen.renderSprite(0, 0, ui);
 
-		int mx = (int)getMouse().getLocation().getX();
-		int my = (int)getMouse().getLocation().getY();
+		int mx = (int) getMouse().getLocation().getX();
+		int my = (int) getMouse().getLocation().getY();
 		if (mx < 63) {
 			if (my > 123) {
 				focusedButton = MODE_TAKE;
@@ -49,8 +52,7 @@ public class Game extends Eggine {
 				focusedButton = MODE_LOOK;
 				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
-		}
-		else if (mx < 122) {
+		} else if (mx < 122) {
 			if (my > 123) {
 				focusedButton = MODE_PUNCH;
 				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
@@ -58,10 +60,12 @@ public class Game extends Eggine {
 				focusedButton = MODE_USE;
 				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
-		}
-		else focusedButton = -1;
+		} else focusedButton = MODE_WALK;
 
-		currentScene.render(screen);
+		currentScene.renderBackground(screen);
+		screen.renderAnimatedSprite(player.getSpritePosition(), player);
+		player.nextFrame();
+		currentScene.renderForeground(screen);
 
 		if (currentDetail != null) {
 			screen.mixRectangle(mx, my, 10, 10, 0x80FF0000);
@@ -73,11 +77,12 @@ public class Game extends Eggine {
 		prevMy = my;
 
 		boolean mouseDown = getMouse().isLeftClicking();
-		if (mouseDown && !prevMouseDown)
-		{
-			if (my < 86)
+		if (mouseDown && !prevMouseDown) {
+			if (my < 86) {
 				currentScene.click(mx, my, mode);
-			mode = focusedButton;
+				mode = MODE_WALK;
+			} else
+				mode = focusedButton;
 		}
 		prevMouseDown = mouseDown;
 	}
@@ -106,6 +111,8 @@ public class Game extends Eggine {
 	TextArea messageTextArea;
 
 	String currentDetail;
+
+	public Character player;
 
 	int prevMx, prevMy;
 	boolean prevMouseDown;

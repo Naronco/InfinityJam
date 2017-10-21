@@ -7,6 +7,7 @@ public interface IScene {
     void leave();
     String detailAt(int x, int y);
     void click(int x, int y, int mode);
-    void render(Screen screen);
+    void renderBackground(Screen screen);
+    void renderForeground(Screen screen);
     void update();
 }
