@@ -40,8 +40,33 @@ public class PointAndClickScene implements IScene {
 	@Override
 	public void click(int x, int y, int mode) {
 		if (mode == Game.MODE_WALK) {
-			for (Polygon2d area : movementAreas) {
-				if (area.intersects(x, y)) {
+			Vector2d playerPos = Game.instance.player.getPosition();
+
+			Polygon2d targetArea = movementAreaAt(x, y);
+			if (targetArea != null) {
+				double dx = x - playerPos.getX();
+				double dy = y - playerPos.getY();
+
+				double dist = Math.sqrt(dx * dx + dy * dy);
+				dx /= dist;
+				dy /= dist;
+
+				double tx = playerPos.getX();
+				double ty = playerPos.getY();
+
+				double step = 4.0;
+
+				boolean movable = true;
+
+				for (double p = 0; p < dist; p += step) {
+					tx += dx;
+					ty += dy;
+
+					if (movementAreaAt((int)tx, (int)ty) == null)
+						movable = false;
+				}
+
+				if (movable) {
 					Game.instance.player.walkTo(new Vector2d(x, y));
 					return;
 				}
@@ -100,5 +125,14 @@ public class PointAndClickScene implements IScene {
 
 	@Override
 	public void update() {
+	}
+
+	private Polygon2d movementAreaAt(int x, int y) {
+		for (Polygon2d area : movementAreas) {
+			if (area.intersects(x, y)) {
+				return area;
+			}
+		}
+		return null;
 	}
 }

@@ -27,7 +27,7 @@ public class Game extends Eggine {
 
 		currentScene = new Bedroom();
 
-		player = new Character(80, 40);
+		player = new Character(90, 40);
 
 		ui = new Sprite(new File("res/ui.png"));
 
