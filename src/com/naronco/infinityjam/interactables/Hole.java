@@ -74,6 +74,16 @@ public class Hole implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Ich brauche diesen Schlüssel noch, nur wofür...");
+			case LEAF:
+				Game.instance.showMessage("Das Blatt soll noch nicht leafen.");
+			case COINS:
+				Game.instance.showMessage("Nicht nötig, der Service ist für mich kostenlos.");
+			case DRUG:
+				Game.instance.showMessage("Besser nicht.");
+			case SAW:
+				Game.instance.showMessage("Ich brauche die Säge noch!");
+			case KNIFE:
+				Game.instance.showMessage("Nicht nötig.");
 				break;
 		}
 	}

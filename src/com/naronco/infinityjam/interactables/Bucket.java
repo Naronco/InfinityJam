@@ -73,6 +73,16 @@ public class Bucket implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("...Es wäre nicht schlecht, wenn der Schlüssel noch benutztbar wäre.");
+			case LEAF:
+				Game.instance.showMessage("Nur für den Fall, falls ich kein Klopapier mehr habe.");
+			case COINS:
+				Game.instance.showMessage("Dieses mal gebe ich mein Geld nicht für irgendwelchen Scheiß aus.");
+			case DRUG:
+				Game.instance.showMessage("Diese Drogen habe sowieso zu viel Mist drinne. Genau wie die Witze.");
+			case SAW:
+				Game.instance.showMessage("Ich wette, die Säge ist für was besseres benutzbar...");
+			case KNIFE:
+				Game.instance.showMessage("Nein danke, heute möchte ich kein Brot mit Nutella zum Frühstück.");
 				break;
 		}
 	}

@@ -29,6 +29,6 @@ public class Walkway extends Door {
 
 	@Override
 	public void look(int x, int y) {
-		Game.instance.showMessage("Hier könnte sich alles verbergen.");
+		Game.instance.showMessage("Das sieht nach einem Durchgang aus...");
 	}
 }
