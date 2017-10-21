@@ -80,21 +80,25 @@ public class Game extends Eggine {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
 					focusedButton = MODE_TAKE;
-				mixButton(screen, MODE_TAKE);
+				if (focusedButton != MODE_TAKE)
+					mixButton(screen, MODE_TAKE);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
 					focusedButton = MODE_LOOK;
-				mixButton(screen, MODE_LOOK);
+				if (focusedButton != MODE_LOOK)
+					mixButton(screen, MODE_LOOK);
 			}
 		} else if (mx < 122) {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
 					focusedButton = MODE_PUNCH;
-				mixButton(screen, MODE_PUNCH);
+				if (focusedButton != MODE_PUNCH)
+					mixButton(screen, MODE_PUNCH);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
 					focusedButton = MODE_USE;
-				mixButton(screen, MODE_USE);
+				if (focusedButton != MODE_USE)
+					mixButton(screen, MODE_USE);
 			}
 		} else {
 			if (getMouse().isLeftClicking())
