@@ -1,10 +1,7 @@
 package com.naronco.infinityjam;
 
 import com.deviotion.ld.eggine.Eggine;
-import com.deviotion.ld.eggine.graphics.Font;
-import com.deviotion.ld.eggine.graphics.Screen;
-import com.deviotion.ld.eggine.graphics.Sprite;
-import com.deviotion.ld.eggine.graphics.Window;
+import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.naronco.infinityjam.scenes.Bedroom;
 
@@ -30,6 +27,8 @@ public class Game extends Eggine {
 		currentScene = new Bedroom();
 
 		ui = new Sprite(new File("res/ui.png"));
+
+		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
@@ -68,10 +67,7 @@ public class Game extends Eggine {
 			screen.mixRectangle(mx, my, 10, 10, 0x80FF0000);
 		}
 
-		if (activeMessage != null) {
-			String partialMessage = activeMessage.substring(0, visibleCharacters);
-			screen.renderText(0, 87, Font.standard, partialMessage);
-		}
+		messageTextArea.render(screen);
 
 		prevMx = mx;
 		prevMy = my;
@@ -94,19 +90,7 @@ public class Game extends Eggine {
 		else
 			currentDetail = null;
 
-		if (buildingMessage) {
-			++ticksSinceLastCharacter;
-
-			if (ticksSinceLastCharacter >= ticksPerCharacter) {
-				++visibleCharacters;
-
-				if (visibleCharacters == activeMessage.length()) {
-					buildingMessage = false;
-				}
-
-				ticksSinceLastCharacter = 0;
-			}
-		}
+		messageTextArea.update();
 	}
 
 	public void setScene(IScene scene) {
@@ -114,40 +98,12 @@ public class Game extends Eggine {
 	}
 
 	public void showMessage(String message) {
-		String[] words = message.split(" ");
-
-		StringBuilder messageBuilder = new StringBuilder();
-		StringBuilder currentLine = new StringBuilder();
-
-		for (String word : words) {
-			int newLength = currentLine.length() + word.length();
-			boolean overBounds = newLength * Font.standard.getCharacterSize().getWidth() >= getWindow().getScreen().getDimension().getWidth();
-
-			if (overBounds) {
-				messageBuilder.append(currentLine).append('\n');
-				currentLine = new StringBuilder();
-			}
-
-			currentLine.append(word).append(' ');
-		}
-
-		if (currentLine.length() > 0) {
-			messageBuilder.append(currentLine);
-		}
-
-		activeMessage = messageBuilder.toString();
-		visibleCharacters = 1;
-		ticksSinceLastCharacter = 0;
-		buildingMessage = true;
+		messageTextArea.showText(message);
 	}
 
 	IScene currentScene;
 
-	String activeMessage;
-	boolean buildingMessage = false;
-	int visibleCharacters;
-	int ticksSinceLastCharacter;
-	int ticksPerCharacter;
+	TextArea messageTextArea;
 
 	String currentDetail;
 

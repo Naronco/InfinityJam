@@ -72,6 +72,37 @@ public class Screen {
         }
     }
 
+    public void renderClippedSprite(int x, int y, int startX, int startY, int endX, int endY, int clipX, int clipY, int clipWidth, int clipHeight, Sprite sprite) {
+        BufferedImage spriteImage = sprite.getBufferedImage();
+
+        if (startX > sprite.getDimension().getWidth()) startX =
+                (int) sprite.getDimension().getWidth();
+        if (startY > sprite.getDimension().getHeight()) startY =
+                (int) sprite.getDimension().getHeight();
+
+        if (endX > (sprite.getDimension().getWidth() - startX)) endX =
+                ((int) sprite.getDimension().getWidth()
+                        - startX);
+        if (endY > (sprite.getDimension().getHeight() - startY)) endY =
+                ((int) sprite.getDimension().getHeight()
+                        - startY);
+
+        for (int i = startX; i < startX + endX; i++) {
+            for (int j = startY; j < startY + endY; j++) {
+                if (i >= spriteImage.getWidth() || i < 0 || j >= spriteImage.getHeight() || j < 0)
+                    continue;
+                int xx = x + (i - startX);
+                int yy = y + (j - startY);
+                if (xx < clipX || yy < clipY || xx >= clipX + clipWidth || yy >= clipY + clipHeight)
+                    continue;
+                int pixelColor = spriteImage.getRGB(i, j);
+                if (pixelColor != sprite.getTransparentColor()) {
+                    this.setPixel(xx, yy, pixelColor);
+                }
+            }
+        }
+    }
+
     public void renderSprite(int x, int y, Sprite sprite) {
         this.renderSprite(x, y, 0, 0, (int) sprite.getDimension().getWidth(),
                 (int) sprite.getDimension().getHeight(), sprite);
@@ -239,6 +270,24 @@ public class Screen {
                 continue;
             }
             renderSprite(x + xOffs, y + yOffs, font.getCharacterVector(ch), font.getCharacterSize(), font.getSprite());
+            xOffs += (int) font.getCharacterSize().getWidth();
+        }
+    }
+
+    public void renderClippedText(int x, int y, int clipX, int clipY, int clipWidth, int clipHeight, Font font, String text) {
+        text = text.toUpperCase();
+        int xOffs = 0, yOffs = 0;
+        Dimension2d s = font.getCharacterSize();
+
+        for (int i = 0; i < text.length(); ++i) {
+            char ch = text.charAt(i);
+            if (ch == '\n') {
+                xOffs = 0;
+                yOffs += (int)font.getCharacterSize().getHeight() + 1;
+                continue;
+            }
+            Vector2d v = font.getCharacterVector(ch);
+            renderClippedSprite(x + xOffs, y + yOffs, (int)v.getX(), (int)v.getY(), (int)s.getWidth(), (int)s.getHeight(), clipX, clipY, clipWidth, clipHeight, font.getSprite());
             xOffs += (int) font.getCharacterSize().getWidth();
         }
     }
