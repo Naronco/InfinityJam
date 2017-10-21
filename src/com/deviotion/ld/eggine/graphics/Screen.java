@@ -212,10 +212,29 @@ public class Screen {
         }
     }
 
+    public void mixOutlinedRectangle(int x, int y, int width, int height, int color) {
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                if (i != 0 && i != width - 1 && j != 0 && j != height - 1) continue;
+                this.mixPixel(i + x, j + y, color);
+            }
+        }
+    }
+
     public void renderRectangle(int x, int y, int width, int height, int
             color) {
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
+                this.setPixel(i + x, j + y, color);
+            }
+        }
+    }
+
+    public void renderOutlinedRectangle(int x, int y, int width, int height, int
+            color) {
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                if (i != 0 && i != width - 1 && j != 0 && j != height - 1) continue;
                 this.setPixel(i + x, j + y, color);
             }
         }

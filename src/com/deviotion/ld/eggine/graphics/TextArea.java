@@ -97,8 +97,9 @@ public class TextArea {
     public void render(Screen screen) {
         if (activeMessage != null) {
             if (bordered) {
-                screen.renderRectangle(x, y, width, height, 0x121212);
-                screen.renderRectangle(x + 1, y + 1, width - 2, height - 2, 0xF2F2F2);
+                screen.mixOutlinedRectangle(x, y, width, height, 0xE0121212);
+                screen.mixOutlinedRectangle(x + 1, y + 1, width, height, 0xE0121212);
+                screen.mixRectangle(x + 1, y + 1, width - 2, height - 2, 0xE0F2F2F2);
             }
 
             String partialMessage = activeMessage.substring(0, visibleCharacters);
