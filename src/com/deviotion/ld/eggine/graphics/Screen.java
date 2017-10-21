@@ -43,7 +43,7 @@ public class Screen {
 	}
 
 	public void renderSprite(int x, int y, int startX, int startY, int endX,
-	                         int endY, Sprite sprite) {
+							 int endY, Sprite sprite) {
 		BufferedImage spriteImage = sprite.getBufferedImage();
 
 		if (startX > sprite.getDimension().getWidth()) startX =
@@ -73,7 +73,7 @@ public class Screen {
 	}
 
 	public void renderSpriteFlipped(int x, int y, int startX, int startY, int endX,
-	                                int endY, Sprite sprite) {
+									int endY, Sprite sprite) {
 		BufferedImage spriteImage = sprite.getBufferedImage();
 
 		if (startX > sprite.getDimension().getWidth()) startX =
@@ -143,7 +143,7 @@ public class Screen {
 	}
 
 	public void renderSprite(Vector2d location, Vector2d startLocation,
-	                         Dimension2d endLocation, Sprite sprite) {
+							 Dimension2d endLocation, Sprite sprite) {
 		this.renderSprite((int) location.getX(), (int) location.getY(),
 				(int) startLocation.getX(), (int) startLocation.getY(),
 				(int) endLocation.getWidth(), (int) endLocation.getHeight(),
@@ -151,46 +151,46 @@ public class Screen {
 	}
 
 	public void renderSprite(Vector2d location, int startX, int startY,
-	                         int endX, int endY, Sprite sprite) {
+							 int endX, int endY, Sprite sprite) {
 		this.renderSprite((int) location.getX(), (int) location.getY(), startX,
 				startY, endX, endY, sprite);
 	}
 
 	public void renderSprite(int x, int y, Vector2d startLocation, int endX,
-	                         int endY, Sprite sprite) {
+							 int endY, Sprite sprite) {
 		this.renderSprite(x, y, (int) startLocation.getX(),
 				(int) startLocation.getY(), endX, endY, sprite);
 	}
 
 	public void renderSprite(int x, int y, int startX, int startY,
-	                         Dimension2d endLocation, Sprite sprite) {
+							 Dimension2d endLocation, Sprite sprite) {
 		this.renderSprite(x, y, startX, startY, (int) endLocation.getWidth(),
 				(int) endLocation.getHeight(), sprite);
 	}
 
 	public void renderSprite(Vector2d location, Vector2d startLocation,
-	                         int endX, int endY, Sprite sprite) {
+							 int endX, int endY, Sprite sprite) {
 		this.renderSprite((int) location.getX(), (int) location.getY(), (int)
 						startLocation.getX(), (int) startLocation.getY(), endX, endY,
 				sprite);
 	}
 
 	public void renderSprite(Vector2d location, int startX, int startY,
-	                         Dimension2d endLocation, Sprite sprite) {
+							 Dimension2d endLocation, Sprite sprite) {
 		this.renderSprite((int) location.getX(), (int) location.getY(),
 				startX, startY, (int) endLocation.getWidth(), (int) endLocation
 						.getHeight(), sprite);
 	}
 
 	public void renderSprite(int x, int y, Vector2d startLocation,
-	                         Dimension2d endLocation, Sprite sprite) {
+							 Dimension2d endLocation, Sprite sprite) {
 		this.renderSprite(x, y, (int) startLocation.getX(), (int)
 						startLocation.getY(), (int) endLocation.getWidth(),
 				(int) endLocation.getHeight(), sprite);
 	}
 
 	public void renderSpriteFlipped(int x, int y, Vector2d startLocation,
-	                                Dimension2d endLocation, Sprite sprite) {
+									Dimension2d endLocation, Sprite sprite) {
 		this.renderSpriteFlipped(x, y, (int) startLocation.getX(), (int)
 						startLocation.getY(), (int) endLocation.getWidth(),
 				(int) endLocation.getHeight(), sprite);
@@ -216,7 +216,7 @@ public class Screen {
 	}
 
 	public void renderSpriteTile(int x, int y, SpriteSheet spriteSheet,
-	                             int tile) {
+								 int tile) {
 		Vector2d location = spriteSheet.getTileVector(tile);
 
 		this.renderSprite(x, y, location, spriteSheet
@@ -230,7 +230,7 @@ public class Screen {
 	}
 
 	public void renderSpriteTileFlipped(int x, int y, SpriteSheet spriteSheet,
-	                                    int tile) {
+										int tile) {
 		Vector2d location = spriteSheet.getTileVector(tile);
 
 		this.renderSpriteFlipped(x, y, location, spriteSheet
@@ -285,7 +285,7 @@ public class Screen {
 	}
 
 	public void renderRectangle(Vector2d location, int width, int height,
-	                            int color) {
+								int color) {
 		this.renderRectangle((int) location.getX(), (int) location.getY(),
 				width, height, color);
 	}
@@ -297,9 +297,28 @@ public class Screen {
 	}
 
 	public void renderRectangle(Vector2d location, Dimension2d dimension,
-	                            int color) {
+								int color) {
 		this.renderRectangle((int) location.getX(), (int) location.getY(),
 				(int) dimension.getWidth(), (int) dimension.getHeight(), color);
+	}
+
+	public void mixOutlinedRectangle(int x, int y, int width, int height, int color) {
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				if (i != 0 && i != width - 1 && j != 0 && j != height - 1) continue;
+				this.mixPixel(i + x, j + y, color);
+			}
+		}
+	}
+
+	public void renderOutlinedRectangle(int x, int y, int width, int height, int
+			color) {
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				if (i != 0 && i != width - 1 && j != 0 && j != height - 1) continue;
+				this.setPixel(i + x, j + y, color);
+			}
+		}
 	}
 
 	public void renderMap(int x, int y, Map map, SpriteSheet spriteSheet) {

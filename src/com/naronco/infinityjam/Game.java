@@ -53,6 +53,23 @@ public class Game extends Eggine {
 	static final int RIGHT_BUTTON_WIDTH = 119 - 63;
 	static final int BUTTON_HEIGHT = 123 - 100;
 
+	private void mixButton(Screen screen, int mode) {
+		switch (mode) {
+			case MODE_TAKE:
+				screen.mixRectangle(0, 106 + BUTTON_HEIGHT, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_LOOK:
+				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_PUNCH:
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_USE:
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+		}
+	}
+
 	@Override
 	public void render(Screen screen) {
 		screen.renderSprite(0, 0, ui);
@@ -61,21 +78,30 @@ public class Game extends Eggine {
 		int my = (int) getMouse().getLocation().getY();
 		if (mx < 63) {
 			if (my > 123) {
-				focusedButton = MODE_TAKE;
-				screen.mixRectangle(0, 106 + BUTTON_HEIGHT, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_TAKE;
+				mixButton(screen, MODE_TAKE);
 			} else if (my > 96) {
-				focusedButton = MODE_LOOK;
-				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_LOOK;
+				mixButton(screen, MODE_LOOK);
 			}
 		} else if (mx < 122) {
 			if (my > 123) {
-				focusedButton = MODE_PUNCH;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_PUNCH;
+				mixButton(screen, MODE_PUNCH);
 			} else if (my > 96) {
-				focusedButton = MODE_USE;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_USE;
+				mixButton(screen, MODE_USE);
 			}
-		} else focusedButton = MODE_WALK;
+		} else {
+			if (getMouse().isLeftClicking())
+				focusedButton = MODE_WALK;
+		}
+
+		mixButton(screen, focusedButton);
 
 		currentScene.renderBackground(screen);
 		if (player.flipX)
@@ -85,8 +111,8 @@ public class Game extends Eggine {
 		player.nextFrame();
 		currentScene.renderForeground(screen);
 
-		if (currentDetail != null) {
-			screen.mixRectangle(mx, my, 10, 10, 0x80FF0000);
+		if (detailTextArea != null) {
+			detailTextArea.render(screen);
 		}
 
 		messageTextArea.render(screen);
@@ -120,12 +146,52 @@ public class Game extends Eggine {
 	@Override
 	public void update(double delta) {
 		currentScene.update();
-		if (prevMy < 86)
-			currentDetail = currentScene.detailAt(prevMx, prevMy);
-		else
+
+		String lastDetail = currentDetail;
+		if (prevMy < 86) {
+			String detail = currentScene.detailAt(prevMx, prevMy);
+
+			if (detail != null && focusedButton != MODE_WALK) {
+				switch (focusedButton) {
+					case MODE_TAKE:
+						currentDetail = "Nimm " + detail;
+						break;
+					case MODE_LOOK:
+						currentDetail = "Siehe " + detail + " an";
+						break;
+					case MODE_USE:
+						currentDetail = "Benutze " + detail;
+						break;
+					case MODE_PUNCH:
+						currentDetail = "Schlage " + detail;
+						break;
+				}
+			} else {
+				currentDetail = detail;
+			}
+		} else
 			currentDetail = null;
 
+		if (lastDetail != null && currentDetail == null) {
+			detailTextArea = null;
+		} else if (lastDetail == null && currentDetail != null) {
+			detailTextArea = new TextArea(prevMx, prevMy, 80, 12, Font.standard);
+			detailTextArea.setAnimated(false);
+			detailTextArea.setBordered(true);
+			detailTextArea.showText(currentDetail);
+			detailTextArea.sizeToFit();
+		} else if (lastDetail != null && currentDetail != null) {
+			detailTextArea.showText(currentDetail);
+			detailTextArea.sizeToFit();
+		}
+
 		messageTextArea.update();
+
+		if (detailTextArea != null) {
+			detailTextArea.setX(prevMx);
+			detailTextArea.setY(prevMy);
+			detailTextArea.update();
+		}
 	}
 
 	public void setScene(IScene scene) {
@@ -139,6 +205,7 @@ public class Game extends Eggine {
 	IScene currentScene;
 
 	TextArea messageTextArea;
+	TextArea detailTextArea;
 
 	String currentDetail;
 

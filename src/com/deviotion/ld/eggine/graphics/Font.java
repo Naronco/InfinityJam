@@ -18,6 +18,24 @@ public class Font {
         this.spriteSheet = new SpriteSheet(sprite, characterSize);
     }
 
+    public Dimension2d sizeOfText(String text) {
+        int width = 0, height = (int)characterSize.getHeight() + 1;
+        int currentLineWidth = 0;
+        for (int i = 0; i < text.length(); ++i) {
+            if (text.charAt(i) == '\n') {
+                height += (int) characterSize.getHeight() + 1;
+                if (currentLineWidth > width)
+                    width = currentLineWidth;
+                currentLineWidth = 0;
+            } else {
+                currentLineWidth += (int) characterSize.getWidth();
+            }
+        }
+        if (width == 0)
+            width = currentLineWidth;
+        return new Dimension2d(width, height);
+    }
+
     public Sprite getSprite() {
         return spriteSheet.getSprite();
     }
