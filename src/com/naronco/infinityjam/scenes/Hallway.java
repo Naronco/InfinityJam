@@ -6,10 +6,7 @@ import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
-import com.naronco.infinityjam.ExitStepArea;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IScene;
-import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.interactables.Bed;
 import com.naronco.infinityjam.interactables.Door;
 import com.naronco.infinityjam.interactables.DrugPlant;
@@ -134,6 +131,10 @@ public class Hallway extends PointAndClickScene {
 				if (startRoom + rooms * 4 + 3 > 999) {
 					Game.instance.setScene(Game.instance.bedroom);
 					rooms = -1; // Went over room 999, what a nerd
+					if (!Game.instance.giveItems(Item.COINS, 1, 9))
+						Game.instance.showMessage("Noch eine Münze kriegst du aber nicht");
+					else
+						Game.instance.showMessage("Um deine Hobbylosigkeit zu belohnen kriegst du eine Münze");
 				}
 			}
 		}
