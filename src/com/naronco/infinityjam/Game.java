@@ -5,6 +5,7 @@ import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.scenes.*;
+import com.naronco.infinityjam.scenes.inventory.Inventory;
 
 import javax.sound.sampled.AudioFormat;
 import java.io.File;
@@ -141,6 +142,8 @@ public class Game extends Eggine {
 					mode = MODE_USE;
 					mixButton(screen, MODE_USE);
 				}
+			} else if (mx > 200 - 22 && my > 150 - 22) {
+				setScene(new Inventory(new Dimension2d(200, 86)));
 			}
 
 			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
@@ -334,5 +337,13 @@ public class Game extends Eggine {
 
 	public Character getPlayer() {
 		return player;
+	}
+
+	public List<IQuest> getQuests() {
+		return quests;
+	}
+
+	public List<IQuest> getFinishedQuests() {
+		return finishedQuests;
 	}
 }

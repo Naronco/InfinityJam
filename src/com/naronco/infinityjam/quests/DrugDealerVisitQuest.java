@@ -16,4 +16,9 @@ public class DrugDealerVisitQuest implements IQuest {
 	public List<Item> getRewards() {
 		return new ArrayList<>();
 	}
+
+	@Override
+	public String getDescription() {
+		return "DrugDealerVisitQuest";
+	}
 }
