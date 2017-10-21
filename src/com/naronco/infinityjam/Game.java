@@ -3,8 +3,7 @@ package com.naronco.infinityjam;
 import com.deviotion.ld.eggine.Eggine;
 import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
-import com.naronco.infinityjam.scenes.Bedroom;
-import com.naronco.infinityjam.scenes.Hallway;
+import com.naronco.infinityjam.scenes.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,6 +22,9 @@ public class Game extends Eggine {
 
 	public Bedroom bedroom;
 	public Hallway hallway;
+	public Elevator elevator;
+	public Street street;
+	public Casino casino;
 
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
@@ -31,9 +33,15 @@ public class Game extends Eggine {
 
 		bedroom = new Bedroom();
 		hallway = new Hallway();
+		elevator = new Elevator();
+		street = new Street();
+		casino = new Casino();
 
 		bedroom.load();
 		hallway.load();
+		elevator.load();
+		street.load();
+		casino.load();
 
 		currentScene = bedroom;
 
