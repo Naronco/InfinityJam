@@ -241,17 +241,18 @@ public class Game extends Eggine {
 
 		IScene prev = currentScene;
 		currentScene = scene;
-
-		Sound backgroundMusic = prev.getBackgroundMusic();
-		if (backgroundMusic != null) {
-			backgroundMusic.stop();
-		}
-
 		currentScene.enter(prev);
 
-		backgroundMusic = currentScene.getBackgroundMusic();
-		if (backgroundMusic != null) {
-			backgroundMusic.playInfinitely();
+		if (prev.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
+			Sound backgroundMusic = prev.getBackgroundMusic();
+			if (backgroundMusic != null) {
+				backgroundMusic.stop();
+			}
+
+			backgroundMusic = currentScene.getBackgroundMusic();
+			if (backgroundMusic != null) {
+				backgroundMusic.playInfinitely();
+			}
 		}
 	}
 
