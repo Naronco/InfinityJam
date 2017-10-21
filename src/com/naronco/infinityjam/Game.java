@@ -3,6 +3,7 @@ package com.naronco.infinityjam;
 import com.deviotion.ld.eggine.Eggine;
 import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
+import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.scenes.Bedroom;
 import com.naronco.infinityjam.scenes.Hallway;
 
@@ -36,6 +37,11 @@ public class Game extends Eggine {
 		hallway.load();
 
 		currentScene = bedroom;
+
+		Sound backgroundMusic = currentScene.getBackgroundMusic();
+		if (backgroundMusic != null) {
+			backgroundMusic.playInfinitely();
+		}
 
 		player = new Character(90, 40);
 
@@ -224,9 +230,21 @@ public class Game extends Eggine {
 
 	public void setScene(IScene scene) {
 		currentScene.leave();
+
 		IScene prev = currentScene;
 		currentScene = scene;
+
+		Sound backgroundMusic = prev.getBackgroundMusic();
+		if (backgroundMusic != null) {
+			backgroundMusic.stop();
+		}
+
 		currentScene.enter(prev);
+
+		backgroundMusic = currentScene.getBackgroundMusic();
+		if (backgroundMusic != null) {
+			backgroundMusic.playInfinitely();
+		}
 	}
 
 	public void showMessage(String message) {
