@@ -44,6 +44,7 @@ public class Character extends SpriteAnimation {
 		Vector2d diff = target.subtract(position);
 		if (diff.getLengthSquared() > 1) {
 			walking = true;
+			wasWalking = true;
 			diff = diff.normalized().multiply(0.6);
 			position = position.add(diff);
 			flipX = diff.getX() > 0;
@@ -51,7 +52,15 @@ public class Character extends SpriteAnimation {
 		return false;
 	}
 
+	public boolean walkingEnded() {
+		if (!walking && wasWalking) {
+			wasWalking = false;
+			return true;
+		}
+		return false;
+	}
+
 	public boolean flipX;
-	private boolean walking;
+	public boolean walking, wasWalking;
 	private Vector2d position, target;
 }
