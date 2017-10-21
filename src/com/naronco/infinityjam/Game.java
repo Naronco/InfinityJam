@@ -50,7 +50,7 @@ public class Game extends Eggine {
 		street.load();
 		casino.load();
 
-		currentScene = bedroom;
+		currentScene = new AlleyChallenge();
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -225,8 +225,13 @@ public class Game extends Eggine {
 		messageTextArea.update();
 
 		if (detailTextArea != null) {
-			detailTextArea.setX(prevMx);
+			if (prevMx + detailTextArea.getWidth() > getWindow().getScreen().getDimension().getWidth()) {
+				detailTextArea.setX(prevMx - detailTextArea.getWidth());
+			} else {
+				detailTextArea.setX(prevMx);
+			}
 			detailTextArea.setY(prevMy);
+
 			detailTextArea.update();
 		}
 	}
