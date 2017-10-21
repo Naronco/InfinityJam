@@ -1,4 +1,7 @@
 package com.naronco.infinityjam;
 
-public class StepArea {
+import com.deviotion.ld.eggine.math.Polygon2d;
+
+public interface StepArea {
+	void stepOn(int x, int y);
 }
