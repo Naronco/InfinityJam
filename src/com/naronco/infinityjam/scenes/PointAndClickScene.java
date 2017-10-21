@@ -137,6 +137,7 @@ public abstract class PointAndClickScene implements IScene {
 			int py = (int) pos.getY();
 			for (StepArea area : stepAreas) {
 				area.stepOn(px, py);
+				break;
 			}
 		}
 	}
