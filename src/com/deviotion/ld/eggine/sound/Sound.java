@@ -1,9 +1,10 @@
 package com.deviotion.ld.eggine.sound;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Sound {
 	private Clip clip;
@@ -13,6 +14,18 @@ public class Sound {
 
 		AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 		clip.open(inputStream);
+	}
+
+	public static List<AudioFormat> getSupportedAudioFormats() {
+		List<AudioFormat> result = new ArrayList<AudioFormat>();
+		for(Line.Info info : AudioSystem.getSourceLineInfo(
+				new Line.Info(SourceDataLine.class))) {
+			if(info instanceof SourceDataLine.Info) {
+				result.addAll(Arrays.asList(
+						((SourceDataLine.Info)info).getFormats()));
+			}
+		}
+		return result;
 	}
 
 	public void playInfinitely() {
