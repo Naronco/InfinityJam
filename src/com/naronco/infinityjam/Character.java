@@ -28,7 +28,7 @@ public class Character extends SpriteAnimation {
 	}
 
 	public Vector2d getSpritePosition() {
-		return position.subtract(new Vector2d(10, 35));
+		return position.subtract(new Vector2d(10, 33));
 	}
 
 	@Override
