@@ -81,33 +81,33 @@ public class Game extends Eggine {
 		if (mx < 63) {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_TAKE;
-				if (focusedButton != MODE_TAKE)
+					mode = MODE_TAKE;
+				if (mode != MODE_TAKE)
 					mixButton(screen, MODE_TAKE);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_LOOK;
-				if (focusedButton != MODE_LOOK)
+					mode = MODE_LOOK;
+				if (mode != MODE_LOOK)
 					mixButton(screen, MODE_LOOK);
 			}
 		} else if (mx < 122) {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_PUNCH;
-				if (focusedButton != MODE_PUNCH)
+					mode = MODE_PUNCH;
+				if (mode != MODE_PUNCH)
 					mixButton(screen, MODE_PUNCH);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_USE;
-				if (focusedButton != MODE_USE)
+					mode = MODE_USE;
+				if (mode != MODE_USE)
 					mixButton(screen, MODE_USE);
 			}
 		} else {
 			if (getMouse().isLeftClicking())
-				focusedButton = MODE_WALK;
+				mode = MODE_WALK;
 		}
 
-		mixButton(screen, focusedButton);
+		mixButton(screen, mode);
 
 		currentScene.renderBackground(screen);
 		if (player.flipX)
@@ -143,8 +143,7 @@ public class Game extends Eggine {
 			if (my < 86) {
 				currentScene.click(mx, my, mode);
 				mode = MODE_WALK;
-			} else
-				mode = focusedButton;
+			}
 
 			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
 			lastClickX = mx;
@@ -170,8 +169,8 @@ public class Game extends Eggine {
 		if (prevMy < 86) {
 			String detail = currentScene.detailAt(prevMx, prevMy);
 
-			if (detail != null && focusedButton != MODE_WALK) {
-				switch (focusedButton) {
+			if (detail != null && mode != MODE_WALK) {
+				switch (mode) {
 					case MODE_TAKE:
 						currentDetail = "Nimm " + detail;
 						break;
@@ -233,7 +232,6 @@ public class Game extends Eggine {
 	int prevMx, prevMy;
 	boolean prevMouseDown;
 
-	int focusedButton = -1;
 	int mode = -1;
 
 	public List<Sprite> itemSprites = new ArrayList<>();
