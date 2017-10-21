@@ -3,9 +3,11 @@ package com.naronco.infinityjam.scenes;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Sounds;
 
 import java.io.File;
 
@@ -26,5 +28,10 @@ public class Street extends PointAndClickScene {
 			Game.instance.player.teleport(new Vector2d(142, 60));
 		else
 			Game.instance.player.teleport(new Vector2d(34, 60));
+	}
+
+	@Override
+	public Sound getBackgroundMusic() {
+		return Sounds.cityTheme;
 	}
 }

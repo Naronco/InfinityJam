@@ -7,6 +7,7 @@ import java.io.File;
 public class Sounds {
 	public static Sound casino = load("casino.wav");
 	public static Sound cityTheme = load("citytheme.wav");
+	public static Sound home = load("home.wav");
 
 	private static Sound load(String name) {
 		try {

@@ -76,6 +76,6 @@ public class Hallway extends PointAndClickScene {
 
 	@Override
 	public Sound getBackgroundMusic() {
-		return Sounds.casino;
+		return Sounds.home;
 	}
 }

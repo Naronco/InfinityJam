@@ -44,6 +44,6 @@ public class Bedroom extends PointAndClickScene {
 
 	@Override
 	public Sound getBackgroundMusic() {
-		return Sounds.cityTheme;
+		return Sounds.home;
 	}
 }

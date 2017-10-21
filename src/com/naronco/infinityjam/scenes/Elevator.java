@@ -5,9 +5,11 @@ import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Sounds;
 
 import java.io.File;
 
@@ -28,5 +30,10 @@ public class Elevator extends PointAndClickScene {
 			Game.instance.player.teleport(new Vector2d(100, 60));
 		else
 			Game.instance.player.teleport(new Vector2d(90, 105));
+	}
+
+	@Override
+	public Sound getBackgroundMusic() {
+		return Sounds.home;
 	}
 }
