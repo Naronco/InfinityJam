@@ -14,6 +14,11 @@ public class Game extends Eggine {
 
 	public static Game instance;
 
+	public static final int MODE_LOOK = 0;
+	public static final int MODE_USE = 1;
+	public static final int MODE_TAKE = 2;
+	public static final int MODE_PUNCH = 3;
+
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
 
@@ -38,19 +43,19 @@ public class Game extends Eggine {
 		int my = (int)getMouse().getLocation().getY();
 		if (mx < 63) {
 			if (my > 123) {
-				focusedButton = 2;
+				focusedButton = MODE_TAKE;
 				screen.mixRectangle(0, 123, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			} else if (my > 96) {
-				focusedButton = 0;
+				focusedButton = MODE_LOOK;
 				screen.mixRectangle(0, 96, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
 		}
 		else if (mx < 122) {
 			if (my > 123) {
-				focusedButton = 3;
+				focusedButton = MODE_PUNCH;
 				screen.mixRectangle(LEFT_BUTTON_WIDTH, 123, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			} else if (my > 96) {
-				focusedButton = 1;
+				focusedButton = MODE_USE;
 				screen.mixRectangle(LEFT_BUTTON_WIDTH, 96, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
 		}
@@ -68,7 +73,8 @@ public class Game extends Eggine {
 		boolean mouseDown = getMouse().isLeftClicking();
 		if (mouseDown && !prevMouseDown)
 		{
-			currentScene.click(mx, my, mode);
+			if (my < 86)
+				currentScene.click(mx, my, mode);
 			mode = focusedButton;
 		}
 		prevMouseDown = mouseDown;
@@ -79,7 +85,10 @@ public class Game extends Eggine {
 	@Override
 	public void update(double delta) {
 		currentScene.update();
-		currentDetail = currentScene.detailAt(prevMx, prevMy);
+		if (prevMy < 86)
+			currentDetail = currentScene.detailAt(prevMx, prevMy);
+		else
+			currentDetail = null;
 	}
 
 	public void setScene(IScene scene) {

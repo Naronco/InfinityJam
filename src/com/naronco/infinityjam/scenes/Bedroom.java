@@ -1,34 +1,16 @@
 package com.naronco.infinityjam.scenes;
 
 import com.deviotion.ld.eggine.graphics.Screen;
+import com.deviotion.ld.eggine.graphics.Sprite;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.interactables.Bed;
 
-public class Bedroom implements IScene {
-    @Override
-    public void load() {
-    }
+import java.io.File;
 
-    @Override
-    public void unload() {
-    }
-
-    @Override
-    public String detailAt(int x, int y) {
-        return null;
-    }
-
-    @Override
-    public void click(int x, int y, int mode) {
-
-    }
-
-    @Override
-    public void render(Screen screen) {
-        screen.renderRectangle(0, 0, 16, 16, 0);
-    }
-
-    @Override
-    public void update() {
-
+public class Bedroom extends PointAndClickScene {
+    public Bedroom() {
+        super();
+        background = new Sprite(new File("res/bedroom.png"));
+        interactables.add(new Bed());
     }
 }

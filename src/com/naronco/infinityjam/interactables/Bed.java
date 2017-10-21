@@ -13,8 +13,8 @@ public class Bed implements Interactable {
     }
 
     @Override
-    public Rectangle2d getRectangle() {
-        return new Rectangle2d(new Vector2d(0, 0), new Dimension2d(50, 50));
+    public boolean intersects(int x, int y) {
+        return x < 105 && x > 40 && y > 20 && y < 100;
     }
 
     @Override
@@ -38,20 +38,22 @@ public class Bed implements Interactable {
     }
 
     @Override
-    public void look() {
+    public void look(int x, int y) {
 
     }
 
     @Override
-    public void use() {
+    public void use(int x, int y) {
+
     }
 
     @Override
-    public void take() {
+    public void take(int x, int y) {
+
     }
 
     @Override
-    public void punch() {
+    public void punch(int x, int y) {
         Game.instance.showMessage("The bed feels bad and doesn't know what it has done wrong.");
     }
 }
