@@ -9,6 +9,9 @@ import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ShellGame implements IScene {
@@ -64,21 +67,43 @@ public class ShellGame implements IScene {
 
 	@Override
 	public String detailAt(int x, int y) {
+		if (state == STATE_PICK) {
+			int mx = (int) Game.instance.getMouse().getLocation().getX();
+			int my = (int) Game.instance.getMouse().getLocation().getY();
+
+			for (Hut hut : huts) {
+				if (hut.getRectangle().intersects(mx, my)) {
+					return "Aufdecken";
+				}
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public void click(int x, int y, int mode) {
+		if (state == STATE_PICK) {
+			for (Hut hut : huts) {
+				if (hut.getRectangle().intersects(x, y)) {
+					state = STATE_REVEAL;
+					if (priceHut == hut) {
+						Game.instance.showMessage("Du hast gewonnen!");
+					} else {
+						Game.instance.showMessage("Du hast leider verloren");
+					}
+					priceHut.moveTo(priceHut.getPosition().subtract(new Vector2d(0, 15)));
+				}
+			}
+		}
 	}
 
 	@Override
 	public void renderBackground(Screen screen) {
+		screen.renderSprite(0, 0, backgroundSprite);
 	}
 
 	@Override
 	public void renderForeground(Screen screen) {
-		screen.renderSprite(0, 0, backgroundSprite);
-
 		if (state == STATE_SHOW_MOVE_DOWN || state == STATE_SHOW_MOVE_UP || state == STATE_REVEAL) {
 			double x = priceHut.getPosition().getX() - priceSprite.getDimension().getWidth() * 0.5;
 			double y = 70 - priceSprite.getDimension().getHeight();
@@ -86,7 +111,24 @@ public class ShellGame implements IScene {
 			screen.renderSprite((int)x, (int)y, priceSprite);
 		}
 
-		for (Hut hut : huts) {
+		Hut[] sortedHuts = new Hut[3];
+		if (state == STATE_SWAP) {
+			for (Hut hut : huts) {
+				if (hut.isAnimating()) {
+					if (hut.takesForegroundPath()) {
+						sortedHuts[2] = hut;
+					} else {
+						sortedHuts[0] = hut;
+					}
+				} else {
+					sortedHuts[1] = hut;
+				}
+			}
+		} else {
+			sortedHuts = huts;
+		}
+
+		for (Hut hut : sortedHuts) {
 			double x = hut.getPosition().getX() - hutSprite.getDimension().getWidth() * 0.5;
 			double y = hut.getPosition().getY() - hutSprite.getDimension().getHeight();
 
@@ -122,7 +164,7 @@ public class ShellGame implements IScene {
 						swap(a, b);
 					} else {
 						state = STATE_PICK;
-						Game.instance.showMessage("Welches welchem Hütchen ist die Kugel?");
+						Game.instance.showMessage("Unter welchem Hütchen ist die Kugel?");
 					}
 					break;
 				case STATE_REVEAL:
@@ -130,23 +172,6 @@ public class ShellGame implements IScene {
 						Game.instance.setScene(prevScene);
 					}
 					break;
-			}
-		}
-
-		if (state == STATE_PICK && Game.instance.getMouse().isLeftClicking()) {
-			int mx = (int) Game.instance.getMouse().getLocation().getX();
-			int my = (int) Game.instance.getMouse().getLocation().getY();
-
-			for (Hut hut : huts) {
-				if (hut.getRectangle().intersects(mx, my)) {
-					state = STATE_REVEAL;
-					if (priceHut == hut) {
-						Game.instance.showMessage("Du hast gewonnen!");
-					} else {
-						Game.instance.showMessage("Du hast leider verloren");
-					}
-					priceHut.moveTo(priceHut.getPosition().subtract(new Vector2d(0, 15)));
-				}
 			}
 		}
 	}

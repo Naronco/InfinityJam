@@ -72,4 +72,8 @@ public class Hut {
 	public Rectangle2d getRectangle() {
 		return new Rectangle2d(new Vector2d(position.getX() - sprite.getDimension().getWidth() * 0.5, position.getY() - sprite.getDimension().getHeight()), sprite.getDimension());
 	}
+
+	public boolean takesForegroundPath() {
+		return foregroundPath;
+	}
 }
