@@ -55,7 +55,7 @@ public class GamingMachine implements Interactable {
 
 	@Override
 	public void look(int x, int y) {
-		Game.instance.showMessage("TEAM:TEXT EINFÜGEN");
+		Game.instance.showMessage("Diese Maschine ist mein Beruf");
 	}
 
 	@Override
@@ -65,16 +65,36 @@ public class GamingMachine implements Interactable {
 
 	@Override
 	public void take(int x, int y) {
-		Game.instance.showMessage("TEAM:TEXT EINFÜGEN");
+		Game.instance.showMessage("Wenn ich Pleite bin und einen Kran habe, vielleicht.");
 	}
 
 	@Override
 	public void punch(int x, int y) {
-		Game.instance.showMessage("TEAM:TEXT EINFÜGEN");
+		Game.instance.showMessage("Keine Chance!");
 	}
 
 	@Override
 	public void interact(int x, int y, Item item) {
+		switch (item) {
+			case KEY:
+				Game.instance.showMessage("Dieser Schlüssel funktioniert nicht bei Automaten.");
+				break;
+			case LEAF:
+				Game.instance.showMessage("Dafür brauche ich Scheine, und kein Blatt");
+				break;
+			case COINS:
+				//ToDo
+				break;
+			case DRUG:
+				Game.instance.showMessage("Die soll ich nehmen, und nicht der Automat!");
+				break;
+			case SAW:
+				Game.instance.showMessage("Die Säge würde bei Metall gar Zerbrechen!");
+				break;
+			case KNIFE:
+				Game.instance.showMessage("Lustige Vorstellung, aber Nein.");
+				break;
+		}
 	}
 
 	@Override

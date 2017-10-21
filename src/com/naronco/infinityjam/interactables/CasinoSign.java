@@ -78,6 +78,16 @@ public class CasinoSign implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Lieber Spieler, das Schild stellt keine Tür da. Die Tür ist direkt unten drunter!");
+			case LEAF:
+				Game.instance.showMessage("MIR FÄLLT NICHTS EIN XD");
+			case COINS:
+				Game.instance.showMessage("Das Geld sollte ich in den Automaten verschwenden");
+			case DRUG:
+				Game.instance.showMessage("Sind Drogen in einem Casino überhaupt erlaubt...");
+			case SAW:
+				Game.instance.showMessage("So einfach zersägen kann ich das nicht.");
+			case KNIFE:
+				Game.instance.showMessage("Ich sollte mein Messer nicht jetzt schon verschwenden.");
 				break;
 		}
 	}

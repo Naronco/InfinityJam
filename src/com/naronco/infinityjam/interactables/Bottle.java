@@ -70,7 +70,7 @@ public class Bottle implements Interactable {
 
 	@Override
 	public void punch(int x, int y) {
-		Game.instance.showMessage("Ich will die Flasche nicht kaputt machen, ich brauch das bestimmt noch!");
+		Game.instance.showMessage("Ich will die Flasche nicht kaputt machen, ich brauch sie bestimmt noch!");
 	}
 
 	@Override
@@ -78,6 +78,16 @@ public class Bottle implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Die Flasche ist schon offen.");
+			case LEAF:
+				Game.instance.showMessage("In meiner Flasche kommt keine Pflanze rein!");
+			case COINS:
+				Game.instance.showMessage("Die Münze passt nicht mal durch den Öffnung!");
+			case DRUG:
+				Game.instance.showMessage("Ist ja nicht so, dass Alkohol allgemein schon schlimm genug ist...");
+			case SAW:
+				Game.instance.showMessage("Ich möchte es wenigstens noch austrinken.");
+			case KNIFE:
+				Game.instance.showMessage("Ich möchte es wenigstens noch austrinken.");
 				break;
 		}
 	}

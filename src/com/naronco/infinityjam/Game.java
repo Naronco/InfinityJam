@@ -60,7 +60,7 @@ public class Game extends Eggine {
 		currentScene = elevator;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
-		if (backgroundMusic != null) {
+		if (backgroundMusic != null && Options.musicEnabled) {
 			backgroundMusic.playInfinitely();
 		}
 
@@ -145,7 +145,11 @@ public class Game extends Eggine {
 						mixButton(screen, MODE_USE);
 					}
 				} else if (mx > 200 - 22 && my > 150 - 22) {
-					setScene(new Inventory(new Dimension2d(200, 86)));
+					if (currentScene instanceof Inventory) {
+						setScene(((Inventory)currentScene).getPrevScene());
+					} else {
+						setScene(new Inventory(new Dimension2d(200, 86)));
+					}
 				}
 			} else if (queuedDialogs.size() > 0 && activeDialog == null) {
 				Dialog d = queuedDialogs.remove(queuedDialogs.size() - 1);
@@ -284,7 +288,7 @@ public class Game extends Eggine {
 			}
 
 			backgroundMusic = currentScene.getBackgroundMusic();
-			if (backgroundMusic != null) {
+			if (backgroundMusic != null && Options.musicEnabled) {
 				backgroundMusic.playInfinitely();
 			}
 		}

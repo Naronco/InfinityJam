@@ -34,7 +34,7 @@ public class TextArea {
     }
 
     public void showText(String text) {
-        String[] words = text.split(" ");
+        String[] words = text.toUpperCase().split(" ");
 
         StringBuilder messageBuilder = new StringBuilder();
         StringBuilder currentLine = new StringBuilder();
