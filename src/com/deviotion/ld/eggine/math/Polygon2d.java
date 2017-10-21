@@ -1,5 +1,7 @@
 package com.deviotion.ld.eggine.math;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Polygon2d {
@@ -7,6 +9,10 @@ public class Polygon2d {
 
 	public Polygon2d(List<Vector2d> points) {
 		this.points = points;
+	}
+
+	public Polygon2d(Vector2d... points) {
+		this.points = Arrays.asList(points);
 	}
 
 	public boolean intersects(int x, int y) {

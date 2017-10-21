@@ -27,8 +27,6 @@ public class Bedroom extends PointAndClickScene {
 
 		interactables.add(new Bed(new Polygon2d(points)));
 
-		addMovementLine(new Vector2d(82, 34), new Vector2d(124, 26), 4);
-		addMovementLine(new Vector2d(90, 44), new Vector2d(131, 35), 4);
-		addMovementLine(new Vector2d(98, 56), new Vector2d(139, 48), 4);
+		addMovementArea(new Polygon2d(new Vector2d(82, 30), new Vector2d(123, 20), new Vector2d(149, 57), new Vector2d(103, 65)));
 	}
 }

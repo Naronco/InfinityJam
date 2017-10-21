@@ -2,6 +2,7 @@ package com.naronco.infinityjam.scenes;
 
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
+import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
@@ -13,13 +14,10 @@ import java.util.List;
 public class PointAndClickScene implements IScene {
 	protected List<Interactable> interactables = new ArrayList<Interactable>();
 	protected Sprite background, foreground;
-	protected List<Vector2d> charPositions = new ArrayList<Vector2d>();
+	protected List<Polygon2d> movementAreas = new ArrayList<Polygon2d>();
 
-	public void addMovementLine(Vector2d start, Vector2d end, int numPoints) {
-		for (int i = 0; i < numPoints; i++) {
-			double d = i / (double) (numPoints - 1);
-			charPositions.add(start.add(end.subtract(start).multiply(d)));
-		}
+	public void addMovementArea(Polygon2d area) {
+		movementAreas.add(area);
 	}
 
 	@Override
@@ -42,21 +40,17 @@ public class PointAndClickScene implements IScene {
 	@Override
 	public void click(int x, int y, int mode) {
 		if (mode == Game.MODE_WALK) {
-			Vector2d pos = new Vector2d(x, y);
-			Vector2d nearest = null;
-			double nearestDistance = 0;
-			for (Vector2d walkPoint : charPositions) {
-				double dist = walkPoint.subtract(pos).getLengthSquared();
-				if (dist < 100) {
-					if (nearest == null || dist < nearestDistance) {
-						nearest = walkPoint;
-						nearestDistance = dist;
-					}
+			boolean moved = false;
+
+			for (Polygon2d area : movementAreas) {
+				if (area.intersects(x, y)) {
+					Game.instance.player.walkTo(new Vector2d(x, y));
+					moved = true;
+					break;
 				}
 			}
-			if (nearest != null)
-				Game.instance.player.walkTo(nearest);
-			else
+
+			if (!moved)
 				Game.instance.showMessage("Da komm ich nicht hin");
 		} else {
 			for (Interactable i : interactables) {
