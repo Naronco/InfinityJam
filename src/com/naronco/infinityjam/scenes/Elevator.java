@@ -1,10 +1,12 @@
 package com.naronco.infinityjam.scenes;
 
+import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.*;
+import com.naronco.infinityjam.Character;
 import com.naronco.infinityjam.interactables.Walkway;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
 import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
@@ -12,9 +14,15 @@ import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
 import java.io.File;
 
 public class Elevator extends PointAndClickScene {
+	Character randomDude;
+	boolean showRandomDude = false;
+	boolean randomDudeTalked = false;
+
 	@Override
 	public void load() {
 		background = new Sprite(new File("res/elevator.png"));
+
+		randomDude = new Character(16, 200, 1);
 
 		addMovementArea(new Polygon2d(new Vector2d(46, 56), new Vector2d(156, 56), new Vector2d(184, 96), new Vector2d(10, 96)));
 
@@ -45,6 +53,29 @@ public class Elevator extends PointAndClickScene {
 	}
 
 	@Override
+	public void renderForeground(Screen screen) {
+		super.renderForeground(screen);
+		if (showRandomDude) {
+			randomDude.draw(screen);
+		}
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (showRandomDude && !randomDudeTalked && randomDude.walkingEnded()) {
+			randomDudeTalked = true;
+			Game.instance.showMessage("Ich hab gehört der Drogen Dealer weiß wie man hier durch kommt. Er wohnt in Raum 153013");
+		}
+	}
+
+	public void triggerDude() {
+		showRandomDude = true;
+		randomDude.walkTo(64, 64);
+		// TODO: lock character during this animation
+	}
+
+	@Override
 	public Sound getBackgroundMusic() {
 		return Sounds.home;
 	}
@@ -66,6 +97,7 @@ class ElevatorQuest extends ExitStepArea {
 			Game.instance.showMessage("Scheint als wäre der Aufzug kaputt. Ich muss einen Weg finden ihn trotzdem benutzen zu können");
 			if (!questGiven) {
 				Game.instance.addQuest(new DrugDealerVisitQuest());
+				Game.instance.elevator.triggerDude();
 				questGiven = true;
 			}
 			return true;
