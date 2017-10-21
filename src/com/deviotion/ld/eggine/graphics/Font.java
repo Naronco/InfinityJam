@@ -31,7 +31,7 @@ public class Font {
                 currentLineWidth += (int) characterSize.getWidth();
             }
         }
-        if (width == 0)
+        if (currentLineWidth > width)
             width = currentLineWidth;
         return new Dimension2d(width, height);
     }
