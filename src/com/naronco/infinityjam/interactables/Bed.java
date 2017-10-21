@@ -41,12 +41,12 @@ public class Bed implements Interactable {
 
     @Override
     public boolean hasUse() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasTake() {
-        return false;
+        return true;
     }
 
     @Override
@@ -60,25 +60,23 @@ public class Bed implements Interactable {
     }
 
     @Override
-    public void use(int x, int y) {
-
-    }
+    public void use(int x, int y) { Game.instance.showMessage("Nein Danke, ich bin schon ausgeschlafen."); }
 
     @Override
-    public void take(int x, int y) {
+    public void take(int x, int y) { Game.instance.showMessage("Sehe ich aus wie Chuck Norris?");
 
     }
 
     @Override
     public void punch(int x, int y) {
-        Game.instance.showMessage("Bett Weich.");
+        Game.instance.showMessage("Das nützt nichts");
     }
 
     @Override
     public void interact(int x, int y, Item item) {
         switch (item) {
             case KEY:
-                Game.instance.showMessage("Schlüssel mit Bett");
+                Game.instance.showMessage("Der Schlüssel zum Erfolg ist definitiv nicht schlafen.");
                 break;
         }
     }
