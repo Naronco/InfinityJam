@@ -33,6 +33,20 @@ public class Game extends Eggine {
 
 		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
 		messageTextArea.setMaxLineCount(2);
+
+		itemSprites.add(new Sprite(new File("res/key.png")));
+		if (itemSprites.size() != (int) Item.values().length)
+			throw new Error("Programmers were retards and didn't add sprites for every item");
+
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
@@ -64,7 +78,10 @@ public class Game extends Eggine {
 		} else focusedButton = MODE_WALK;
 
 		currentScene.renderBackground(screen);
-		screen.renderAnimatedSprite(player.getSpritePosition(), player);
+		if (player.flipX)
+			screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
+		else
+			screen.renderAnimatedSprite(player.getSpritePosition(), player);
 		player.nextFrame();
 		currentScene.renderForeground(screen);
 
@@ -76,6 +93,18 @@ public class Game extends Eggine {
 
 		prevMx = mx;
 		prevMy = my;
+
+		int itemX = 124, itemY = 106;
+		int itemN = 0;
+		for (Item i : items) {
+			screen.renderSprite(itemX, itemY, itemSprites.get(i.valueOf()));
+			itemY += 12;
+			itemN++;
+			if (itemN % 3 == 0) {
+				itemY -= 12 * 3 - 2;
+				itemX += 10;
+			}
+		}
 
 		boolean mouseDown = getMouse().isLeftClicking();
 		if (mouseDown && !prevMouseDown) {
@@ -120,4 +149,8 @@ public class Game extends Eggine {
 
 	int focusedButton = -1;
 	int mode = -1;
+
+	public List<Sprite> itemSprites = new ArrayList<>();
+	public List<Item> items = new ArrayList<>();
+	public int selectedItem = -1;
 }
