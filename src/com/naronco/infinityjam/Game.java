@@ -151,11 +151,11 @@ public class Game extends Eggine {
 
 		mixButton(screen, mode);
 
+		messageTextArea.render(screen);
+
 		if (detailTextArea != null) {
 			detailTextArea.render(screen);
 		}
-
-		messageTextArea.render(screen);
 
 		prevMx = mx;
 		prevMy = my;
