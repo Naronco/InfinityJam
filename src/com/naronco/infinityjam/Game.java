@@ -58,7 +58,7 @@ public class Game extends Eggine {
 		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
-		if (backgroundMusic != null) {
+		if (backgroundMusic != null && Options.musicEnabled) {
 			backgroundMusic.playInfinitely();
 		}
 
@@ -259,7 +259,7 @@ public class Game extends Eggine {
 			}
 
 			backgroundMusic = currentScene.getBackgroundMusic();
-			if (backgroundMusic != null) {
+			if (backgroundMusic != null && Options.musicEnabled) {
 				backgroundMusic.playInfinitely();
 			}
 		}
