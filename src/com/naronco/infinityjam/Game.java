@@ -9,6 +9,7 @@ import com.naronco.infinityjam.scenes.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game extends Eggine {
 	Sprite ui;
@@ -38,6 +39,8 @@ public class Game extends Eggine {
 		street = new Street();
 		casino = new Casino();
 
+		random = new Random();
+
 		bedroom.load();
 		hallway.load();
 		elevator.load();
@@ -59,17 +62,11 @@ public class Game extends Eggine {
 		messageTextArea.setMaxLineCount(2);
 
 		itemSprites.add(new Sprite(new File("res/key.png")));
+		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Leaf
+		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Coins
 		if (itemSprites.size() != (int) Item.values().length)
 			throw new Error("Programmers were retards and didn't add sprites for every item");
 
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
 		items.add(Item.KEY);
 
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
@@ -259,6 +256,8 @@ public class Game extends Eggine {
 		messageTextArea.showText(message);
 	}
 
+	public Random random;
+
 	IScene currentScene;
 
 	TextArea messageTextArea;
@@ -272,6 +271,25 @@ public class Game extends Eggine {
 	boolean prevMouseDown;
 
 	int mode = -1;
+
+	/**
+	 * @param item
+	 * @param count
+	 * @param max Maximum count of this item in inventory
+	 * @return true if at least one item has been given.
+	 */
+	public boolean giveItems(Item item, int count, int max) {
+		int existing = 0;
+		for (Item i : items)
+			if (i == item)
+				existing++;
+		if (existing > max) {
+			return false;
+		}
+		for (int i = 0; i < Math.min(count, max - existing); i++)
+			items.add(item);
+		return true;
+	}
 
 	public List<Sprite> itemSprites = new ArrayList<>();
 	public List<Item> items = new ArrayList<>();

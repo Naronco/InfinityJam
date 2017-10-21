@@ -12,6 +12,9 @@ import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.interactables.Bed;
+import com.naronco.infinityjam.interactables.Bottle;
+import com.naronco.infinityjam.interactables.Bucket;
+import com.naronco.infinityjam.interactables.Hole;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,13 +26,37 @@ public class Bedroom extends PointAndClickScene {
 		background = new Sprite(new File("res/bedroom.png"));
 		foreground = new Sprite(new File("res/bedroom-objects.png"));
 
-		List<Vector2d> points = new ArrayList<Vector2d>();
-		points.add(new Vector2d(39, 27));
-		points.add(new Vector2d(73, 19));
-		points.add(new Vector2d(105, 71));
-		points.add(new Vector2d(67, 80));
+		interactables.add(new Bed(new Polygon2d(
+				new Vector2d(39, 27),
+				new Vector2d(73, 19),
+				new Vector2d(105, 71),
+				new Vector2d(67, 80)
+		)));
 
-		interactables.add(new Bed(new Polygon2d(points)));
+		interactables.add(new Bottle(new Polygon2d(
+				new Vector2d(114, 44),
+				new Vector2d(121, 56),
+				new Vector2d(120, 69),
+				new Vector2d(113, 72),
+				new Vector2d(106, 70),
+				new Vector2d(106, 60)
+		)));
+
+		interactables.add(new Bucket(new Polygon2d(
+				new Vector2d(127, 47),
+				new Vector2d(140, 44),
+				new Vector2d(153, 49),
+				new Vector2d(152, 62),
+				new Vector2d(141, 67),
+				new Vector2d(129, 61)
+		)));
+
+		interactables.add(new Hole(new Polygon2d(
+				new Vector2d(146, 16),
+				new Vector2d(158, 28),
+				new Vector2d(158, 48),
+				new Vector2d(146, 32)
+		)));
 
 		addMovementArea(new Polygon2d(new Vector2d(86, 30), new Vector2d(130, 20), new Vector2d(149, 57), new Vector2d(103, 65)));
 

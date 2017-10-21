@@ -11,18 +11,35 @@ import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.interactables.Bed;
+import com.naronco.infinityjam.interactables.DrugPlant;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Hallway extends PointAndClickScene {
 	int rooms = 0;
 	int startRoom = 11;
 
+	Map<Integer, Integer> plants = new HashMap<>();
+	DrugPlant plant;
+
 	@Override
 	public void load() {
 		background = new Sprite(new File("res/hallway.png"));
+
+		plant = new DrugPlant(new Polygon2d(
+				new Vector2d(94, 33),
+				new Vector2d(106, 33),
+				new Vector2d(111, 50),
+				new Vector2d(107, 60),
+				new Vector2d(96, 60),
+				new Vector2d(90, 50)
+		));
+
+		interactables.add(plant);
 
 		addMovementArea(new Polygon2d(new Vector2d(-5, 55), new Vector2d(205, 55), new Vector2d(205, 86), new Vector2d(-5, 86)));
 
@@ -49,6 +66,10 @@ public class Hallway extends PointAndClickScene {
 
 	@Override
 	public void enter(IScene prev) {
+		if (plants.containsKey(rooms))
+			plant.load(plants.get(rooms));
+		else
+			plant.load(0);
 		if (prev == Game.instance.bedroom)
 			Game.instance.player.teleport(new Vector2d(26, 64));
 		else if (prev == Game.instance.elevator)
@@ -72,6 +93,12 @@ public class Hallway extends PointAndClickScene {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void leave() {
+		if (plant.save() != 0)
+			plants.put(rooms, plant.save());
 	}
 
 	@Override
