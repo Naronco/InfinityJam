@@ -47,6 +47,8 @@ public class Game extends Eggine {
 		items.add(Item.KEY);
 		items.add(Item.KEY);
 		items.add(Item.KEY);
+
+		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
@@ -143,8 +145,21 @@ public class Game extends Eggine {
 				mode = MODE_WALK;
 			} else
 				mode = focusedButton;
+
+			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
+			lastClickX = mx;
+			lastClickY = my;
 		}
 		prevMouseDown = mouseDown;
+
+		if (clickAnimation != null) {
+			if (clickAnimation.nextFrame()) {
+				clickAnimation = null;
+			} else {
+				int animIndex = clickAnimation.getTile();
+				screen.renderSprite(lastClickX - 4, lastClickY - 4, clickSheet.getTileVector(animIndex), 8, 8, clickSheet.getSprite());
+			}
+		}
 	}
 
 	@Override
@@ -224,4 +239,8 @@ public class Game extends Eggine {
 	public List<Sprite> itemSprites = new ArrayList<>();
 	public List<Item> items = new ArrayList<>();
 	public int selectedItem = -1;
+
+	SpriteSheet clickSheet;
+	SpriteAnimation clickAnimation;
+	int lastClickX, lastClickY;
 }

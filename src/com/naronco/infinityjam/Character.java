@@ -32,7 +32,7 @@ public class Character extends SpriteAnimation {
 	}
 
 	@Override
-	public void nextFrame() {
+	public boolean nextFrame() {
 		if (walking) {
 			setStartTile(1);
 			setEndTile(4);
@@ -48,6 +48,7 @@ public class Character extends SpriteAnimation {
 			position = position.add(diff);
 			flipX = diff.getX() > 0;
 		} else walking = false;
+		return false;
 	}
 
 	public boolean flipX;
