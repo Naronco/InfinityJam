@@ -324,4 +324,8 @@ public class Game extends Eggine {
 	SpriteSheet clickSheet;
 	SpriteAnimation clickAnimation;
 	int lastClickX, lastClickY;
+
+	public Character getPlayer() {
+		return player;
+	}
 }
