@@ -46,7 +46,7 @@ public class SpriteAnimation {
 		tiles = endTile - startTile;
 	}
 
-	public void nextFrame() {
+	public boolean nextFrame() {
 		long now = System.nanoTime();
 		if (now >= this.lastTile + (1000000000f / this.animationFps)) {
 			this.lastTile = now;
@@ -54,8 +54,10 @@ public class SpriteAnimation {
 
 			if (this.currentTile > this.startTile + this.tiles) {
 				this.currentTile = this.startTile;
+				return true;
 			}
 		}
+		return false;
 	}
 
 }
