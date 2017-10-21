@@ -1,8 +1,12 @@
 package com.deviotion.ld.eggine.graphics;
 
+import com.deviotion.ld.eggine.math.Dimension2d;
+
 public class TextArea {
     private int x, y, width, height;
     private Font font;
+    private boolean animated = true;
+    private boolean bordered = false;
     private int ticksPerCharacter = 1;
     private int maxLineCount = 0;
 
@@ -35,6 +39,9 @@ public class TextArea {
 
         for (String word : words) {
             int newLength = currentLine.length() + word.length();
+            if (currentLine.length() > 0)
+                ++newLength;
+
             boolean overBounds = newLength * Font.standard.getCharacterSize().getWidth() >= width;
 
             if (overBounds) {
@@ -42,7 +49,10 @@ public class TextArea {
                 currentLine = new StringBuilder();
             }
 
-            currentLine.append(word).append(' ');
+            if (currentLine.length() > 0)
+                currentLine.append(' ');
+
+            currentLine.append(word);
         }
 
         if (currentLine.length() > 0) {
@@ -50,9 +60,9 @@ public class TextArea {
         }
 
         activeMessage = messageBuilder.toString();
-        visibleCharacters = 1;
+        visibleCharacters = animated ? 1 : activeMessage.length();
         ticksSinceLastCharacter = 0;
-        buildingMessage = true;
+        buildingMessage = animated;
         currentFirstLine = 0;
         lineOffset = 0;
     }
@@ -86,8 +96,29 @@ public class TextArea {
 
     public void render(Screen screen) {
         if (activeMessage != null) {
+            if (bordered) {
+                screen.renderRectangle(x, y, width, height, 0x121212);
+                screen.renderRectangle(x + 1, y + 1, width - 2, height - 2, 0xF2F2F2);
+            }
+
             String partialMessage = activeMessage.substring(0, visibleCharacters);
-            screen.renderClippedText(x, y - lineOffset, x, y, width, height, Font.standard, partialMessage);
+
+            int textStartX = bordered ? x + 2 : x;
+            int textStartY = bordered ? y + 2 : y;
+            int textWidth = bordered ? width - 4 : width;
+            int textHeight = bordered ? height - 4 : height;
+
+            screen.renderClippedText(textStartX, textStartY - lineOffset, textStartX, textStartY, textWidth, textHeight, Font.standard, partialMessage);
+        }
+    }
+
+    public void sizeToFit() {
+        Dimension2d size = font.sizeOfText(activeMessage);
+        width = (int)size.getWidth();
+        height = (int)size.getHeight();
+        if (bordered) {
+            width += 4;
+            height += 4;
         }
     }
 
@@ -95,8 +126,16 @@ public class TextArea {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getWidth() {
@@ -109,6 +148,22 @@ public class TextArea {
 
     public Font getFont() {
         return font;
+    }
+
+    public boolean isAnimated() {
+        return animated;
+    }
+
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+    }
+
+    public boolean isBordered() {
+        return bordered;
+    }
+
+    public void setBordered(boolean bordered) {
+        this.bordered = bordered;
     }
 
     public int getTicksPerCharacter() {
