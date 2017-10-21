@@ -37,25 +37,25 @@ public class PointAndClickScene implements IScene {
                 switch (mode)
                 {
                     case Game.MODE_LOOK:
-                        if (i.hasLook())
+                        if (!i.hasLook())
                             Game.instance.showMessage("The Developers forgot to make this viewable.");
                         else
                             i.look(x, y);
                         break;
                     case Game.MODE_USE:
-                        if (i.hasUse())
+                        if (!i.hasUse())
                             Game.instance.showMessage("I can't use this.");
                         else
                             i.use(x, y);
                         break;
                     case Game.MODE_TAKE:
-                        if (i.hasTake())
+                        if (!i.hasTake())
                             Game.instance.showMessage("I can't take this.");
                         else
                             i.take(x, y);
                         break;
                     case Game.MODE_PUNCH:
-                        if (i.hasPunch())
+                        if (!i.hasPunch())
                             Game.instance.showMessage("Violence won't help.");
                         else
                             i.punch(x, y);

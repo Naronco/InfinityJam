@@ -13,7 +13,6 @@ import java.util.Arrays;
  * A last minute game engine for Ludum Dare.
  *
  * @author Alex Nicholson (TechnoCF)
- *
  */
 
 public class Screen {
@@ -22,7 +21,7 @@ public class Screen {
     private BufferedImage bufferedImage;
     private int[] pixels;
 
-    public Screen (Dimension2d dimension) {
+    public Screen(Dimension2d dimension) {
         this.dimension = dimension;
         this.bufferedImage = new BufferedImage((int) this.dimension.getWidth
                 (), (int) this.dimension.getHeight(), BufferedImage
@@ -31,17 +30,19 @@ public class Screen {
                 .getDataBuffer()).getData();
     }
 
-    public Dimension2d getDimension () {
+    public Dimension2d getDimension() {
         return this.dimension;
     }
-    public BufferedImage getBufferedImage () {
+
+    public BufferedImage getBufferedImage() {
         return this.bufferedImage;
     }
-    public int[] getPixels () {
+
+    public int[] getPixels() {
         return this.pixels;
     }
 
-    public void renderSprite (int x, int y, int startX, int startY, int endX,
+    public void renderSprite(int x, int y, int startX, int startY, int endX,
                              int endY, Sprite sprite) {
         BufferedImage spriteImage = sprite.getBufferedImage();
 
@@ -60,8 +61,8 @@ public class Screen {
 
         for (int i = startX; i < startX + endX; i++) {
             for (int j = startY; j < startY + endY; j++) {
-            	if(i >= spriteImage.getWidth() || i < 0 || j >= spriteImage.getHeight() || j < 0)
-            		continue;
+                if (i >= spriteImage.getWidth() || i < 0 || j >= spriteImage.getHeight() || j < 0)
+                    continue;
                 int pixelColor = spriteImage.getRGB(i, j);
                 if (pixelColor != sprite.getTransparentColor()) {
                     this.setPixel(x + (i - startX), y + (j - startY),
@@ -70,60 +71,71 @@ public class Screen {
             }
         }
     }
-    public void renderSprite (int x, int y, Sprite sprite) {
+
+    public void renderSprite(int x, int y, Sprite sprite) {
         this.renderSprite(x, y, 0, 0, (int) sprite.getDimension().getWidth(),
                 (int) sprite.getDimension().getHeight(), sprite);
     }
-    public void renderSprite (Vector2d location, Sprite sprite) {
+
+    public void renderSprite(Vector2d location, Sprite sprite) {
         this.renderSprite((int) location.getX(), (int) location.getY(), sprite);
     }
-    public void renderSprite (Vector2d location, Vector2d startLocation,
+
+    public void renderSprite(Vector2d location, Vector2d startLocation,
                              Dimension2d endLocation, Sprite sprite) {
         this.renderSprite((int) location.getX(), (int) location.getY(),
                 (int) startLocation.getX(), (int) startLocation.getY(),
                 (int) endLocation.getWidth(), (int) endLocation.getHeight(),
                 sprite);
     }
-    public void renderSprite (Vector2d location, int startX, int startY,
+
+    public void renderSprite(Vector2d location, int startX, int startY,
                              int endX, int endY, Sprite sprite) {
         this.renderSprite((int) location.getX(), (int) location.getY(), startX,
                 startY, endX, endY, sprite);
     }
-    public void renderSprite (int x, int y, Vector2d startLocation, int endX,
+
+    public void renderSprite(int x, int y, Vector2d startLocation, int endX,
                              int endY, Sprite sprite) {
         this.renderSprite(x, y, (int) startLocation.getX(),
                 (int) startLocation.getY(), endX, endY, sprite);
     }
-    public void renderSprite (int x, int y, int startX, int startY,
+
+    public void renderSprite(int x, int y, int startX, int startY,
                              Dimension2d endLocation, Sprite sprite) {
         this.renderSprite(x, y, startX, startY, (int) endLocation.getWidth(),
                 (int) endLocation.getHeight(), sprite);
     }
-    public void renderSprite (Vector2d location, Vector2d startLocation,
+
+    public void renderSprite(Vector2d location, Vector2d startLocation,
                              int endX, int endY, Sprite sprite) {
         this.renderSprite((int) location.getX(), (int) location.getY(), (int)
-                startLocation.getX(), (int) startLocation.getY(), endX, endY,
+                        startLocation.getX(), (int) startLocation.getY(), endX, endY,
                 sprite);
     }
-    public void renderSprite (Vector2d location, int startX, int startY,
-                              Dimension2d endLocation, Sprite sprite) {
+
+    public void renderSprite(Vector2d location, int startX, int startY,
+                             Dimension2d endLocation, Sprite sprite) {
         this.renderSprite((int) location.getX(), (int) location.getY(),
                 startX, startY, (int) endLocation.getWidth(), (int) endLocation
                         .getHeight(), sprite);
     }
-    public void renderSprite (int x, int y, Vector2d startLocation,
+
+    public void renderSprite(int x, int y, Vector2d startLocation,
                              Dimension2d endLocation, Sprite sprite) {
         this.renderSprite(x, y, (int) startLocation.getX(), (int)
                         startLocation.getY(), (int) endLocation.getWidth(),
                 (int) endLocation.getHeight(), sprite);
     }
-    public void setPixel (int x, int y, int color) {
+
+    public void setPixel(int x, int y, int color) {
         if (x >= 0 && y >= 0 && x < this.dimension.getWidth() && y < this
                 .dimension.getHeight()) {
             this.pixels[x + y * (int) this.dimension.getWidth()] = color;
         }
     }
-    public void mixPixel (int x, int y, int color) {
+
+    public void mixPixel(int x, int y, int color) {
         if (x >= 0 && y >= 0 && x < this.dimension.getWidth() && y < this
                 .dimension.getHeight()) {
             int p = this.pixels[x + y * (int) this.dimension.getWidth()];
@@ -142,58 +154,63 @@ public class Screen {
         this.renderSprite(x, y, location, spriteSheet
                 .getSpriteSize(), spriteSheet.getSprite());
     }
+
     public void renderSpriteTile(Vector2d vector, int tile, SpriteSheet
             spriteSheet) {
         this.renderSpriteTile((int) vector.getX(), (int) vector.getY(),
                 spriteSheet, tile);
     }
 
-    public void renderAnimatedSprite (int x, int y, SpriteAnimation
-                                      spriteAnimation) {
+    public void renderAnimatedSprite(int x, int y, SpriteAnimation
+            spriteAnimation) {
         this.renderSpriteTile(x, y, spriteAnimation.getSpriteSheet(),
                 spriteAnimation.getTile());
     }
-    public void renderAnimatedSprite (Vector2d vector, SpriteAnimation
+
+    public void renderAnimatedSprite(Vector2d vector, SpriteAnimation
             spriteAnimation) {
         this.renderAnimatedSprite((int) vector.getX(), (int) vector.getY(),
                 spriteAnimation);
     }
 
-    public void mixRectangle (int x, int y, int width, int height, int color) {
-        for (int j=0; j<height; j++) {
-            for (int i=0; i<width; i++) {
-                this.mixPixel(i+x, j+y, color);
+    public void mixRectangle(int x, int y, int width, int height, int color) {
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                this.mixPixel(i + x, j + y, color);
             }
         }
     }
 
-    public void renderRectangle (int x, int y, int width, int height, int
+    public void renderRectangle(int x, int y, int width, int height, int
             color) {
-        for (int j=0; j<height; j++) {
-            for (int i=0; i<width; i++) {
-                this.setPixel(i+x, j+y, color);
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                this.setPixel(i + x, j + y, color);
             }
         }
     }
-    public void renderRectangle (Vector2d location, int width, int height,
-                                 int color) {
+
+    public void renderRectangle(Vector2d location, int width, int height,
+                                int color) {
         this.renderRectangle((int) location.getX(), (int) location.getY(),
                 width, height, color);
     }
-    public void renderRectangle (int x, int y, Dimension2d dimension, int
+
+    public void renderRectangle(int x, int y, Dimension2d dimension, int
             color) {
         this.renderRectangle(x, y, (int) dimension.getWidth(), (int)
                 dimension.getHeight(), color);
     }
-    public void renderRectangle (Vector2d location, Dimension2d dimension,
-                                 int color) {
+
+    public void renderRectangle(Vector2d location, Dimension2d dimension,
+                                int color) {
         this.renderRectangle((int) location.getX(), (int) location.getY(),
                 (int) dimension.getWidth(), (int) dimension.getHeight(), color);
     }
 
-    public void renderMap (int x, int y, Map map, SpriteSheet spriteSheet) {
-        for (int i=0; i<map.getDimension().getWidth(); i++) {
-            for (int j=0; j<map.getDimension().getHeight(); j++) {
+    public void renderMap(int x, int y, Map map, SpriteSheet spriteSheet) {
+        for (int i = 0; i < map.getDimension().getWidth(); i++) {
+            for (int j = 0; j < map.getDimension().getHeight(); j++) {
                 int tile = map.getTile(i, j);
                 if (tile != -1) {
                     this.renderSpriteTile(x + (i * (int) spriteSheet
@@ -207,8 +224,15 @@ public class Screen {
         }
     }
 
-    public void fillScreen (int color) {
+    public void fillScreen(int color) {
         Arrays.fill(this.pixels, color);
     }
 
+    public void renderText(int x, int y, Font font, String text) {
+        text = text.toUpperCase();
+        for (int i = 0; i < text.length(); ++i) {
+            char ch = text.charAt(i);
+            renderSprite(x + i * (int) font.getCharacterSize().getWidth(), y, font.getCharacterVector(ch), font.getCharacterSize(), font.getSprite());
+        }
+    }
 }

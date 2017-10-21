@@ -1,6 +1,7 @@
 package com.naronco.infinityjam;
 
 import com.deviotion.ld.eggine.Eggine;
+import com.deviotion.ld.eggine.graphics.Font;
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.graphics.Window;
@@ -31,7 +32,7 @@ public class Game extends Eggine {
 
 	static final int LEFT_BUTTON_WIDTH = 63;
 	static final int RIGHT_BUTTON_WIDTH = 119 - 63;
-	static final int BUTTON_HEIGHT = 123 - 96;
+	static final int BUTTON_HEIGHT = 123 - 100;
 
 	@Override
 	public void render(Screen screen) {
@@ -42,19 +43,19 @@ public class Game extends Eggine {
 		if (mx < 63) {
 			if (my > 123) {
 				focusedButton = MODE_TAKE;
-				screen.mixRectangle(0, 123, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				screen.mixRectangle(0, 106 + BUTTON_HEIGHT, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			} else if (my > 96) {
 				focusedButton = MODE_LOOK;
-				screen.mixRectangle(0, 96, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
 		}
 		else if (mx < 122) {
 			if (my > 123) {
 				focusedButton = MODE_PUNCH;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 123, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			} else if (my > 96) {
 				focusedButton = MODE_USE;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 96, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 			}
 		}
 		else focusedButton = -1;
@@ -63,6 +64,25 @@ public class Game extends Eggine {
 
 		if (currentDetail != null) {
 			screen.mixRectangle(mx, my, 10, 10, 0x80FF0000);
+		}
+
+		if (activeMessage != null) {
+			String[] words = activeMessage.split(" ");
+			String currentLine = "";
+			int lineCount = 0;
+			for (String word : words) {
+				int newLength = currentLine.length() + word.length();
+				if (newLength * Font.standard.getCharacterSize().getWidth() >= screen.getDimension().getWidth()) {
+					screen.renderText(0, 87 + lineCount * ((int)Font.standard.getCharacterSize().getHeight() + 1), Font.standard, currentLine);
+					currentLine = word + " ";
+					++lineCount;
+				} else {
+					currentLine += word + " ";
+				}
+			}
+			if (!currentLine.equals("")) {
+				screen.renderText(0, 87 + lineCount * ((int)Font.standard.getCharacterSize().getHeight() + 1), Font.standard, currentLine);
+			}
 		}
 
 		prevMx = mx;
