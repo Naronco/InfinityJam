@@ -6,6 +6,7 @@ import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.scenes.*;
 
+import javax.sound.sampled.AudioFormat;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class Game extends Eggine {
 
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
+
+		List<AudioFormat> supportedAudioFormats = Sound.getSupportedAudioFormats();
 
 		instance = this;
 

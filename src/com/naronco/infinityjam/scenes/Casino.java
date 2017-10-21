@@ -8,6 +8,7 @@ import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.interactables.GamingMachine;
 
 import java.io.File;
 
@@ -19,6 +20,17 @@ public class Casino extends PointAndClickScene {
 		addMovementArea(new Polygon2d(new Vector2d(16, 56), new Vector2d(200, 60), new Vector2d(200, 85), new Vector2d(0, 85)));
 
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(17, 54), new Vector2d(38, 52), new Vector2d(30, 86), new Vector2d(0, 86)), Game.instance.street));
+
+		int distance = (83 - 47);
+		int width = (75 - 47);
+		int height = (56 - 7);
+
+		for (int i = 0; i < 4; ++i) {
+			int x = 47 + distance * i;
+			int y = 7;
+			GamingMachine machine = new GamingMachine(new Polygon2d(new Vector2d(x, y), new Vector2d(x + width, y), new Vector2d(x + width, y + height), new Vector2d(x, y + height)));
+			interactables.add(machine);
+		}
 	}
 
 	@Override
