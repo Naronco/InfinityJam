@@ -18,7 +18,12 @@ public class Bed implements Interactable {
 
     @Override
     public String getName() {
-        return "Bed";
+        return "Bett";
+    }
+
+    @Override
+    public String getNameWithArticle() {
+        return "ein Bett";
     }
 
     @Override

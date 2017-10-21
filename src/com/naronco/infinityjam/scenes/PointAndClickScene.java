@@ -54,11 +54,11 @@ public class PointAndClickScene implements IScene {
 					}
 				}
 			}
-			if (nearest != null)
+			if (nearest != null) {
 				Game.instance.player.walkTo(nearest);
-			else
-				Game.instance.showMessage("Da komm ich nicht hin");
-		} else {
+				return;
+			}
+		}
 			for (Interactable i : interactables) {
 				if (i.intersects(x, y)) {
 					switch (mode) {
@@ -86,11 +86,15 @@ public class PointAndClickScene implements IScene {
 							else
 								i.punch(x, y);
 							break;
+						default:
+							Game.instance.showMessage(i.getNameWithArticle() + ".");
+							break;
 					}
 					return;
 				}
 			}
-		}
+		if (mode == Game.MODE_WALK)
+			Game.instance.showMessage("Da komm ich nicht hin");
 	}
 
 	@Override

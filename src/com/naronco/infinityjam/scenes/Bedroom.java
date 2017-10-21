@@ -20,5 +20,6 @@ public class Bedroom extends PointAndClickScene {
 		addMovementLine(new Vector2d(82, 34), new Vector2d(124, 26), 4);
 		addMovementLine(new Vector2d(90, 44), new Vector2d(131, 35), 4);
 		addMovementLine(new Vector2d(98, 56), new Vector2d(139, 48), 4);
+		addMovementLine(new Vector2d(102, 66), new Vector2d(145, 55), 4);
 	}
 }
