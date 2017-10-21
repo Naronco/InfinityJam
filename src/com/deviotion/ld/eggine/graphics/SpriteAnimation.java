@@ -10,7 +10,7 @@ package com.deviotion.ld.eggine.graphics;
 public class SpriteAnimation {
 
 	private SpriteSheet spriteSheet;
-	private int animationFps;
+	public int animationFps;
 	private int startTile;
 	private int endTile;
 	private int currentTile;

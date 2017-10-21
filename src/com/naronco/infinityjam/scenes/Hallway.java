@@ -3,6 +3,7 @@ package com.naronco.infinityjam.scenes;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.interactables.Bed;
@@ -16,7 +17,9 @@ public class Hallway extends PointAndClickScene {
 	public void load() {
 		background = new Sprite(new File("res/hallway.png"));
 
-		addMovementArea(new Polygon2d(new Vector2d(0, 55), new Vector2d(200, 55), new Vector2d(200, 86), new Vector2d(0, 86)));
+		addMovementArea(new Polygon2d(new Vector2d(-5, 55), new Vector2d(205, 55), new Vector2d(205, 86), new Vector2d(-5, 86)));
+
+		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(10, 52), new Vector2d(40, 52), new Vector2d(40, 62), new Vector2d(10, 62)), Game.instance.bedroom));
 	}
 
 	@Override
