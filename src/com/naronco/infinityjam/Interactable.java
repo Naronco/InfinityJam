@@ -13,4 +13,5 @@ public interface Interactable {
     void use(int x, int y);
     void take(int x, int y);
     void punch(int x, int y);
+    void interact(int x, int y, Item item);
 }
