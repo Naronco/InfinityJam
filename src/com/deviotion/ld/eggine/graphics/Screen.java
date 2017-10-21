@@ -230,9 +230,16 @@ public class Screen {
 
     public void renderText(int x, int y, Font font, String text) {
         text = text.toUpperCase();
+        int xOffs = 0, yOffs = 0;
         for (int i = 0; i < text.length(); ++i) {
             char ch = text.charAt(i);
-            renderSprite(x + i * (int) font.getCharacterSize().getWidth(), y, font.getCharacterVector(ch), font.getCharacterSize(), font.getSprite());
+            if (ch == '\n') {
+                xOffs = 0;
+                yOffs += (int)font.getCharacterSize().getHeight() + 1;
+                continue;
+            }
+            renderSprite(x + xOffs, y + yOffs, font.getCharacterVector(ch), font.getCharacterSize(), font.getSprite());
+            xOffs += (int) font.getCharacterSize().getWidth();
         }
     }
 }

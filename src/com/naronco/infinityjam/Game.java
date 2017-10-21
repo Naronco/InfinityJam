@@ -9,6 +9,8 @@ import com.deviotion.ld.eggine.math.Dimension2d;
 import com.naronco.infinityjam.scenes.Bedroom;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game extends Eggine {
 	Sprite ui;
@@ -67,22 +69,8 @@ public class Game extends Eggine {
 		}
 
 		if (activeMessage != null) {
-			String[] words = activeMessage.split(" ");
-			String currentLine = "";
-			int lineCount = 0;
-			for (String word : words) {
-				int newLength = currentLine.length() + word.length();
-				if (newLength * Font.standard.getCharacterSize().getWidth() >= screen.getDimension().getWidth()) {
-					screen.renderText(0, 87 + lineCount * ((int)Font.standard.getCharacterSize().getHeight() + 1), Font.standard, currentLine);
-					currentLine = word + " ";
-					++lineCount;
-				} else {
-					currentLine += word + " ";
-				}
-			}
-			if (!currentLine.equals("")) {
-				screen.renderText(0, 87 + lineCount * ((int)Font.standard.getCharacterSize().getHeight() + 1), Font.standard, currentLine);
-			}
+			String partialMessage = activeMessage.substring(0, visibleCharacters);
+			screen.renderText(0, 87, Font.standard, partialMessage);
 		}
 
 		prevMx = mx;
@@ -105,6 +93,20 @@ public class Game extends Eggine {
 			currentDetail = currentScene.detailAt(prevMx, prevMy);
 		else
 			currentDetail = null;
+
+		if (buildingMessage) {
+			++ticksSinceLastCharacter;
+
+			if (ticksSinceLastCharacter >= ticksPerCharacter) {
+				++visibleCharacters;
+
+				if (visibleCharacters == activeMessage.length()) {
+					buildingMessage = false;
+				}
+
+				ticksSinceLastCharacter = 0;
+			}
+		}
 	}
 
 	public void setScene(IScene scene) {
@@ -112,11 +114,40 @@ public class Game extends Eggine {
 	}
 
 	public void showMessage(String message) {
-		activeMessage = message;
+		String[] words = message.split(" ");
+
+		StringBuilder messageBuilder = new StringBuilder();
+		StringBuilder currentLine = new StringBuilder();
+
+		for (String word : words) {
+			int newLength = currentLine.length() + word.length();
+			boolean overBounds = newLength * Font.standard.getCharacterSize().getWidth() >= getWindow().getScreen().getDimension().getWidth();
+
+			if (overBounds) {
+				messageBuilder.append(currentLine).append('\n');
+				currentLine = new StringBuilder();
+			}
+
+			currentLine.append(word).append(' ');
+		}
+
+		if (currentLine.length() > 0) {
+			messageBuilder.append(currentLine);
+		}
+
+		activeMessage = messageBuilder.toString();
+		visibleCharacters = 1;
+		ticksSinceLastCharacter = 0;
+		buildingMessage = true;
 	}
 
 	IScene currentScene;
+
 	String activeMessage;
+	boolean buildingMessage = false;
+	int visibleCharacters;
+	int ticksSinceLastCharacter;
+	int ticksPerCharacter;
 
 	String currentDetail;
 
