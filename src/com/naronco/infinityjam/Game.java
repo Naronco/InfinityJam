@@ -39,6 +39,23 @@ public class Game extends Eggine {
 	static final int RIGHT_BUTTON_WIDTH = 119 - 63;
 	static final int BUTTON_HEIGHT = 123 - 100;
 
+	private void mixButton(Screen screen, int mode) {
+		switch (mode) {
+			case MODE_TAKE:
+				screen.mixRectangle(0, 106 + BUTTON_HEIGHT, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_LOOK:
+				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_PUNCH:
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+			case MODE_USE:
+				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				break;
+		}
+	}
+
 	@Override
 	public void render(Screen screen) {
 		screen.renderSprite(0, 0, ui);
@@ -47,21 +64,27 @@ public class Game extends Eggine {
 		int my = (int) getMouse().getLocation().getY();
 		if (mx < 63) {
 			if (my > 123) {
-				focusedButton = MODE_TAKE;
-				screen.mixRectangle(0, 106 + BUTTON_HEIGHT, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_TAKE;
+				mixButton(screen, MODE_TAKE);
 			} else if (my > 96) {
-				focusedButton = MODE_LOOK;
-				screen.mixRectangle(0, 106, LEFT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_LOOK;
+				mixButton(screen, MODE_LOOK);
 			}
 		} else if (mx < 122) {
 			if (my > 123) {
-				focusedButton = MODE_PUNCH;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106 + BUTTON_HEIGHT, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_PUNCH;
+				mixButton(screen, MODE_PUNCH);
 			} else if (my > 96) {
-				focusedButton = MODE_USE;
-				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
+				if (getMouse().isLeftClicking())
+					focusedButton = MODE_USE;
+				mixButton(screen, MODE_USE);
 			}
 		} else focusedButton = MODE_WALK;
+
+		mixButton(screen, focusedButton);
 
 		currentScene.renderBackground(screen);
 		screen.renderAnimatedSprite(player.getSpritePosition(), player);
