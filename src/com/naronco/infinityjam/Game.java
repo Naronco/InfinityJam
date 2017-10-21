@@ -29,10 +29,14 @@ public class Game extends Eggine {
 	public Street street;
 	public Casino casino;
 
+	public SpriteSheet characters;
+
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
 
 		List<AudioFormat> supportedAudioFormats = Sound.getSupportedAudioFormats();
+
+		characters = new SpriteSheet(new Sprite(new File("res/char.png")), new Dimension2d(19, 35));
 
 		instance = this;
 
@@ -106,11 +110,7 @@ public class Game extends Eggine {
 		currentScene.renderBackground(screen);
 
 		if (currentScene.showsPlayer()) {
-			if (player.flipX)
-				screen.renderAnimatedSpriteFlipped(player.getSpritePosition(), player);
-			else
-				screen.renderAnimatedSprite(player.getSpritePosition(), player);
-			player.nextFrame();
+			player.draw(screen);
 		}
 
 		currentScene.renderForeground(screen);

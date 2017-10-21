@@ -1,5 +1,6 @@
 package com.naronco.infinityjam;
 
+import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.graphics.SpriteAnimation;
 import com.deviotion.ld.eggine.graphics.SpriteSheet;
@@ -10,20 +11,34 @@ import com.naronco.infinityjam.scenes.PointAndClickScene;
 import java.io.File;
 
 public class Character extends SpriteAnimation {
-	public Character(int x, int y) {
-		super(new SpriteSheet(new Sprite(new File("res/char.png")), new Dimension2d(19, 35)), 0, 0, 10);
+	public int idleStartTile, idleEndTile, walkStartTile, walkEndTile, baseFps;
+
+	public Character(int x, int y, int idleStartTile, int idleEndTile, int walkStartTile, int walkEndTile, int baseFps) {
+		super(Game.instance.characters, idleStartTile, idleEndTile, baseFps);
 		position = target = new Vector2d(x, y);
+		this.idleStartTile = idleStartTile;
+		this.idleEndTile = idleEndTile;
+		this.walkStartTile = walkStartTile;
+		this.walkEndTile = walkEndTile;
+		this.baseFps = baseFps;
+	}
+
+	public Character(int x, int y, int row) {
+		this(x, y, 0 + row * 8, 0 + row * 8, 1 + row * 8, 4 + row * 8, 10);
+	}
+
+	public Character(int x, int y) {
+		this(x, y, 0);
 	}
 
 	public void walkTo(Vector2d v) {
 		if (target.subtract(v).getLengthSquared() < 16) {
 			running = true;
-			animationFps = 20;
-		}
-		else {
+			animationFps = baseFps * 2;
+		} else {
 			target = v;
 			running = false;
-			animationFps = 10;
+			animationFps = baseFps;
 		}
 	}
 
@@ -51,11 +66,11 @@ public class Character extends SpriteAnimation {
 			flipX = diff.getX() > 0;
 		} else walking = false;
 		if (walking) {
-			setStartTile(1);
-			setEndTile(4);
+			setStartTile(walkStartTile);
+			setEndTile(walkEndTile);
 		} else {
-			setStartTile(0);
-			setEndTile(0);
+			setStartTile(idleStartTile);
+			setEndTile(idleEndTile);
 		}
 		return false;
 	}
@@ -77,4 +92,12 @@ public class Character extends SpriteAnimation {
 	public boolean flipX;
 	public boolean walking, wasWalking;
 	private Vector2d position, target;
+
+	public void draw(Screen screen) {
+		nextFrame();
+		if (flipX)
+			screen.renderAnimatedSpriteFlipped(getSpritePosition(), this);
+		else
+			screen.renderAnimatedSprite(getSpritePosition(), this);
+	}
 }
