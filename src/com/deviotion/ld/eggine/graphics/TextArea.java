@@ -17,6 +17,8 @@ public class TextArea {
     private int lineHeight;
     private int currentFirstLine;
     private int lineOffset;
+    private int ticksSinceLastPixel = 0;
+    private int ticksPerScrollingPixel = 2;
 
     private int visibleCharacters;
     private int ticksSinceLastCharacter;
@@ -80,6 +82,7 @@ public class TextArea {
                     if (activeMessage.charAt(visibleCharacters) == '\n') {
                         if (currentFirstLine >= maxLineCount - 1) {
                             lineOffset = (currentFirstLine - maxLineCount + 1) * lineHeight + 1;
+                            ticksSinceLastPixel = 0;
                         }
                         ++currentFirstLine;
                     }
@@ -87,11 +90,13 @@ public class TextArea {
 
                 ticksSinceLastCharacter = 0;
             }
-
-            if (lineOffset % lineHeight != 0) {
-                ++lineOffset;
-            }
         }
+
+        if (lineOffset % lineHeight != 0 && ticksSinceLastPixel >= ticksPerScrollingPixel) {
+            ++lineOffset;
+            ticksSinceLastPixel = 0;
+        }
+        ++ticksSinceLastPixel;
     }
 
     public void render(Screen screen) {
