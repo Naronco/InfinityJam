@@ -125,7 +125,7 @@ public class Game extends Eggine {
 			if (detail != null && focusedButton != MODE_WALK) {
 				switch (focusedButton) {
 					case MODE_TAKE:
-						currentDetail = "Nehme " + detail;
+						currentDetail = "Nimm " + detail;
 						break;
 					case MODE_LOOK:
 						currentDetail = "Siehe " + detail + " an";
