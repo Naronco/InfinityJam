@@ -59,8 +59,8 @@ public class PointAndClickScene implements IScene {
 				boolean movable = true;
 
 				for (double p = 0; p < dist; p += step) {
-					tx += dx;
-					ty += dy;
+					tx += dx * step;
+					ty += dy * step;
 
 					if (movementAreaAt((int)tx, (int)ty) == null)
 						movable = false;
