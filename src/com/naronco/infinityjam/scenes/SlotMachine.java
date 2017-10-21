@@ -1,5 +1,6 @@
 package com.naronco.infinityjam.scenes;
 
+import com.deviotion.ld.eggine.graphics.Font;
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.graphics.SpriteSheet;
