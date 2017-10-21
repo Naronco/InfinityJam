@@ -3,19 +3,19 @@ package com.deviotion.ld.eggine.graphics;
 public class TextArea {
     private int x, y, width, height;
     private Font font;
+    private int ticksPerCharacter = 1;
+    private int maxLineCount = 0;
 
-    String activeMessage;
+    private String activeMessage;
 
-    boolean buildingMessage = false;
+    private boolean buildingMessage = false;
 
-    int lineHeight;
-    int numberOfLines;
-    int currentFirstLine;
-    int lineOffset;
+    private int lineHeight;
+    private int currentFirstLine;
+    private int lineOffset;
 
-    int visibleCharacters;
-    int ticksSinceLastCharacter;
-    int ticksPerCharacter = 1;
+    private int visibleCharacters;
+    private int ticksSinceLastCharacter;
 
     public TextArea(int x, int y, int width, int height, Font font) {
         this.x = x;
@@ -33,8 +33,6 @@ public class TextArea {
         StringBuilder messageBuilder = new StringBuilder();
         StringBuilder currentLine = new StringBuilder();
 
-        numberOfLines = 1;
-
         for (String word : words) {
             int newLength = currentLine.length() + word.length();
             boolean overBounds = newLength * Font.standard.getCharacterSize().getWidth() >= width;
@@ -42,8 +40,6 @@ public class TextArea {
             if (overBounds) {
                 messageBuilder.append(currentLine).append('\n');
                 currentLine = new StringBuilder();
-
-                ++numberOfLines;
             }
 
             currentLine.append(word).append(' ');
@@ -72,8 +68,8 @@ public class TextArea {
                     buildingMessage = false;
                 } else {
                     if (activeMessage.charAt(visibleCharacters) == '\n') {
-                        if (currentFirstLine > 0) {
-                            lineOffset = (currentFirstLine - 1) * lineHeight + 1;
+                        if (currentFirstLine >= maxLineCount - 1) {
+                            lineOffset = (currentFirstLine - maxLineCount + 1) * lineHeight + 1;
                         }
                         ++currentFirstLine;
                     }
@@ -113,5 +109,21 @@ public class TextArea {
 
     public Font getFont() {
         return font;
+    }
+
+    public int getTicksPerCharacter() {
+        return ticksPerCharacter;
+    }
+
+    public void setTicksPerCharacter(int ticksPerCharacter) {
+        this.ticksPerCharacter = ticksPerCharacter;
+    }
+
+    public int getMaxLineCount() {
+        return maxLineCount;
+    }
+
+    public void setMaxLineCount(int maxLineCount) {
+        this.maxLineCount = maxLineCount;
     }
 }
