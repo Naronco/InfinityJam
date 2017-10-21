@@ -27,7 +27,7 @@ public class Game extends Eggine {
 
 		currentScene = new Bedroom();
 
-		player = new Character(80, 40);
+		player = new Character(90, 40);
 
 		ui = new Sprite(new File("res/ui.png"));
 
@@ -47,6 +47,8 @@ public class Game extends Eggine {
 		items.add(Item.KEY);
 		items.add(Item.KEY);
 		items.add(Item.KEY);
+
+		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
@@ -79,33 +81,33 @@ public class Game extends Eggine {
 		if (mx < 63) {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_TAKE;
-				if (focusedButton != MODE_TAKE)
+					mode = MODE_TAKE;
+				if (mode != MODE_TAKE)
 					mixButton(screen, MODE_TAKE);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_LOOK;
-				if (focusedButton != MODE_LOOK)
+					mode = MODE_LOOK;
+				if (mode != MODE_LOOK)
 					mixButton(screen, MODE_LOOK);
 			}
 		} else if (mx < 122) {
 			if (my > 123) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_PUNCH;
-				if (focusedButton != MODE_PUNCH)
+					mode = MODE_PUNCH;
+				if (mode != MODE_PUNCH)
 					mixButton(screen, MODE_PUNCH);
 			} else if (my > 96) {
 				if (getMouse().isLeftClicking())
-					focusedButton = MODE_USE;
-				if (focusedButton != MODE_USE)
+					mode = MODE_USE;
+				if (mode != MODE_USE)
 					mixButton(screen, MODE_USE);
 			}
 		} else {
 			if (getMouse().isLeftClicking())
-				focusedButton = MODE_WALK;
+				mode = MODE_WALK;
 		}
 
-		mixButton(screen, focusedButton);
+		mixButton(screen, mode);
 
 		currentScene.renderBackground(screen);
 		if (player.flipX)
@@ -141,10 +143,22 @@ public class Game extends Eggine {
 			if (my < 86) {
 				currentScene.click(mx, my, mode);
 				mode = MODE_WALK;
-			} else
-				mode = focusedButton;
+			}
+
+			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
+			lastClickX = mx;
+			lastClickY = my;
 		}
 		prevMouseDown = mouseDown;
+
+		if (clickAnimation != null) {
+			if (clickAnimation.nextFrame()) {
+				clickAnimation = null;
+			} else {
+				int animIndex = clickAnimation.getTile();
+				screen.renderSprite(lastClickX - 4, lastClickY - 4, clickSheet.getTileVector(animIndex), 8, 8, clickSheet.getSprite());
+			}
+		}
 	}
 
 	@Override
@@ -155,8 +169,8 @@ public class Game extends Eggine {
 		if (prevMy < 86) {
 			String detail = currentScene.detailAt(prevMx, prevMy);
 
-			if (detail != null && focusedButton != MODE_WALK) {
-				switch (focusedButton) {
+			if (detail != null && mode != MODE_WALK) {
+				switch (mode) {
 					case MODE_TAKE:
 						currentDetail = "Nimm " + detail;
 						break;
@@ -199,7 +213,9 @@ public class Game extends Eggine {
 	}
 
 	public void setScene(IScene scene) {
+		currentScene.leave();
 		currentScene = scene;
+		currentScene.enter();
 	}
 
 	public void showMessage(String message) {
@@ -218,10 +234,13 @@ public class Game extends Eggine {
 	int prevMx, prevMy;
 	boolean prevMouseDown;
 
-	int focusedButton = -1;
 	int mode = -1;
 
 	public List<Sprite> itemSprites = new ArrayList<>();
 	public List<Item> items = new ArrayList<>();
 	public int selectedItem = -1;
+
+	SpriteSheet clickSheet;
+	SpriteAnimation clickAnimation;
+	int lastClickX, lastClickY;
 }
