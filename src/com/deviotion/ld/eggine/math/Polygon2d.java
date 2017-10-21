@@ -15,7 +15,7 @@ public class Polygon2d {
 		this.points = Arrays.asList(points);
 	}
 
-	public boolean intersects(int x, int y) {
+	public boolean intersects(double x, double y) {
 		for (int i = 0; i < points.size(); ++i) {
 			Vector2d current = points.get(i);
 			Vector2d next = i == (points.size() - 1) ? points.get(0) : points.get(i + 1);
@@ -29,6 +29,16 @@ public class Polygon2d {
 				return false;
 		}
 
+		return true;
+	}
+
+	public boolean intersects(Vector2d point) {
+		return intersects(point.getX(), point.getY());
+	}
+
+	public boolean contains(Line2d line) {
+		if (!intersects(line.getStart())) return false;
+		if (!intersects(line.getEnd())) return false;
 		return true;
 	}
 
