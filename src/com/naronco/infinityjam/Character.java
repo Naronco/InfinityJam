@@ -60,6 +60,11 @@ public class Character extends SpriteAnimation {
 		return false;
 	}
 
+	public void teleport(Vector2d pos) {
+		position = pos;
+		target = position;
+	}
+
 	public boolean flipX;
 	public boolean walking, wasWalking;
 	private Vector2d position, target;

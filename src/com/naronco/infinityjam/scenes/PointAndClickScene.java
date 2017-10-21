@@ -7,21 +7,19 @@ import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Interactable;
+import com.naronco.infinityjam.StepArea;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PointAndClickScene implements IScene {
+public abstract class PointAndClickScene implements IScene {
 	protected List<Interactable> interactables = new ArrayList<Interactable>();
 	protected Sprite background, foreground;
 	protected List<Polygon2d> movementAreas = new ArrayList<Polygon2d>();
+	protected List<StepArea> stepAreas = new ArrayList<StepArea>();
 
 	public void addMovementArea(Polygon2d area) {
 		movementAreas.add(area);
-	}
-
-	@Override
-	public void enter() {
 	}
 
 	@Override
@@ -62,7 +60,7 @@ public class PointAndClickScene implements IScene {
 					tx += dx;
 					ty += dy;
 
-					if (movementAreaAt((int)tx, (int)ty) == null)
+					if (movementAreaAt((int) tx, (int) ty) == null)
 						movable = false;
 				}
 
@@ -125,6 +123,14 @@ public class PointAndClickScene implements IScene {
 
 	@Override
 	public void update() {
+		if (Game.instance.player.walkingEnded()) {
+			Vector2d pos = Game.instance.player.getPosition();
+			int px = (int) pos.getX();
+			int py = (int) pos.getY();
+			for (StepArea area : stepAreas) {
+				area.stepOn(px, py);
+			}
+		}
 	}
 
 	private Polygon2d movementAreaAt(int x, int y) {

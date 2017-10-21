@@ -4,6 +4,7 @@ import com.deviotion.ld.eggine.Eggine;
 import com.deviotion.ld.eggine.graphics.*;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.naronco.infinityjam.scenes.Bedroom;
+import com.naronco.infinityjam.scenes.Hallway;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,12 +21,21 @@ public class Game extends Eggine {
 	public static final int MODE_TAKE = 2;
 	public static final int MODE_PUNCH = 3;
 
+	public Bedroom bedroom;
+	public Hallway hallway;
+
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
 
 		instance = this;
 
-		currentScene = new Bedroom();
+		bedroom = new Bedroom();
+		hallway = new Hallway();
+
+		bedroom.load();
+		hallway.load();
+
+		currentScene = bedroom;
 
 		player = new Character(90, 40);
 
@@ -214,8 +224,9 @@ public class Game extends Eggine {
 
 	public void setScene(IScene scene) {
 		currentScene.leave();
+		IScene prev = currentScene;
 		currentScene = scene;
-		currentScene.enter();
+		currentScene.enter(prev);
 	}
 
 	public void showMessage(String message) {
