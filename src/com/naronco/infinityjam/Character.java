@@ -41,13 +41,6 @@ public class Character extends SpriteAnimation {
 
 	@Override
 	public boolean nextFrame() {
-		if (walking) {
-			setStartTile(1);
-			setEndTile(4);
-		} else {
-			setStartTile(0);
-			setEndTile(0);
-		}
 		super.nextFrame();
 		Vector2d diff = target.subtract(position);
 		if (diff.getLengthSquared() > 1) {
@@ -57,6 +50,13 @@ public class Character extends SpriteAnimation {
 			position = position.add(diff);
 			flipX = diff.getX() > 0;
 		} else walking = false;
+		if (walking) {
+			setStartTile(1);
+			setEndTile(4);
+		} else {
+			setStartTile(0);
+			setEndTile(0);
+		}
 		return false;
 	}
 

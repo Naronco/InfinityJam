@@ -57,13 +57,14 @@ public class Door implements Interactable {
 
 	@Override
 	public void use(int x, int y) {
-		Game.instance.player.walkTo(walkTo);
+		take(x, y);
 	}
 
 	@Override
 	public void take(int x, int y) {
+		Game.instance.player.walking = true;
+		Game.instance.player.wasWalking = true;
 		Game.instance.player.walkTo(walkTo);
-
 	}
 
 	@Override
