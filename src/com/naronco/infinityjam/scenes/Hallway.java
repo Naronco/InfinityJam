@@ -5,9 +5,11 @@ import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.interactables.Bed;
 
 import java.io.File;
@@ -70,5 +72,10 @@ public class Hallway extends PointAndClickScene {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Sound getBackgroundMusic() {
+		return Sounds.casino;
 	}
 }

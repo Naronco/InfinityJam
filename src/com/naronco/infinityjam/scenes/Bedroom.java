@@ -6,9 +6,11 @@ import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.interactables.Bed;
 
 import java.io.File;
@@ -38,5 +40,10 @@ public class Bedroom extends PointAndClickScene {
 	public void enter(IScene prev) {
 		if (prev == Game.instance.hallway)
 			Game.instance.player.teleport(new Vector2d(135, 32));
+	}
+
+	@Override
+	public Sound getBackgroundMusic() {
+		return Sounds.cityTheme;
 	}
 }

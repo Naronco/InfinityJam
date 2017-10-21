@@ -1,6 +1,7 @@
 package com.naronco.infinityjam;
 
 import com.deviotion.ld.eggine.graphics.Screen;
+import com.deviotion.ld.eggine.sound.Sound;
 
 public interface IScene {
     void load();
@@ -11,4 +12,5 @@ public interface IScene {
     void renderBackground(Screen screen);
     void renderForeground(Screen screen);
     void update();
+    Sound getBackgroundMusic();
 }
