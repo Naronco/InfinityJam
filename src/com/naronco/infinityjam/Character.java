@@ -16,11 +16,19 @@ public class Character extends SpriteAnimation {
 	}
 
 	public void walkTo(Vector2d v) {
-		target = v;
+		if (target.subtract(v).getLengthSquared() < 16) {
+			running = true;
+			animationFps = 20;
+		}
+		else {
+			target = v;
+			running = false;
+			animationFps = 10;
+		}
 	}
 
 	public void walkTo(int x, int y) {
-		target = new Vector2d(x, y);
+		walkTo(new Vector2d(x, y));
 	}
 
 	public Vector2d getPosition() {
@@ -45,7 +53,7 @@ public class Character extends SpriteAnimation {
 		if (diff.getLengthSquared() > 1) {
 			walking = true;
 			wasWalking = true;
-			diff = diff.normalized().multiply(0.6);
+			diff = diff.normalized().multiply(running ? 1.2 : 0.6);
 			position = position.add(diff);
 			flipX = diff.getX() > 0;
 		} else walking = false;
@@ -60,6 +68,12 @@ public class Character extends SpriteAnimation {
 		return false;
 	}
 
+	public void teleport(Vector2d pos) {
+		position = pos;
+		target = position;
+	}
+
+	public boolean running;
 	public boolean flipX;
 	public boolean walking, wasWalking;
 	private Vector2d position, target;

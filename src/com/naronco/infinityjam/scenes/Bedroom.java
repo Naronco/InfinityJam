@@ -6,6 +6,8 @@ import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
+import com.naronco.infinityjam.ExitStepArea;
+import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.interactables.Bed;
 
@@ -14,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bedroom extends PointAndClickScene {
-	public Bedroom() {
-		super();
+	@Override
+	public void load() {
 		background = new Sprite(new File("res/bedroom.png"));
 		foreground = new Sprite(new File("res/bedroom-objects.png"));
 
@@ -27,6 +29,14 @@ public class Bedroom extends PointAndClickScene {
 
 		interactables.add(new Bed(new Polygon2d(points)));
 
-		addMovementArea(new Polygon2d(new Vector2d(82, 30), new Vector2d(123, 20), new Vector2d(149, 57), new Vector2d(103, 65)));
+		addMovementArea(new Polygon2d(new Vector2d(86, 30), new Vector2d(130, 20), new Vector2d(149, 57), new Vector2d(103, 65)));
+
+		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(132, 25), new Vector2d(142, 39), new Vector2d(127, 43), new Vector2d(120, 30)), Game.instance.hallway));
+	}
+
+	@Override
+	public void enter(IScene prev) {
+		if (prev == Game.instance.hallway)
+			Game.instance.player.teleport(new Vector2d(135, 32));
 	}
 }
