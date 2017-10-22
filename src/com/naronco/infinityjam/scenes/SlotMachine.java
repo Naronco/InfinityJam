@@ -7,8 +7,10 @@ import com.deviotion.ld.eggine.graphics.SpriteSheet;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
+import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.quests.TripleSevenQuest;
 
 import java.io.File;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ public class SlotMachine implements IScene {
 	private SpriteSheet slotsSheet;
 	private SlotMachineRoll[] rolls;
 	private boolean rolling = false;
+	private SlotMachineSymbol[] currentResult = null;
 
 	private static final SlotMachineSymbol[][] RESULTS = {
 			{ SlotMachineSymbol.cherry, SlotMachineSymbol.cloverleaf, SlotMachineSymbol.bomb },
@@ -110,8 +113,9 @@ public class SlotMachine implements IScene {
 			if (roll.isRolling())
 				return;
 		}
+		currentResult = RESULTS[gameCount % RESULTS.length];
 		for (int i = 0; i < rolls.length; ++i) {
-			rolls[i].roll(RESULTS[gameCount % RESULTS.length][i]);
+			rolls[i].roll(currentResult[i]);
 			rolling = true;
 		}
 		Sounds.casinoRoll.play();
@@ -144,6 +148,9 @@ public class SlotMachine implements IScene {
 					rolling = true;
 			}
 			if (!rolling) {
+				if (currentResult[0] == SlotMachineSymbol.seven && currentResult[1] == SlotMachineSymbol.seven && currentResult[2] == SlotMachineSymbol.seven) {
+					Game.instance.finishQuest(Game.instance.getQuest(TripleSevenQuest.class));
+				}
 				Sounds.casinoWin.play();
 			}
 		}
