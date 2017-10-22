@@ -393,6 +393,10 @@ public class Game extends Eggine {
 		return finishedQuests;
 	}
 
+	public Item getSelectedItem() {
+		return selectedItem != -1 ? items.get(selectedItem) : null;
+	}
+
 	public void pushDialog(Dialog child) {
 		queuedDialogs.add(child);
 	}

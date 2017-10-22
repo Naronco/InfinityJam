@@ -4,10 +4,7 @@ import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IScene;
-import com.naronco.infinityjam.Interactable;
-import com.naronco.infinityjam.StepArea;
+import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.interactables.Door;
 
 import java.util.ArrayList;
@@ -96,8 +93,13 @@ public abstract class PointAndClickScene implements IScene {
 					case Game.MODE_USE:
 						if (!i.hasUse())
 							Game.instance.showMessage("Das ist nutzlos");
-						else
-							i.use(x, y);
+						else {
+							Item item = Game.instance.getSelectedItem();
+							if (item == null)
+								i.use(x, y);
+							else
+								i.interact(x, y, item);
+						}
 						break;
 					case Game.MODE_TAKE:
 						if (!i.hasTake())
