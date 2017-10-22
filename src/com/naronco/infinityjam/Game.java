@@ -76,23 +76,13 @@ public class Game extends Eggine {
 		messageTextArea.setMaxLineCount(2);
 
 		itemSprites.add(new Sprite(new File("res/key.png")));
-		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Leaf
-		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Coins
-		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Drug
-		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Saw
-		itemSprites.add(new Sprite(new File("res/key.png"))); // TODO: Knife
+		itemSprites.add(new Sprite(new File("res/leaf.png")));
+		itemSprites.add(new Sprite(new File("res/coin.png")));
+		itemSprites.add(new Sprite(new File("res/drug.png")));
+		itemSprites.add(new Sprite(new File("res/saw.png")));
+		itemSprites.add(new Sprite(new File("res/knife.png")));
 		if (itemSprites.size() != (int) Item.values().length)
 			throw new Error("Programmers were retards and didn't add sprites for every item");
-
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
-		items.add(Item.KEY);
 
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 	}
