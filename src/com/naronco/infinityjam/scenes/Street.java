@@ -26,6 +26,13 @@ public class Street extends PointAndClickScene {
 				new Vector2d(20, 66)
 		)));
 
+		interactables.add(new Walkway("Dunkle Gasse", new Vector2d(94, 56), new Polygon2d(
+				new Vector2d(89, 0),
+				new Vector2d(103, 0),
+				new Vector2d(99, 55),
+				new Vector2d(88, 55)
+		)));
+
 		interactables.add(new Walkway("Casino 29134239436854268469158942354684324891236445641256423156...", new Vector2d(138, 60), new Polygon2d(
 				new Vector2d(125, 32),
 				new Vector2d(162, 32),
@@ -34,6 +41,7 @@ public class Street extends PointAndClickScene {
 		)));
 
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(20, 57), new Vector2d(50, 57), new Vector2d(50, 66), new Vector2d(20, 66)), Game.instance.elevator));
+		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(88, 55), new Vector2d(99, 55), new Vector2d(99, 63), new Vector2d(88, 63)), Game.instance.alley));
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(125, 57), new Vector2d(160, 57), new Vector2d(160, 66), new Vector2d(125, 66)), Game.instance.casino));
 	}
 

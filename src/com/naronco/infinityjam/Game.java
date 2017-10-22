@@ -31,6 +31,7 @@ public class Game extends Eggine {
 	public Elevator elevator;
 	public Street street;
 	public Casino casino;
+	public Alley alley;
 
 	public SpriteSheet characters;
 
@@ -48,6 +49,7 @@ public class Game extends Eggine {
 		elevator = new Elevator();
 		street = new Street();
 		casino = new Casino();
+		alley = new Alley();
 
 		random = new Random();
 
@@ -56,6 +58,7 @@ public class Game extends Eggine {
 		elevator.load();
 		street.load();
 		casino.load();
+		alley.load();
 
 		currentScene = bedroom;
 
@@ -126,6 +129,9 @@ public class Game extends Eggine {
 		}
 
 		currentScene.renderForeground(screen);
+
+		if (currentTransition != null)
+			currentTransition.render(screen, transitionTime / transitionDuration);
 
 		int mx = (int) getMouse().getLocation().getX();
 		int my = (int) getMouse().getLocation().getY();
@@ -293,26 +299,58 @@ public class Game extends Eggine {
 
 			detailTextArea.update();
 		}
+
+		if (currentTransition != null) {
+			transitionTime += 1.0 / 30.0;
+			if (transitionTime >= transitionDuration * 0.5 && pendingScene != null) {
+				currentScene = pendingScene;
+				currentScene.enter(prevScene);
+				prevScene = pendingScene = null;
+			}
+			if (transitionTime >= transitionDuration) {
+				currentTransition = null;
+
+				Sound backgroundMusic = currentScene.getBackgroundMusic();
+				if (backgroundMusic != null)
+					backgroundMusic.playInfinitely();
+			}
+		}
+	}
+
+	public void setScene(IScene scene, ISceneTransition transition) {
+		currentScene.leave();
+
+		if (transition == null) {
+			IScene prev = currentScene;
+			currentScene = scene;
+			currentScene.enter(prev);
+
+			if (prev.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
+				Sound backgroundMusic = prev.getBackgroundMusic();
+				if (backgroundMusic != null) {
+					backgroundMusic.stop();
+				}
+
+				backgroundMusic = currentScene.getBackgroundMusic();
+				if (backgroundMusic != null) {
+					backgroundMusic.playInfinitely();
+				}
+			}
+		} else {
+			currentTransition = transition;
+			transitionTime = 0;
+
+			prevScene = currentScene;
+			pendingScene = scene;
+
+			Sound backgroundMusic = currentScene.getBackgroundMusic();
+			if (backgroundMusic != null)
+				backgroundMusic.stop();
+		}
 	}
 
 	public void setScene(IScene scene) {
-		currentScene.leave();
-
-		IScene prev = currentScene;
-		currentScene = scene;
-		currentScene.enter(prev);
-
-		if (prev.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
-			Sound backgroundMusic = prev.getBackgroundMusic();
-			if (backgroundMusic != null) {
-				backgroundMusic.stop();
-			}
-
-			backgroundMusic = currentScene.getBackgroundMusic();
-			if (backgroundMusic != null) {
-				backgroundMusic.playInfinitely();
-			}
-		}
+		setScene(scene, null);
 	}
 
 	public void showMessage(String message) {
@@ -348,6 +386,11 @@ public class Game extends Eggine {
 
 	IScene currentScene;
 
+	IScene pendingScene, prevScene;
+	ISceneTransition currentTransition;
+	double transitionDuration = 1.0;
+	double transitionTime = 0;
+
 	TextArea messageTextArea;
 	TextArea detailTextArea;
 
@@ -373,7 +416,7 @@ public class Game extends Eggine {
 		for (Item i : items)
 			if (i == item)
 				existing++;
-		if (existing > max) {
+		if (existing >= max) {
 			return false;
 		}
 		for (int i = 0; i < Math.min(count, max - existing); i++)
