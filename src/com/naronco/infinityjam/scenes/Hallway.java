@@ -208,6 +208,8 @@ class DrugDealerDoor implements Interactable {
 
 	@Override
 	public void use(int x, int y) {
+		if (Game.instance.hallway.startRoom + Game.instance.hallway.rooms * 4 + 2 != 13)
+			return;
 		IQuest visitQ = Game.instance.getQuest(DrugDealerVisitQuest.class);
 		if (visitQ != null) {
 			Game.instance.pushDialog(new Dialog("Was ist?",
