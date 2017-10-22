@@ -110,6 +110,8 @@ public class SlotMachine implements IScene {
 	public void click(int x, int y, int mode) {
 		if (x < 15 && y < 15) {
 			Game.instance.setScene(Game.instance.casino);
+			Sounds.casinoRoll.stop();
+			Sounds.casinoWin.stop();
 			return;
 		}
 		if (x < 15 || x > 30)

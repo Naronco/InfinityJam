@@ -64,7 +64,7 @@ public class Game extends Eggine {
 		casino.load();
 		alley.load();
 
-		currentScene = bedroom;
+		currentScene = casino;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -82,6 +82,17 @@ public class Game extends Eggine {
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 
 		addQuest(new TripleSevenQuest());
+
+		showMessage("Dein einziges Ziel ist es, die 777 am Spielautomat zu erreichen.");
+
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
+		items.add(Item.COINS);
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
