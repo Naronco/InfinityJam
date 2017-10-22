@@ -64,7 +64,7 @@ public class Game extends Eggine {
 		casino.load();
 		alley.load();
 
-		currentScene = bedroom;
+		currentScene = street;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -74,6 +74,7 @@ public class Game extends Eggine {
 		gameOverBG = new Sprite(new File("res/dead.png"));
 		ui = new Sprite(new File("res/ui.png"));
 		uiLite = new Sprite(new File("res/ui-lite.png"));
+		dialogIndicator = new Sprite(new File("res/dialog-indicator.png"));
 
 		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
 		messageTextArea.setMaxLineCount(2);
@@ -226,8 +227,10 @@ public class Game extends Eggine {
 		if (activeDialog == null) {
 			if (queuedDialogs.size() == 0)
 				screen.renderSprite(0, 0, ui);
-			else
+			else {
 				screen.renderSprite(0, 0, uiLite);
+				screen.renderSprite(180, (int)(125 + Math.sin(t) * 5), dialogIndicator);
+			}
 		} else {
 			screen.renderSprite(0, 0, uiLite);
 			int y = 0;
@@ -235,7 +238,7 @@ public class Game extends Eggine {
 				boolean hovered = my >= 106 + y * 10 && my < 116 + y * 10;
 				if (hovered)
 					screen.mixRectangle(0, 106 + y * 10, 200, 10, 0x40000000);
-				screen.renderText(2, 107 + y++ * 10, Font.standard, answer.getTitle());
+				screen.renderText(2, 107 + y++ * 10, Font.standard, ">" + answer.getTitle());
 				if (hovered && mouseDown && !prevMouseDown) {
 					activeDialog = null;
 					answer.run();
@@ -295,6 +298,8 @@ public class Game extends Eggine {
 	public void update(double delta) {
 		if (gameOver)
 			return;
+
+		t += delta;
 
 		currentScene.update();
 
@@ -465,6 +470,9 @@ public class Game extends Eggine {
 	Sprite gameOverBG;
 	boolean gameOver = false;
 	int gameOverFrame;
+
+	double t = 0;
+	Sprite dialogIndicator;
 
 	IScene currentScene;
 
