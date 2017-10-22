@@ -2,6 +2,9 @@ package com.deviotion.ld.eggine.graphics;
 
 import com.deviotion.ld.eggine.math.Dimension2d;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextArea {
     private int x, y, width, height;
     private Font font;
@@ -23,6 +26,9 @@ public class TextArea {
     private int visibleCharacters;
     private int ticksSinceLastCharacter;
 
+    private List<ITextAreaListener> listeners = new ArrayList<>();
+    private ITextAreaListener oneTimeListener = null;
+
     public TextArea(int x, int y, int width, int height, Font font) {
         this.x = x;
         this.y = y;
@@ -33,7 +39,9 @@ public class TextArea {
         this.lineHeight = ((int)font.getCharacterSize().getHeight() + 1);
     }
 
-    public void showText(String text) {
+    public void showText(String text, ITextAreaListener oneTimeListener) {
+        this.oneTimeListener = oneTimeListener;
+
         String[] words = text.toUpperCase().split(" ");
 
         StringBuilder messageBuilder = new StringBuilder();
@@ -69,6 +77,10 @@ public class TextArea {
         lineOffset = 0;
     }
 
+    public void showText(String text) {
+        showText(text, null);
+    }
+
     public void update() {
         if (buildingMessage) {
             ++ticksSinceLastCharacter;
@@ -77,6 +89,12 @@ public class TextArea {
                 ++visibleCharacters;
 
                 if (visibleCharacters == activeMessage.length()) {
+                    for (ITextAreaListener listener : listeners)
+                        listener.onScrollingFinished(this);
+                    if (oneTimeListener != null) {
+                        oneTimeListener.onScrollingFinished(this);
+                        oneTimeListener = null;
+                    }
                     buildingMessage = false;
                 } else {
                     if (activeMessage.charAt(visibleCharacters) == '\n') {
@@ -186,5 +204,9 @@ public class TextArea {
 
     public void setMaxLineCount(int maxLineCount) {
         this.maxLineCount = maxLineCount;
+    }
+
+    public void addListener(ITextAreaListener listener) {
+        listeners.add(listener);
     }
 }

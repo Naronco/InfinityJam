@@ -2,6 +2,8 @@ package com.naronco.infinityjam.scenes;
 
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
+import com.deviotion.ld.eggine.graphics.TextArea;
+import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
@@ -13,20 +15,22 @@ import com.naronco.infinityjam.interactables.DialogTrigger;
 import com.naronco.infinityjam.interactables.Walkway;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
 import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
+import com.naronco.infinityjam.transitions.BlackOverlayTransition;
 
 import java.io.File;
 
 public class Alley extends PointAndClickScene {
+	public static final int MODE_BAD_GUYS_CONFRONTATION = 0;
+	public static final int MODE_BAD_GUYS_RUNAWAY = 1;
+	public static final int MODE_DEFAULT = 2;
+
+	private int mode = MODE_BAD_GUYS_CONFRONTATION;
+
 	Character guys[];
 
 	@Override
 	public void load() {
 		background = new Sprite(new File("res/alley.png"));
-
-		guys = new Character[3];
-		for (int i = 0; i < guys.length; ++i) {
-			guys[i] = new Character(200 - 30 - i * 30, 60, 1);
-		}
 
 		addMovementArea(new Polygon2d(
 				new Vector2d(0, 38),
@@ -54,9 +58,38 @@ public class Alley extends PointAndClickScene {
 	}
 
 	@Override
+	public void click(int x, int y, int mode) {
+		/*if (this.mode == MODE_BAD_GUYS_CONFRONTATION)
+			Game.instance.setScene(new AlleyChallenge(new Dimension2d(200, 86)), new BlackOverlayTransition());
+		else*/
+			super.click(x, y, mode);
+	}
+
+	@Override
 	public void enter(IScene prev) {
-		Game.instance.animationPlaying = true;
-		Game.instance.showMessage("Du Schuft!");
+		switch (mode) {
+			case MODE_BAD_GUYS_CONFRONTATION:
+				Game.instance.pushDialog(new Dialog("Du Schuft!!",
+						new StaticAnswer("Was??",
+								new Dialog("Du hast eine Kreissäge aus dem 53. Stock geworfen und damit unser Zelt zerstört!",
+										new StaticAnswer("Das habe ich nicht!",
+												new Dialog("Naja ok... Wahrscheinlich hast du recht... Trotzdem schuldig!", (TextArea textArea) -> enterMinigame())
+										),
+										new StaticAnswer("Ich gebe es zu.",
+												new Dialog("Wir wussten es!", (TextArea textArea) -> enterMinigame())
+										)
+								)
+						)
+				));
+				break;
+			case MODE_BAD_GUYS_RUNAWAY:
+				Game.instance.animationPlaying = true;
+				Game.instance.showMessage("Aaaaah! Er ist zu stark! Wir verschwinden");
+				for (Character guy : guys)
+					guy.walkTo(new Vector2d(270, 150));
+				break;
+		}
+
 		if (prev == Game.instance.street)
 			Game.instance.player.teleport(new Vector2d(10, 50));
 	}
@@ -64,33 +97,71 @@ public class Alley extends PointAndClickScene {
 	@Override
 	public void renderForeground(Screen screen) {
 		super.renderForeground(screen);
-		for (Character guy : guys)
-			guy.draw(screen);
+
+		switch (mode) {
+			case MODE_BAD_GUYS_CONFRONTATION:
+			case MODE_BAD_GUYS_RUNAWAY:
+				for (Character guy : guys)
+					guy.draw(screen);
+				break;
+		}
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		/*if (showRandomDude && !randomDudeTalked && randomDude.walkingEnded()) {
-			randomDudeTalked = true;
-			Game.instance.showMessage("I hob gehört da Drogn Deala woass wia ma do duach kimmd. Ea wohnt in Raum 153013");
-			Game.instance.animationPlaying = false;
-			interactables.add(new DialogTrigger("Random Dude", new Polygon2d(
-					randomDude.getSpritePosition(),
-					randomDude.getSpritePosition().add(new Vector2d(20, 0)),
-					randomDude.getSpritePosition().add(new Vector2d(20, 33)),
-					randomDude.getSpritePosition().add(new Vector2d(0, 33))
-			), new Dialog(
-					"Servus, wos wuist du?",
-					new StaticAnswer("Wo finde ich den Drogen Dealer?", new Dialog("Ea wohnt in Raum 153013, hob i doch schonmoi gsogt")),
-					new StaticAnswer("Servus", new Dialog("Was soll der schlechte Akzent?"))
-			)));
-		}*/
+
+		if (mode == MODE_BAD_GUYS_RUNAWAY) {
+			for (Character guy : guys) {
+				if (guy.walkingEnded()) {
+					Game.instance.animationPlaying = false;
+
+					setMode(MODE_DEFAULT);
+					Game.instance.setScene(this, new BlackOverlayTransition());
+
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
 	public Sound getBackgroundMusic() {
 		return Sounds.cityTheme;
+	}
+
+	private void enterMinigame() {
+		Game.instance.setScene(new AlleyChallenge(new Dimension2d(200, 86)), new BlackOverlayTransition());
+	}
+
+	public int getMode() {
+		return mode;
+	}
+
+	public void setMode(int mode) {
+		this.mode = mode;
+
+		guys = null;
+		switch (mode) {
+			case MODE_BAD_GUYS_CONFRONTATION:
+				guys = new Character[3];
+				for (int i = 0; i < guys.length; ++i) {
+					int y = 60;
+					if (i == 1)
+						y = 68;
+					guys[i] = new Character(200 - 60 - i * 30, y, 1);
+				}
+				break;
+			case MODE_BAD_GUYS_RUNAWAY:
+				guys = new Character[3];
+				for (int i = 0; i < guys.length; ++i) {
+					int y = 60;
+					if (i == 1)
+						y = 68;
+					guys[i] = new Character(200 - 60 - i * 30, y, 1);
+				}
+				break;
+		}
 	}
 }
 /*

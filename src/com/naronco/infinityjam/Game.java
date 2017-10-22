@@ -50,6 +50,7 @@ public class Game extends Eggine {
 		street = new Street();
 		casino = new Casino();
 		alley = new Alley();
+		alley.setMode(Alley.MODE_BAD_GUYS_CONFRONTATION);
 
 		random = new Random();
 
@@ -60,7 +61,7 @@ public class Game extends Eggine {
 		casino.load();
 		alley.load();
 
-		currentScene = bedroom;
+		currentScene = street;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -159,7 +160,7 @@ public class Game extends Eggine {
 				}
 			} else if (queuedDialogs.size() > 0 && activeDialog == null) {
 				Dialog d = queuedDialogs.remove(0);
-				showMessage(d.title);
+				showMessage(d.title, d.listener);
 				if (d.answers != null && d.answers.length > 0)
 					activeDialog = d;
 			}
@@ -346,8 +347,12 @@ public class Game extends Eggine {
 		setScene(scene, null);
 	}
 
+	public void showMessage(String message, ITextAreaListener listener) {
+		messageTextArea.showText(message, listener);
+	}
+
 	public void showMessage(String message) {
-		messageTextArea.showText(message);
+		showMessage(message, null);
 	}
 
 	public void addQuest(IQuest quest) {
