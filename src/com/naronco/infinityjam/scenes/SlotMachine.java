@@ -7,10 +7,7 @@ import com.deviotion.ld.eggine.graphics.SpriteSheet;
 import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IScene;
-import com.naronco.infinityjam.Item;
-import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.quests.TripleSevenQuest;
 
 import java.io.File;
@@ -97,6 +94,9 @@ public class SlotMachine implements IScene {
 
 	@Override
 	public String detailAt(int x, int y) {
+		if (x < 15 && y < 15) {
+			return "Zurück";
+		}
 		if (x < 15 || x > 30)
 			return null;
 		for (SlotMachineRoll roll : rolls) {
@@ -108,6 +108,10 @@ public class SlotMachine implements IScene {
 
 	@Override
 	public void click(int x, int y, int mode) {
+		if (x < 15 && y < 15) {
+			Game.instance.setScene(Game.instance.casino);
+			return;
+		}
 		if (x < 15 || x > 30)
 			return;
 		for (SlotMachineRoll roll : rolls) {
@@ -142,6 +146,7 @@ public class SlotMachine implements IScene {
 			SlotMachineRoll roll = rolls[i];
 			roll.render(screen, i * 33 + 57, -5);
 		}
+		screen.renderSprite(0, 0, Sprites.ARROW);
 	}
 
 	@Override

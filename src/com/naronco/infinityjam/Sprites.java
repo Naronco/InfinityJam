@@ -14,4 +14,5 @@ public class Sprites {
 	public static final Sprite SAW = new Sprite(new File("res/saw.png"));
 	public static final Sprite KNIFE = new Sprite(new File("res/knife.png"));
 	public static final Sprite BULLET = new Sprite(new File("res/bullet.png"));
+	public static final Sprite ARROW = new Sprite(new File("res/arrow.png"));
 }
