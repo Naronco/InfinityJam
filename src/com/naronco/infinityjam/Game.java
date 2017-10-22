@@ -137,6 +137,7 @@ public class Game extends Eggine {
 				if (my < 86) {
 					currentScene.click(mx, my, mode);
 					mode = MODE_WALK;
+					selectedItem = -1;
 				} else if (mx < 63) {
 					if (my > 123) {
 						mode = MODE_TAKE;
