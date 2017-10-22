@@ -9,8 +9,11 @@ import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.Character;
 import com.naronco.infinityjam.*;
+import com.naronco.infinityjam.dialog.ConditionalAnswer;
 import com.naronco.infinityjam.dialog.Dialog;
 import com.naronco.infinityjam.dialog.StaticAnswer;
+import com.naronco.infinityjam.dialog.TeleportAnswer;
+import com.naronco.infinityjam.interactables.DialogTrigger;
 import com.naronco.infinityjam.interactables.Walkway;
 import com.naronco.infinityjam.quests.AlleyQuest;
 import com.naronco.infinityjam.transitions.BlackOverlayTransition;
@@ -25,6 +28,7 @@ public class Alley extends PointAndClickScene {
 	private int mode = MODE_BAD_GUYS_CONFRONTATION;
 
 	Character guys[];
+	Character hutPlayer;
 
 	@Override
 	public void load() {
@@ -115,6 +119,9 @@ public class Alley extends PointAndClickScene {
 				for (Character guy : guys)
 					guy.draw(screen);
 				break;
+			case MODE_DEFAULT:
+				hutPlayer.draw(screen);
+				break;
 		}
 	}
 
@@ -153,6 +160,8 @@ public class Alley extends PointAndClickScene {
 		this.mode = mode;
 
 		guys = null;
+		interactables.remove(hutPlayer);
+		hutPlayer = null;
 		switch (mode) {
 			case MODE_BAD_GUYS_CONFRONTATION:
 				guys = new Character[3];
@@ -171,6 +180,23 @@ public class Alley extends PointAndClickScene {
 						y = 68;
 					guys[i] = new Character(200 - 60 - i * 30, y, 1);
 				}
+				break;
+			case MODE_DEFAULT:
+				hutPlayer = new Character(200 - 60, 60, 1);
+				Dialog initialDialog = new Dialog("Ich bin der Hütchenspieler. Bei mir kannst du Hütchen spielen. Was willst du?",
+						new ConditionalAnswer("1 Spiel", () -> Game.instance.removeItem(Item.COINS, 1),
+								new TeleportAnswer("1 Spiel", new ShellGame(15), new Dialog("Dann pass mal gut auf")),
+								new StaticAnswer("1 Spiel", new Dialog("Du hast aber gar keine Münze"))
+						),
+						new StaticAnswer("Erklärung", new Dialog("Du gibst mir 1ne Münze. Wenn du das richtige Hütchen am Ende findest, bekommst du 2 Münzen von mir wieder zurück. Ansonsten behalte ich deine Münze, muhaha!")),
+						new StaticAnswer("Abbrechen", new Dialog("Dann eben nicht"))
+				);
+				interactables.add(new DialogTrigger("Hütchenspieler", new Polygon2d(
+						hutPlayer.getSpritePosition(),
+						hutPlayer.getSpritePosition().add(new Vector2d(20, 0)),
+						hutPlayer.getSpritePosition().add(new Vector2d(20, 33)),
+						hutPlayer.getSpritePosition().add(new Vector2d(0, 33))
+				), initialDialog));
 				break;
 		}
 	}

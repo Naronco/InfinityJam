@@ -14,7 +14,7 @@ public class Hut {
 	private Vector2d targetPosition;
 	private boolean foregroundPath;
 	private int ticksSinceAnimStart;
-	private int durationInTicks = 30;
+	private int durationInTicks = 7;
 
 	public Hut(Sprite sprite, Vector2d position) {
 		this.sprite = sprite;

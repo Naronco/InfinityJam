@@ -9,6 +9,7 @@ import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Item;
 import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.quests.TripleSevenQuest;
 
@@ -30,10 +31,10 @@ public class SlotMachine implements IScene {
 			{ SlotMachineSymbol.cherry, SlotMachineSymbol.cloverleaf, SlotMachineSymbol.bomb },
 			{ SlotMachineSymbol.dollar, SlotMachineSymbol.euro, SlotMachineSymbol.cherry },
 			{ SlotMachineSymbol.seven, SlotMachineSymbol.heart, SlotMachineSymbol.cloverleaf },
+			{ SlotMachineSymbol.seven, SlotMachineSymbol.seven, SlotMachineSymbol.seven },
 			{ SlotMachineSymbol.cloverleaf, SlotMachineSymbol.seven, SlotMachineSymbol.euro },
 			{ SlotMachineSymbol.coins, SlotMachineSymbol.heart, SlotMachineSymbol.cloverleaf },
 			{ SlotMachineSymbol.cherry, SlotMachineSymbol.bomb, SlotMachineSymbol.heart },
-			{ SlotMachineSymbol.seven, SlotMachineSymbol.seven, SlotMachineSymbol.seven },
 			/*{ SlotMachineSymbol.diamond, SlotMachineSymbol.bomb, SlotMachineSymbol.seven },
 			{ SlotMachineSymbol.dollar, SlotMachineSymbol.diamond, SlotMachineSymbol.cloverleaf },
 			{ SlotMachineSymbol.seven, SlotMachineSymbol.seven, SlotMachineSymbol.bomb },
@@ -113,13 +114,19 @@ public class SlotMachine implements IScene {
 			if (roll.isRolling())
 				return;
 		}
-		currentResult = RESULTS[gameCount % RESULTS.length];
-		for (int i = 0; i < rolls.length; ++i) {
-			rolls[i].roll(currentResult[i]);
-			rolling = true;
+
+		if (Game.instance.removeItem(Item.COINS, 1)) {
+			currentResult = RESULTS[gameCount % RESULTS.length];
+			for (int i = 0; i < rolls.length; ++i) {
+				rolls[i].roll(currentResult[i]);
+				rolling = true;
+			}
+			Sounds.casinoRoll.play();
+			++gameCount;
+			Game.instance.showMessage("na dann mal viel glück");
+		} else {
+			Game.instance.showMessage("ohne geld kein glück");
 		}
-		Sounds.casinoRoll.play();
-		++gameCount;
 	}
 
 	@Override
@@ -150,6 +157,9 @@ public class SlotMachine implements IScene {
 			if (!rolling) {
 				if (currentResult[0] == SlotMachineSymbol.seven && currentResult[1] == SlotMachineSymbol.seven && currentResult[2] == SlotMachineSymbol.seven) {
 					Game.instance.finishQuest(Game.instance.getQuest(TripleSevenQuest.class));
+					Game.instance.showMessage("3 mal die 7!Das ist der Hauptgewinn!");
+				} else {
+					Game.instance.showMessage("Dadumm.Leider verloren.1 Münze pro Spiel");
 				}
 				Sounds.casinoWin.play();
 			}

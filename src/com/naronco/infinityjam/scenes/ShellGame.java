@@ -6,6 +6,7 @@ import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.Item;
 import com.naronco.infinityjam.Sounds;
 
 import java.io.File;
@@ -59,6 +60,8 @@ public class ShellGame implements IScene {
 	@Override
 	public void enter(IScene prev) {
 		prevScene = prev;
+		state = STATE_SHOW_MOVE_UP;
+		swapCount = 0;
 	}
 
 	@Override
@@ -87,6 +90,7 @@ public class ShellGame implements IScene {
 				if (hut.getRectangle().intersects(x, y)) {
 					state = STATE_REVEAL;
 					if (priceHut == hut) {
+						Game.instance.giveItems(Item.COINS, 2, 9);
 						Game.instance.showMessage("Du hast gewonnen!");
 					} else {
 						Game.instance.showMessage("Du hast leider verloren");

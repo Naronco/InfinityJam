@@ -2,6 +2,7 @@ package com.naronco.infinityjam.dialog;
 
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
+import com.naronco.infinityjam.transitions.BlackOverlayTransition;
 
 public class TeleportAnswer implements IAnswer {
 	public String text;
