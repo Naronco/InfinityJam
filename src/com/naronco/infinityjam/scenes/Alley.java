@@ -87,12 +87,17 @@ public class Alley extends PointAndClickScene {
 				for (Character guy : guys)
 					guy.walkTo(new Vector2d(270, 150));
 
-				AlleyQuest quest = Game.instance.getQuest(AlleyQuest.class);
-				if (quest == null) {
-					quest = new AlleyQuest();
-					Game.instance.addQuest(quest);
+				break;
+			case MODE_DEFAULT:
+				if (!Game.instance.isQuestFinished(AlleyQuest.class)) {
+					AlleyQuest quest = Game.instance.getQuest(AlleyQuest.class);
+					if (quest == null) {
+						quest = new AlleyQuest();
+						Game.instance.addQuest(quest);
+					}
+					Game.instance.finishQuest(quest);
+					Game.instance.player.teleport(new Vector2d(10, 50));
 				}
-				Game.instance.finishQuest(quest);
 				break;
 		}
 
