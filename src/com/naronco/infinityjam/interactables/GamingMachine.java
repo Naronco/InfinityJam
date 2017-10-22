@@ -83,7 +83,9 @@ public class GamingMachine implements Interactable {
 				Game.instance.showMessage("Dafür brauche ich Scheine, und kein Blatt");
 				break;
 			case COINS:
-				//ToDo
+				SlotMachine scene = new SlotMachine();
+				Game.instance.setScene(scene);
+				scene.roll();
 				break;
 			case DRUG:
 				Game.instance.showMessage("Die soll ich nehmen, und nicht der Automat!");
