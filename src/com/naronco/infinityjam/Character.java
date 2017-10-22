@@ -5,6 +5,7 @@ import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.graphics.SpriteAnimation;
 import com.deviotion.ld.eggine.graphics.SpriteSheet;
 import com.deviotion.ld.eggine.math.Dimension2d;
+import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.scenes.PointAndClickScene;
 
@@ -52,6 +53,10 @@ public class Character extends SpriteAnimation {
 
 	public Vector2d getSpritePosition() {
 		return position.subtract(new Vector2d(10, 33));
+	}
+
+	public Rectangle2d getRectangle() {
+		return new Rectangle2d(getSpritePosition(), getSpriteSheet().getSpriteSize());
 	}
 
 	@Override

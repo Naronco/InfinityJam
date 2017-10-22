@@ -38,11 +38,12 @@ public class Game extends Eggine {
 	public Game() {
 		super(60, 30, new Window("InfinityJam", new Dimension2d(200, 150), 4));
 
+		instance = this;
+
 		List<AudioFormat> supportedAudioFormats = Sound.getSupportedAudioFormats();
 
 		characters = new SpriteSheet(new Sprite(new File("res/char.png")), new Dimension2d(19, 35));
-
-		instance = this;
+		player = new Player(90, 40);
 
 		bedroom = new Bedroom();
 		hallway = new Hallway();
@@ -67,8 +68,6 @@ public class Game extends Eggine {
 		if (backgroundMusic != null) {
 			backgroundMusic.playInfinitely();
 		}
-
-		player = new Character(90, 40);
 
 		ui = new Sprite(new File("res/ui.png"));
 		uiLite = new Sprite(new File("res/ui-lite.png"));
@@ -385,7 +384,7 @@ public class Game extends Eggine {
 
 	String currentDetail;
 
-	public Character player;
+	public Player player;
 
 	int prevMx, prevMy;
 	boolean prevMouseDown;

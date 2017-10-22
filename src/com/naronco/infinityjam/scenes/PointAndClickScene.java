@@ -3,6 +3,7 @@ package com.naronco.infinityjam.scenes;
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
+import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.interactables.Door;
@@ -15,6 +16,10 @@ public abstract class PointAndClickScene implements IScene {
 	protected Sprite background, foreground;
 	protected List<Polygon2d> movementAreas = new ArrayList<Polygon2d>();
 	protected List<StepArea> stepAreas = new ArrayList<StepArea>();
+
+	public PointAndClickScene() {
+		this.interactables.add(Game.instance.player);
+	}
 
 	public void addMovementArea(Polygon2d area) {
 		movementAreas.add(area);
