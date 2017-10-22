@@ -499,12 +499,37 @@ public class Game extends Eggine {
 	TextArea gameOverTipArea = new TextArea(1, 106, 198, 100, Font.white);
 
 	private static final String[] WIN_TEXT_LINES = {
-		"Hallo",
-		"",
-		"Welt",
-		"viele Wörter",
-		"",
-		"Test"
+		"\"Der Profit...", "", "", "",
+		"...der kommt zwar vom Casino...","", "", "",
+		"...aber der Verlust...","", "", "",
+		"der kommt von dem Rest\"","", "", "",
+		"-Anonynm","", "", "",
+		"(Beziehungsweise Ich eben)","", "", "",
+		"Das Team bestand aus 3 Leuten...","", "", "",
+		"Zwei Programmierer/Designer...","", "", "",
+		"...und ein Musiker","", "", "",
+		"(Das war ich)","", "", "",
+		"...und das waren die Credits!","", "", "",
+		"Die Musik ist schon schön, ne","", "", "",
+		"Hab ich selbst gemacht", "", "", "",
+		"Okay, zugegeben...","", "", "",
+		"Ich habe mich etwas an Musik", "",
+		"von anderen Videospielen", "",
+		"orientiert", "", "", "",
+		"...und Pink Floyd!","", "", "",
+		"Und naja, mehr habe ich nicht", "",
+		"zu sagen, außer danke...","", "", "",
+		"...für's Spielen!","", "", "",
+		"P.s. Ich bin nicht mal Musiker","", "", "",
+		"Ich habe nicht mal eine Band!","", "", "",
+		"Und das ist das einzige Musik-", "",
+		"stück,das ich je geschrieben", "",
+		"habe", "", "", "",
+		"...was sehr gut ist", "", "", "",
+		"Das kann ich irgendwo hochladen", "", "", "",
+		"Und alle werden neidisch!", "", "", "",
+		"Mozart kann einpacken", "", "", "",
+
 	};
 	boolean won = false;
 	int wonFrame;
