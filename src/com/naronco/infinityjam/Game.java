@@ -211,7 +211,7 @@ public class Game extends Eggine {
 			if (selectedItem == itemN)
 				screen.renderCircle(itemX + 8, itemY + 8, 7, 0xA0A0A0);
 
-			screen.renderSprite(itemX, itemY, itemSprites.get(i.valueOf()));
+			screen.renderSprite(itemX, itemY, itemSprites.get(i.ordinal()));
 
 			if (mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
 				selectedItem = itemN;
@@ -252,6 +252,8 @@ public class Game extends Eggine {
 						break;
 					case MODE_USE:
 						currentDetail = "Benutze " + detail;
+						if (selectedItem != -1)
+							currentDetail += " mit " + items.get(selectedItem).toString();
 						break;
 					case MODE_PUNCH:
 						currentDetail = "Schlage " + detail;

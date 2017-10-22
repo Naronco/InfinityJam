@@ -8,21 +8,15 @@ public enum Item {
 	SAW,
 	KNIFE;
 
-	public int valueOf() {
+	public String toString() {
 		switch (this) {
-			case KEY:
-				return 0;
-			case LEAF:
-				return 1;
-			case COINS:
-				return 2;
-			case DRUG:
-				return 3;
-			case SAW:
-				return 4;
-			case KNIFE:
-				return 5;
+			case KEY: return "Schlüssel";
+			case LEAF: return "Blatt";
+			case COINS: return "Münzen";
+			case DRUG: return "Droge";
+			case SAW: return "Kreissäge";
+			case KNIFE: return "Messer";
 		}
-		throw new Error("Retarded programmers didn't implement this Item");
+		return null;
 	}
 }
