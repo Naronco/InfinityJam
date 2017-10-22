@@ -19,6 +19,6 @@ public class DrugDealerVisitQuest implements IQuest {
 
 	@Override
 	public String getDescription() {
-		return "DrugDealerVisitQuest";
+		return "Besuche den Dealer in 153013";
 	}
 }

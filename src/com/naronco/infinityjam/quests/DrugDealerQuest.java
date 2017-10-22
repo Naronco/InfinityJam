@@ -22,6 +22,6 @@ public class DrugDealerQuest implements IQuest {
 
 	@Override
 	public String getDescription() {
-		return "DrugDealerQuest";
+		return "Bringe die Blätter zum Dealer";
 	}
 }
