@@ -109,7 +109,11 @@ public class SlotMachine implements IScene {
 	@Override
 	public void click(int x, int y, int mode) {
 		if (x < 15 && y < 15) {
-			Game.instance.setScene(Game.instance.casino);
+			if (won) {
+				Game.instance.win();
+			} else {
+				Game.instance.setScene(Game.instance.casino);
+			}
 			Sounds.casinoRoll.stop();
 			Sounds.casinoWin.stop();
 			return;
@@ -151,6 +155,8 @@ public class SlotMachine implements IScene {
 		screen.renderSprite(0, 0, Sprites.ARROW);
 	}
 
+	boolean won = false;
+
 	@Override
 	public void update() {
 		for (SlotMachineRoll roll : rolls) {
@@ -167,6 +173,7 @@ public class SlotMachine implements IScene {
 				if (currentResult[0] == SlotMachineSymbol.seven && currentResult[1] == SlotMachineSymbol.seven && currentResult[2] == SlotMachineSymbol.seven) {
 					Game.instance.finishQuest(Game.instance.getQuest(TripleSevenQuest.class));
 					Game.instance.showMessage("3 mal die 7!Das ist der Hauptgewinn!");
+					won = true;
 				} else {
 					Game.instance.showMessage("Dadumm.Leider verloren.1 Münze pro Spiel");
 				}

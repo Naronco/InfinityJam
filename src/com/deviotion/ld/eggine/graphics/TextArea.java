@@ -132,7 +132,7 @@ public class TextArea {
             int textWidth = bordered ? width - 4 : width;
             int textHeight = bordered ? height - 4 : height;
 
-            screen.renderClippedText(textStartX, textStartY - lineOffset, textStartX, textStartY, textWidth, textHeight, Font.standard, partialMessage);
+            screen.renderClippedText(textStartX, textStartY - lineOffset, textStartX, textStartY, textWidth, textHeight, font, partialMessage);
         }
     }
 

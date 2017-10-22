@@ -33,7 +33,7 @@ public class Casino extends PointAndClickScene {
 		int width = (75 - 47);
 		int height = (56 - 7);
 
-		for (int i = 0; i < 4; ++i) {
+		for (int i = 1; i < 4; ++i) {
 			int x = 47 + distance * i;
 			int y = 7;
 			GamingMachine machine = new GamingMachine(new Polygon2d(new Vector2d(x, y), new Vector2d(x + width, y), new Vector2d(x + width, y + height), new Vector2d(x, y + height)));

@@ -84,15 +84,6 @@ public class Game extends Eggine {
 		addQuest(new TripleSevenQuest());
 
 		showMessage("Dein einziges Ziel ist es, die 777 am Spielautomat zu erreichen.");
-
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
-		items.add(Item.COINS);
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
@@ -166,6 +157,13 @@ public class Game extends Eggine {
 
 	@Override
 	public void render(Screen screen) {
+		if (won) {
+			screen.renderRectangle(0, 0, 200, 150, 0x121212);
+			for (int i = 0; i < WIN_TEXT_LINES.length; ++i) {
+				screen.renderText(1, wonFrame + i * 8, Font.white, WIN_TEXT_LINES[i]);
+			}
+			return;
+		}
 		if (gameOver) {
 			if (gameOverFrame > 0)
 				gameOverFrame--;
@@ -305,8 +303,17 @@ public class Game extends Eggine {
 		}
 	}
 
+	int ticks = 0;
+
 	@Override
 	public void update(double delta) {
+		if (won) {
+			++ticks;
+			if (ticks % 4 == 0)
+				wonFrame--;
+			return;
+		}
+
 		if (gameOver)
 			return;
 
@@ -486,6 +493,17 @@ public class Game extends Eggine {
 	boolean gameOver = false;
 	int gameOverFrame;
 
+	private static final String[] WIN_TEXT_LINES = {
+		"Hallo",
+		"",
+		"Welt",
+		"viele Wörter",
+		"",
+		"Test"
+	};
+	boolean won = false;
+	int wonFrame;
+
 	double t = 0;
 	Sprite dialogIndicator;
 
@@ -580,6 +598,13 @@ public class Game extends Eggine {
 			currentScene.getBackgroundMusic().stop();
 		Sounds.death.play();
 		gameOverFrame = 75;
+	}
+
+	public void win() {
+		won = true;
+		if (currentScene.getBackgroundMusic() != null)
+			currentScene.getBackgroundMusic().stop();
+		wonFrame = 150;
 	}
 
 	public List<Item> items = new ArrayList<>();
