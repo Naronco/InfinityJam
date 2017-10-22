@@ -56,39 +56,45 @@ public abstract class Loop {
     public void start () {
         this.lastLoop = System.nanoTime();
 
-        while (true) {
-            long now = System.nanoTime();
-            long taken = now - this.lastLoop;
-            this.lastLoop = now;
+        try {
+            while (true) {
+                long now = System.nanoTime();
+                long taken = now - this.lastLoop;
+                this.lastLoop = now;
 
-            this.lagRender += taken;
-            this.lagUpdate += taken;
+                this.lagRender += taken;
+                this.lagUpdate += taken;
 
-            while (this.lagUpdate > this.calculatedUpdateRate) {
-                this.update(10000000f / this.lagUpdate);
+                while (this.lagUpdate > this.calculatedUpdateRate) {
+                    this.update(10000000f / this.lagUpdate);
 
-                this.lagUpdate -= this.calculatedUpdateRate;
-                this.updates++;
+                    this.lagUpdate -= this.calculatedUpdateRate;
+                    this.updates++;
+                }
+
+                while (this.lagRender > this.calculatedFrameRate) {
+                    this.render(window.getScreen());
+                    this.window.render();
+
+                    this.lagRender -= this.calculatedFrameRate;
+                    this.frames++;
+                }
+
+                now = System.nanoTime();
+                if (now >= this.lastFPS + 1000000000f) {
+                    this.lastFPS = now;
+
+                    this.fps = this.frames;
+                    this.ups = this.updates;
+
+                    this.frames = 0;
+                    this.updates = 0;
+                }
+
+                Thread.sleep(5);
             }
-
-            while (this.lagRender > this.calculatedFrameRate) {
-                this.render(window.getScreen());
-                this.window.render();
-
-                this.lagRender -= this.calculatedFrameRate;
-                this.frames++;
-            }
-
-            now = System.nanoTime();
-            if (now >= this.lastFPS + 1000000000f) {
-                this.lastFPS = now;
-
-                this.fps = this.frames;
-                this.ups = this.updates;
-
-                this.frames = 0;
-                this.updates = 0;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
