@@ -305,15 +305,22 @@ public class Game extends Eggine {
 			if (transitionTime >= transitionDuration * 0.5 && pendingScene != null) {
 				currentScene = pendingScene;
 				currentScene.enter(prevScene);
+
+				if (prevScene.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
+					Sound backgroundMusic = prevScene.getBackgroundMusic();
+					if (backgroundMusic != null)
+						backgroundMusic.stop();
+
+					backgroundMusic = currentScene.getBackgroundMusic();
+					if (backgroundMusic != null)
+						backgroundMusic.playInfinitely();
+				}
+
 				prevScene = pendingScene = null;
 			}
-			if (transitionTime >= transitionDuration) {
-				currentTransition = null;
 
-				Sound backgroundMusic = currentScene.getBackgroundMusic();
-				if (backgroundMusic != null)
-					backgroundMusic.playInfinitely();
-			}
+			if (transitionTime >= transitionDuration)
+				currentTransition = null;
 		}
 	}
 
@@ -342,10 +349,6 @@ public class Game extends Eggine {
 
 			prevScene = currentScene;
 			pendingScene = scene;
-
-			Sound backgroundMusic = currentScene.getBackgroundMusic();
-			if (backgroundMusic != null)
-				backgroundMusic.stop();
 		}
 	}
 
