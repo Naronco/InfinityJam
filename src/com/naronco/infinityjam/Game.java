@@ -155,7 +155,7 @@ public class Game extends Eggine {
 					}
 				} else if (mx > 200 - 22 && my > 150 - 22) {
 					if (currentScene instanceof Inventory) {
-						setScene(((Inventory)currentScene).getPrevScene());
+						setScene(((Inventory) currentScene).getPrevScene());
 					} else {
 						setScene(new Inventory(new Dimension2d(200, 86)));
 					}
@@ -205,22 +205,24 @@ public class Game extends Eggine {
 		prevMy = my;
 		prevMouseDown = mouseDown;
 
-		int itemX = 124, itemY = 106;
-		int itemN = 0;
-		for (Item i : items) {
-			if (selectedItem == itemN)
-				screen.renderCircle(itemX + 8, itemY + 8, 7, 0xA0A0A0);
+		if (activeDialog == null && queuedDialogs.size() == 0) {
+			int itemX = 124, itemY = 106;
+			int itemN = 0;
+			for (Item i : items) {
+				if (selectedItem == itemN)
+					screen.renderCircle(itemX + 8, itemY + 8, 7, 0xA0A0A0);
 
-			screen.renderSprite(itemX, itemY, itemSprites.get(i.ordinal()));
+				screen.renderSprite(itemX, itemY, itemSprites.get(i.ordinal()));
 
-			if (mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
-				selectedItem = itemN;
+				if (mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
+					selectedItem = itemN;
 
-			itemY += 12;
-			itemN++;
-			if (itemN % 3 == 0) {
-				itemY -= 12 * 3 - 2;
-				itemX += 10;
+				itemY += 12;
+				itemN++;
+				if (itemN % 3 == 0) {
+					itemY -= 12 * 3 - 2;
+					itemX += 10;
+				}
 			}
 		}
 
