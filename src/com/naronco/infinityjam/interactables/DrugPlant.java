@@ -132,14 +132,19 @@ public class DrugPlant implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Schlüssel unter Planzentöpfen zu verstecken ist zu offensichtlich.");
+				break;
 			case LEAF:
 				Game.instance.showMessage("Eigentlich komplett Sinnlos.");
+				break;
 			case COINS:
 				Game.instance.showMessage("Ich spende mein Geld lieber einem Brunnen...beziehungsweise den Automaten, ist sowieso das gleiche.");
+				break;
 			case DRUG:
 				Game.instance.showMessage("Geh dir das mal selber durch den Kopf: Der Drogenpflanze Drogen geben...");
+				break;
 			case SAW:
 				Game.instance.showMessage("Ich lasse die Pflanze lieber so am leben.");
+				break;
 			case KNIFE:
 				Game.instance.showMessage("Ich lasse dir Pflanze lieber so am leben.");
 				break;

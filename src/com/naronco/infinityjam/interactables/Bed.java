@@ -85,14 +85,19 @@ public class Bed implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Der Schlüssel zum Erfolg ist definitiv nicht schlafen.");
+				break;
 			case LEAF:
 				Game.instance.showMessage("Das ist nutzlos.");
+				break;
 			case COINS:
 				Game.instance.showMessage("Ich habe schon zu viel Geld für die BedRulls Matraze ausgegeben.");
+				break;
 			case DRUG:
 				Game.instance.showMessage("Dafür wurden Drogen nicht gemacht.");
+				break;
 			case SAW:
 				Game.instance.showMessage("Lieber nicht, ich muss noch drauf schlafen.");
+				break;
 			case KNIFE:
 				Game.instance.showMessage("Lieber nicht, ich muss noch drauf schlafen.");
 				break;

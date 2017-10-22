@@ -78,14 +78,19 @@ public class Bottle implements Interactable {
 		switch (item) {
 			case KEY:
 				Game.instance.showMessage("Die Flasche ist schon offen.");
+				break;
 			case LEAF:
 				Game.instance.showMessage("In meiner Flasche kommt keine Pflanze rein!");
+				break;
 			case COINS:
 				Game.instance.showMessage("Die Münze passt nicht mal durch den Öffnung!");
+				break;
 			case DRUG:
 				Game.instance.showMessage("Ist ja nicht so, dass Alkohol allgemein schon schlimm genug ist...");
+				break;
 			case SAW:
 				Game.instance.showMessage("Ich möchte es wenigstens noch austrinken.");
+				break;
 			case KNIFE:
 				Game.instance.showMessage("Ich möchte es wenigstens noch austrinken.");
 				break;
