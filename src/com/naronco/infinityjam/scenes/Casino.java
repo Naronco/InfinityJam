@@ -8,6 +8,7 @@ import com.naronco.infinityjam.ExitStepArea;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.interactables.CoinVendor;
 import com.naronco.infinityjam.interactables.GamingMachine;
 import com.naronco.infinityjam.interactables.Walkway;
 
@@ -27,6 +28,13 @@ public class Casino extends PointAndClickScene {
 				new Vector2d(38, 55),
 				new Vector2d(40, 85),
 				new Vector2d(-30, 85)
+		)));
+
+		interactables.add(new CoinVendor(new Polygon2d(
+				new Vector2d(30, 18),
+				new Vector2d(73, 18),
+				new Vector2d(66, 56),
+				new Vector2d(31, 56)
 		)));
 
 		int distance = (83 - 47);
