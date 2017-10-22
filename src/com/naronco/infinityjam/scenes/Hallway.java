@@ -7,10 +7,11 @@ import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.*;
-import com.naronco.infinityjam.interactables.Bed;
-import com.naronco.infinityjam.interactables.Door;
-import com.naronco.infinityjam.interactables.DrugPlant;
-import com.naronco.infinityjam.interactables.Walkway;
+import com.naronco.infinityjam.dialog.Dialog;
+import com.naronco.infinityjam.dialog.StaticAnswer;
+import com.naronco.infinityjam.interactables.*;
+import com.naronco.infinityjam.quests.DrugDealerQuest;
+import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,6 +86,7 @@ public class Hallway extends PointAndClickScene {
 		addMovementArea(new Polygon2d(new Vector2d(-5, 55), new Vector2d(205, 55), new Vector2d(205, 86), new Vector2d(-5, 86)));
 
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(10, 52), new Vector2d(40, 52), new Vector2d(40, 62), new Vector2d(10, 62)), Game.instance.bedroom));
+		stepAreas.add(new InteractStepArea(new Polygon2d(new Vector2d(113, 55), new Vector2d(144, 55), new Vector2d(144, 72), new Vector2d(113, 72)), new DrugDealerDoor("Ominöse Tür")));
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(-5, 55), new Vector2d(10, 55), new Vector2d(10, 86), new Vector2d(-5, 86)), this));
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(190, 55), new Vector2d(205, 55), new Vector2d(205, 86), new Vector2d(190, 86)), this));
 	}
@@ -107,10 +109,6 @@ public class Hallway extends PointAndClickScene {
 
 	@Override
 	public void enter(IScene prev) {
-		if (plants.containsKey(rooms))
-			plant.load(plants.get(rooms));
-		else
-			plant.load(0);
 		if (prev == Game.instance.bedroom)
 			Game.instance.player.teleport(new Vector2d(26, 64));
 		else if (prev == Game.instance.elevator)
@@ -137,6 +135,10 @@ public class Hallway extends PointAndClickScene {
 						Game.instance.showMessage("Um deine Hobbylosigkeit zu belohnen kriegst du eine Münze");
 				}
 			}
+			if (plants.containsKey(rooms))
+				plant.load(plants.get(rooms));
+			else
+				plant.load(0);
 		}
 	}
 
@@ -149,5 +151,97 @@ public class Hallway extends PointAndClickScene {
 	@Override
 	public Sound getBackgroundMusic() {
 		return Sounds.home;
+	}
+}
+
+class DrugDealerDoor implements Interactable {
+	String name;
+
+	public DrugDealerDoor(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getNameWithArticle() {
+		return name;
+	}
+
+	@Override
+	public boolean intersects(int x, int y) {
+		return false;
+	}
+
+	@Override
+	public boolean hasLook() {
+		return true;
+	}
+
+	@Override
+	public boolean hasUse() {
+		return true;
+	}
+
+	@Override
+	public boolean hasTake() {
+		return true;
+	}
+
+	@Override
+	public boolean hasPunch() {
+		return true;
+	}
+
+	@Override
+	public boolean hasImplicitClick() {
+		return false;
+	}
+
+	@Override
+	public void look(int x, int y) {
+		Game.instance.showMessage("Da steht eingeritzt 'Geheimer Drogen Dealer'");
+	}
+
+	@Override
+	public void use(int x, int y) {
+		IQuest visitQ = Game.instance.getQuest(DrugDealerVisitQuest.class);
+		if (visitQ != null) {
+			Game.instance.pushDialog(new Dialog("Was ist?",
+					new StaticAnswer("Kannst du mir mit dem Aufzug helfen?",
+							new Dialog("Hm... Das kann ich schon, nur brauche ich ein paar Zutaten"),
+							new Dialog("Wenn du mir meine Zutaten bringen kannst helf ich dir den Aufzug wieder zu benutzen",
+									new StaticAnswer("Wo finde ich besagte Zutaten?",
+											new Dialog("Ich habe überall im Gang vermeindliche Dekopflanzen platziert. Eigentlich sind es Drogen."),
+											new Dialog("Pflück einfach die reifen Blätter, aber sei dabei sehr Vorsichtig!"))
+							))
+			));
+			Game.instance.finishQuest(visitQ);
+			Game.instance.addQuest(new DrugDealerQuest());
+		} else {
+			Game.instance.showMessage("Lieber nicht.");
+		}
+	}
+
+	@Override
+	public void take(int x, int y) {
+		Game.instance.showMessage("Ich glaub die ist extra gesichert");
+	}
+
+	@Override
+	public void punch(int x, int y) {
+		Game.instance.showMessage("Dann würde er mir nicht mehr helfen");
+	}
+
+	@Override
+	public void interact(int x, int y, Item item) {
+
+	}
+
+	@Override
+	public void implicit(int x, int y) {
 	}
 }

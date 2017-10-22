@@ -107,6 +107,7 @@ public class DrugPlant implements Interactable {
 				Game.instance.showMessage("Hm ne, ich hab schon genug.");
 			else
 				Game.instance.showMessage("Ah! Endlich");
+			harvested = true;
 		}
 	}
 

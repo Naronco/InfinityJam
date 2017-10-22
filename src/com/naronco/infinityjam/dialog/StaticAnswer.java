@@ -4,11 +4,11 @@ import com.naronco.infinityjam.Game;
 
 public class StaticAnswer implements IAnswer {
 	public String text;
-	public Dialog child;
+	public Dialog[] children;
 
-	public StaticAnswer(String text, Dialog child) {
+	public StaticAnswer(String text, Dialog... children) {
 		this.text = text;
-		this.child = child;
+		this.children = children;
 	}
 
 	@Override
@@ -19,7 +19,8 @@ public class StaticAnswer implements IAnswer {
 	@Override
 	public boolean run() {
 		Game.instance.showMessage(text);
-		Game.instance.pushDialog(child);
+		for (Dialog d : children)
+			Game.instance.pushDialog(d);
 		return false;
 	}
 }
