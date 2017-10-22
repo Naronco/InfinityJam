@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DrugDealerQuest implements IQuest {
+	public boolean usedPunch = false;
+
 	@Override
 	public void activate() {
 	}

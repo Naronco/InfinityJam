@@ -49,6 +49,8 @@ public class Street extends PointAndClickScene {
 	public void enter(IScene prev) {
 		if (prev == Game.instance.casino)
 			Game.instance.player.teleport(new Vector2d(142, 60));
+		else if (prev == Game.instance.hallway)
+			Game.instance.player.teleport(new Vector2d(100, 80));
 		else
 			Game.instance.player.teleport(new Vector2d(34, 60));
 	}

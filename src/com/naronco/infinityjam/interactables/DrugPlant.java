@@ -2,6 +2,7 @@ package com.naronco.infinityjam.interactables;
 
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.naronco.infinityjam.Game;
+import com.naronco.infinityjam.IQuest;
 import com.naronco.infinityjam.Interactable;
 import com.naronco.infinityjam.Item;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
@@ -113,7 +114,8 @@ public class DrugPlant implements Interactable {
 
 	@Override
 	public void punch(int x, int y) {
-		if (Game.instance.getQuest(DrugDealerQuest.class) == null) {
+		IQuest q = Game.instance.getQuest(DrugDealerQuest.class);
+		if (q == null) {
 			Game.instance.showMessage("Sowas mach ich nicht einfach so, ich will Mutter Natur nicht verärgern");
 			return;
 		}
@@ -121,6 +123,7 @@ public class DrugPlant implements Interactable {
 			Game.instance.showMessage("Mehr ist hier nicht.");
 			return;
 		}
+		((DrugDealerQuest) q).usedPunch = true;
 		harvested = true;
 		if (!Game.instance.giveItems(Item.LEAF, 3, 5))
 			Game.instance.showMessage("Wie soll ich die bitte mitnehmen? Meine Hände sind schon voll!");
