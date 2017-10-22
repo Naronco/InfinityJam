@@ -19,8 +19,8 @@ public class StaticAnswer implements IAnswer {
 	@Override
 	public boolean run() {
 		Game.instance.showMessage(text);
-		for (Dialog d : children)
-			Game.instance.pushDialog(d);
+		for (int i = children.length - 1; i >= 0; i--)
+			Game.instance.pushDialog(children[i]);
 		return false;
 	}
 }
