@@ -4,11 +4,9 @@ import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Polygon2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
-import com.naronco.infinityjam.ExitStepArea;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IScene;
-import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.interactables.Walkway;
+import com.naronco.infinityjam.quests.AlleyQuest;
 
 import java.io.File;
 
@@ -40,7 +38,7 @@ public class Street extends PointAndClickScene {
 				new Vector2d(134, 56)
 		)));
 
-		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(20, 57), new Vector2d(50, 57), new Vector2d(50, 66), new Vector2d(20, 66)), Game.instance.elevator));
+		stepAreas.add(new QuestExitStepArea(AlleyQuest.class, "Ich brauche etwas um den Aufzug zu reparieren", new Polygon2d(new Vector2d(20, 57), new Vector2d(50, 57), new Vector2d(50, 66), new Vector2d(20, 66)), Game.instance.elevator));
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(88, 55), new Vector2d(99, 55), new Vector2d(99, 63), new Vector2d(88, 63)), Game.instance.alley));
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(125, 57), new Vector2d(160, 57), new Vector2d(160, 66), new Vector2d(125, 66)), Game.instance.casino));
 	}

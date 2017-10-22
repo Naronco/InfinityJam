@@ -17,7 +17,7 @@ public class DrugDealerQuest implements IQuest {
 
 	@Override
 	public List<Item> getRewards() {
-		return Arrays.asList(Item.DRUG);
+		return Arrays.asList(Item.DRUG, Item.COINS);
 	}
 
 	@Override

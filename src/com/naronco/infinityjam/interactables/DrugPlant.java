@@ -104,7 +104,7 @@ public class DrugPlant implements Interactable {
 		else if (harvesting == 3)
 			Game.instance.showMessage("Fast...");
 		else if (harvesting == 4) {
-			if (!Game.instance.giveItems(Item.LEAF, 1, 5))
+			if (!Game.instance.giveItems(Item.LEAF, 1, 3))
 				Game.instance.showMessage("Hm ne, ich hab schon genug.");
 			else
 				Game.instance.showMessage("Ah! Endlich");
@@ -125,7 +125,7 @@ public class DrugPlant implements Interactable {
 		}
 		((DrugDealerQuest) q).usedPunch = true;
 		harvested = true;
-		if (!Game.instance.giveItems(Item.LEAF, 3, 5))
+		if (!Game.instance.giveItems(Item.LEAF, 2, 3))
 			Game.instance.showMessage("Wie soll ich die bitte mitnehmen? Meine Hände sind schon voll!");
 		else
 			Game.instance.showMessage("Die Pflanze wurde ausgerissen.");

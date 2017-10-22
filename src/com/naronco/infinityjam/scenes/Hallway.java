@@ -214,8 +214,8 @@ class DrugDealerDoor implements Interactable {
 		IQuest visitQ = Game.instance.getQuest(DrugDealerVisitQuest.class);
 		IQuest collectQ = Game.instance.getQuest(DrugDealerQuest.class);
 		if (collectQ != null) {
-			if (!Game.instance.removeItem(Item.LEAF, 5)) {
-				Game.instance.showMessage("Du hast noch nicht genug Zutaten geernet");
+			if (!Game.instance.removeItem(Item.LEAF, 3)) {
+				Game.instance.showMessage("Du hast noch nicht genug Zutaten geerntet");
 				return;
 			}
 			Game.instance.finishQuest(collectQ);
