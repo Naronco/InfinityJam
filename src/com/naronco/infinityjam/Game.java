@@ -306,6 +306,9 @@ public class Game extends Eggine {
 	}
 
 	public void setScene(IScene scene, ISceneTransition transition) {
+		if (currentTransition != null)
+			return;
+
 		currentScene.leave();
 
 		if (transition == null) {
@@ -334,6 +337,8 @@ public class Game extends Eggine {
 	}
 
 	public void setScene(IScene scene) {
+		if (currentTransition != null)
+			return;
 		setScene(scene, null);
 	}
 
