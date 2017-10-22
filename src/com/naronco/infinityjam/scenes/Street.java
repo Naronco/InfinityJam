@@ -33,7 +33,7 @@ public class Street extends PointAndClickScene {
 				new Vector2d(88, 55)
 		)));
 
-		interactables.add(new Walkway("Casino 29134239436854268469158942354684324891236445641256423156...", new Vector2d(138, 60), new Polygon2d(
+		interactables.add(new Walkway("Casino", new Vector2d(138, 60), new Polygon2d(
 				new Vector2d(134, 28),
 				new Vector2d(159, 28),
 				new Vector2d(159, 56),
