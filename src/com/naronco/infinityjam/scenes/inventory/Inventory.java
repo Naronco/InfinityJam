@@ -101,16 +101,16 @@ public class Inventory implements IScene {
 				if (quests.isEmpty() && finishedQuests.isEmpty()) {
 					screen.renderText(1, 15, Font.standard, "Keine");
 				} else {
-					for (int i = 0; i < finishedQuests.size(); ++i) {
-						int y = 15 + i * 9;
-						screen.renderSprite(1, y - 1, Sprites.CHECKBOX_ON);
-						screen.renderText(12, y, Font.standard, finishedQuests.get(i).getDescription());
-					}
-
 					for (int i = 0; i < quests.size(); ++i) {
-						int y = 15 + (finishedQuests.size() + i) * 9;
+						int y = 15 + i * 9;
 						screen.renderSprite(1, y - 1, Sprites.CHECKBOX_OFF);
 						screen.renderText(12, y, Font.standard, quests.get(i).getDescription());
+					}
+
+					for (int i = 0; i < finishedQuests.size(); ++i) {
+						int y = 15 + (quests.size() + i) * 9;
+						screen.renderSprite(1, y - 1, Sprites.CHECKBOX_ON);
+						screen.renderText(12, y, Font.standard, finishedQuests.get(i).getDescription());
 					}
 				}
 
