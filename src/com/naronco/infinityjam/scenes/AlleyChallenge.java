@@ -9,13 +9,31 @@ import com.naronco.infinityjam.Character;
 import com.naronco.infinityjam.Game;
 import com.naronco.infinityjam.IScene;
 import com.naronco.infinityjam.Sounds;
+import com.naronco.infinityjam.scenes.inventory.Inventory;
+import com.naronco.infinityjam.transitions.BlackOverlayTransition;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Random;
 
 public class AlleyChallenge implements IScene {
+	private static final String[] MESSAGES = {
+			"HIER IRGENDWELCHE",
+			"BESCHIMPFUNGEN VON",
+			"DEN RAUDIES",
+			"ODER AUCH ASSIS",
+			"WIE AUCH IMMER",
+			"EINFÜGEN.",
+			"DIESE WERDEN IMMER MAL",
+			"WIEDER WÄHREND DES MINISPIELS",
+			"EINGEBLENDET.",
+			"ABER",
+			"IN GENAU DIESER",
+			"REIHENFOLGE"
+	};
+
 	private Dimension2d size;
 
 	private Sprite bulletSprite;
@@ -25,6 +43,9 @@ public class AlleyChallenge implements IScene {
 
 	private Random random = new Random();
 	private int ticks = 0;
+	private int currentMessageIndex = 0;
+
+	private Alley prevAlley;
 
 	public AlleyChallenge(Dimension2d size) {
 		this.size = size;
@@ -37,6 +58,7 @@ public class AlleyChallenge implements IScene {
 
 	@Override
 	public void enter(IScene prev) {
+		prevAlley = (Alley)prev;
 	}
 
 	@Override
@@ -76,7 +98,7 @@ public class AlleyChallenge implements IScene {
 	@Override
 	public void update() {
 		++ticks;
-		if (ticks >= 30) {
+		if (ticks % 30 == 0) {
 			double s = size.getHeight() / 6;
 			if (Math.random() < 0.5) {
 				for (int i = 0; i < random.nextInt(3) + 1; ++i) {
@@ -87,7 +109,17 @@ public class AlleyChallenge implements IScene {
 					bulletPositions.add(new Vector2d(size.getWidth() + 10, i * s));
 				}
 			}
-			ticks = 0;
+		}
+
+		if (ticks % 90 == 0) {
+			Game.instance.showMessage(MESSAGES[currentMessageIndex++]);
+			currentMessageIndex %= MESSAGES.length;
+		}
+
+		if (ticks > 30 * 30 && prevAlley != null) {
+			prevAlley.setMode(Alley.MODE_BAD_GUYS_RUNAWAY);
+			Game.instance.setScene(prevAlley, new BlackOverlayTransition());
+			prevAlley = null;
 		}
 
 		for (int i = 0; i < bulletPositions.size(); ++i) {
