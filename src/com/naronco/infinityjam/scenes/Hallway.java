@@ -9,6 +9,7 @@ import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.dialog.Dialog;
 import com.naronco.infinityjam.dialog.StaticAnswer;
+import com.naronco.infinityjam.dialog.TeleportAnswer;
 import com.naronco.infinityjam.interactables.*;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
 import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
@@ -211,13 +212,31 @@ class DrugDealerDoor implements Interactable {
 		if (Game.instance.hallway.startRoom + Game.instance.hallway.rooms * 4 + 2 != 13)
 			return;
 		IQuest visitQ = Game.instance.getQuest(DrugDealerVisitQuest.class);
-		if (visitQ != null) {
+		IQuest collectQ = Game.instance.getQuest(DrugDealerQuest.class);
+		if (collectQ != null) {
+			if (Game.instance.giveItems(Item.LEAF, 0, 5)) {
+				Game.instance.showMessage("Du hast noch nicht genug Zutaten geernet");
+				return;
+			}
+			Game.instance.finishQuest(collectQ);
+			if (((DrugDealerQuest) collectQ).usedPunch) {
+				Game.instance.pushDialog(new Dialog("Argh! Ich hab dir doch gesagt du solltest vorsichtig sein!"));
+				Game.instance.pushDialog(new Dialog("Naja ok... hier hast du deine \"Spezialdroge\"", new TeleportAnswer("Danke", Game.instance.street)));
+			} else {
+				Game.instance.pushDialog(new Dialog("Ok danke, mich nervt dieses ewige ernten schon ziemlich.",
+						new StaticAnswer("Was ist mit dem Aufzug?",
+								new Dialog("Ah ja, wenn du beim Aufzug bist musst du einfach nur den Code zum Entsperren eingeben"),
+								new Dialog("Mit dieser Droge kannst du die Fingerabdrücke auf dem Keypad erkennen", new TeleportAnswer("Danke", Game.instance.elevator))
+						)
+				));
+			}
+		} else if (visitQ != null) {
 			Game.instance.pushDialog(new Dialog("Was ist?",
 					new StaticAnswer("Kannst du mir mit dem Aufzug helfen?",
 							new Dialog("Hm... Das kann ich schon, nur brauche ich ein paar Zutaten"),
 							new Dialog("Wenn du mir meine Zutaten bringen kannst helf ich dir den Aufzug wieder zu benutzen",
 									new StaticAnswer("Wo finde ich besagte Zutaten?",
-											new Dialog("Ich habe überall im Gang vermeindliche Dekopflanzen platziert. Eigentlich sind es Drogen."),
+											new Dialog("Ich habe überall im Gang vermeindliche Dekopflanzen platziert. Eigentlich sind es die Grundlage für Drogen."),
 											new Dialog("Pflück einfach die reifen Blätter, aber sei dabei sehr Vorsichtig!"))
 							))
 			));

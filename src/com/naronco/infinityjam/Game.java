@@ -169,7 +169,7 @@ public class Game extends Eggine {
 					}
 				}
 			} else if (queuedDialogs.size() > 0 && activeDialog == null) {
-				Dialog d = queuedDialogs.remove(queuedDialogs.size() - 1);
+				Dialog d = queuedDialogs.remove(0);
 				showMessage(d.title, d.listener);
 				if (d.answers != null && d.answers.length > 0)
 					activeDialog = d;

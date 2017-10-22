@@ -10,6 +10,7 @@ import com.naronco.infinityjam.Character;
 import com.naronco.infinityjam.dialog.Dialog;
 import com.naronco.infinityjam.dialog.StaticAnswer;
 import com.naronco.infinityjam.interactables.DialogTrigger;
+import com.naronco.infinityjam.interactables.Keypad;
 import com.naronco.infinityjam.interactables.Walkway;
 import com.naronco.infinityjam.quests.DrugDealerQuest;
 import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
@@ -21,6 +22,8 @@ public class Elevator extends PointAndClickScene {
 	boolean showRandomDude = false;
 	boolean randomDudeTalked = false;
 
+	public boolean unlocked = false;
+
 	@Override
 	public void load() {
 		background = new Sprite(new File("res/elevator.png"));
@@ -28,6 +31,13 @@ public class Elevator extends PointAndClickScene {
 		randomDude = new Character(16, 200, 1);
 
 		addMovementArea(new Polygon2d(new Vector2d(46, 56), new Vector2d(156, 56), new Vector2d(184, 96), new Vector2d(10, 96)));
+
+		interactables.add(new Keypad(new Polygon2d(
+				new Vector2d(123, 12),
+				new Vector2d(140, 12),
+				new Vector2d(140, 32),
+				new Vector2d(123, 32)
+		)));
 
 		interactables.add(new Walkway("Aufzug", new Vector2d(100, 64), new Polygon2d(
 				new Vector2d(120, 6),
@@ -105,14 +115,18 @@ class ElevatorQuest extends ExitStepArea {
 
 	@Override
 	public boolean stepOn(int x, int y) {
-		if (Game.instance.isQuestFinished(DrugDealerQuest.class))
+		if (Game.instance.elevator.unlocked)
 			return super.stepOn(x, y);
 		else if (area.intersects(x, y)) {
-			Game.instance.showMessage("Scheint als wäre der Aufzug kaputt. Ich muss einen Weg finden ihn trotzdem benutzen zu können");
-			if (!questGiven) {
-				Game.instance.addQuest(new DrugDealerVisitQuest());
-				Game.instance.elevator.triggerDude();
-				questGiven = true;
+			if (Game.instance.isQuestFinished(DrugDealerQuest.class)) {
+				Game.instance.showMessage("Ich muss zuerst den Code im Keypad rechts eingeben");
+			} else {
+				Game.instance.showMessage("Scheint als wäre der Aufzug defekt. Ich muss einen Ersatz finden");
+				if (!questGiven) {
+					Game.instance.addQuest(new DrugDealerVisitQuest());
+					Game.instance.elevator.triggerDude();
+					questGiven = true;
+				}
 			}
 			return true;
 		}
