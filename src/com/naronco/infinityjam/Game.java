@@ -284,20 +284,24 @@ public class Game extends Eggine {
 		if (currentTransition != null) {
 			transitionTime += 1.0 / 30.0;
 			if (transitionTime >= transitionDuration * 0.5 && pendingScene != null) {
+				currentScene.leave();
 				currentScene = pendingScene;
 				currentScene.enter(prevScene);
 
-				if (prevScene.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
-					Sound backgroundMusic = prevScene.getBackgroundMusic();
-					if (backgroundMusic != null)
-						backgroundMusic.stop();
+				// IScene.enter() could change scene
+				if (prevScene != null) {
+					if (prevScene.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
+						Sound backgroundMusic = prevScene.getBackgroundMusic();
+						if (backgroundMusic != null)
+							backgroundMusic.stop();
 
-					backgroundMusic = currentScene.getBackgroundMusic();
-					if (backgroundMusic != null)
-						backgroundMusic.playInfinitely();
+						backgroundMusic = currentScene.getBackgroundMusic();
+						if (backgroundMusic != null)
+							backgroundMusic.playInfinitely();
+					}
+
+					prevScene = pendingScene = null;
 				}
-
-				prevScene = pendingScene = null;
 			}
 
 			if (transitionTime >= transitionDuration)
@@ -309,24 +313,8 @@ public class Game extends Eggine {
 		if (currentTransition != null)
 			return;
 
-		currentScene.leave();
-
 		if (transition == null) {
-			IScene prev = currentScene;
-			currentScene = scene;
-			currentScene.enter(prev);
-
-			if (prev.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
-				Sound backgroundMusic = prev.getBackgroundMusic();
-				if (backgroundMusic != null) {
-					backgroundMusic.stop();
-				}
-
-				backgroundMusic = currentScene.getBackgroundMusic();
-				if (backgroundMusic != null) {
-					backgroundMusic.playInfinitely();
-				}
-			}
+			jumpToScene(scene);
 		} else {
 			currentTransition = transition;
 			transitionTime = 0;
@@ -337,9 +325,32 @@ public class Game extends Eggine {
 	}
 
 	public void setScene(IScene scene) {
-		if (currentTransition != null)
-			return;
-		setScene(scene, null);
+		if (currentTransition != null) {
+			pendingScene = null;
+			prevScene = null;
+			currentTransition = null;
+		}
+		jumpToScene(scene);
+	}
+
+	private void jumpToScene(IScene scene) {
+		currentScene.leave();
+
+		IScene prev = currentScene;
+		currentScene = scene;
+		currentScene.enter(prev);
+
+		if (prev.getBackgroundMusic() != currentScene.getBackgroundMusic()) {
+			Sound backgroundMusic = prev.getBackgroundMusic();
+			if (backgroundMusic != null) {
+				backgroundMusic.stop();
+			}
+
+			backgroundMusic = currentScene.getBackgroundMusic();
+			if (backgroundMusic != null) {
+				backgroundMusic.playInfinitely();
+			}
+		}
 	}
 
 	public void showMessage(String message, ITextAreaListener listener) {
