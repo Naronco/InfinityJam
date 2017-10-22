@@ -71,7 +71,7 @@ public class Hole implements Interactable {
 
 	@Override
 	public void punch(int x, int y) {
-		Game.instance.showMessage("Seit meiner letzten Freundin tue ich meine Faust nicht mehr in Löcher...");
+		Game.instance.showMessage("Der Schlag ging ins leere.");
 	}
 
 	@Override
