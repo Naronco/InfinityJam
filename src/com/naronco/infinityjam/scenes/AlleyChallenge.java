@@ -3,12 +3,11 @@ package com.naronco.infinityjam.scenes;
 import com.deviotion.ld.eggine.graphics.Screen;
 import com.deviotion.ld.eggine.graphics.Sprite;
 import com.deviotion.ld.eggine.math.Dimension2d;
+import com.deviotion.ld.eggine.math.Rectangle2d;
 import com.deviotion.ld.eggine.math.Vector2d;
 import com.deviotion.ld.eggine.sound.Sound;
+import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.Character;
-import com.naronco.infinityjam.Game;
-import com.naronco.infinityjam.IScene;
-import com.naronco.infinityjam.Sounds;
 import com.naronco.infinityjam.scenes.inventory.Inventory;
 import com.naronco.infinityjam.transitions.BlackOverlayTransition;
 
@@ -36,7 +35,6 @@ public class AlleyChallenge implements IScene {
 
 	private Dimension2d size;
 
-	private Sprite bulletSprite;
 	private List<Vector2d> bulletPositions = new ArrayList<Vector2d>();
 
 	private double velocity = 0;
@@ -49,7 +47,6 @@ public class AlleyChallenge implements IScene {
 
 	public AlleyChallenge(Dimension2d size) {
 		this.size = size;
-		this.bulletSprite = new Sprite(new File("res/key.png"));
 	}
 
 	@Override
@@ -91,7 +88,7 @@ public class AlleyChallenge implements IScene {
 	@Override
 	public void renderForeground(Screen screen) {
 		for (Vector2d pos : bulletPositions) {
-			screen.renderSprite(pos, bulletSprite);
+			screen.renderSprite(pos, Sprites.BULLET);
 		}
 	}
 
@@ -122,16 +119,24 @@ public class AlleyChallenge implements IScene {
 			prevAlley = null;
 		}
 
+		Character player = Game.instance.getPlayer();
+
 		for (int i = 0; i < bulletPositions.size(); ++i) {
 			Vector2d pos = bulletPositions.get(i);
 			if (pos.getX() < -50) {
 				bulletPositions.remove(i--);
 			} else {
 				pos.setX(pos.getX() - 3.0);
+
+				Rectangle2d bulletRect = new Rectangle2d(pos, Sprites.BULLET.getDimension());
+				Rectangle2d playerRect = player.getRectangle();
+
+				if (bulletRect.intersects(playerRect)) {
+					Game.instance.die();
+				}
 			}
 		}
 
-		Character player = Game.instance.getPlayer();
 		player.flipX = true;
 
 		player.getPosition().setX(20);

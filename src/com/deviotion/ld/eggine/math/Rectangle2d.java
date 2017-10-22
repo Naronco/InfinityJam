@@ -32,4 +32,12 @@ public class Rectangle2d {
     public boolean intersects(Vector2d position) {
         return intersects(position.getX(), position.getY());
     }
+
+    public boolean intersects(Rectangle2d rect) {
+        if (position.getX() + size.getWidth() < rect.position.getX()) return false;
+        if (position.getY() + size.getHeight() < rect.position.getY()) return false;
+        if (position.getX() >= rect.position.getX() + rect.size.getWidth()) return false;
+        if (position.getY() >= rect.position.getY() + rect.size.getHeight()) return false;
+        return true;
+    }
 }
