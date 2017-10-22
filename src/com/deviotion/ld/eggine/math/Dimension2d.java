@@ -32,4 +32,7 @@ public class Dimension2d {
         this.height = height;
     }
 
+	public Dimension2d copy() {
+        return new Dimension2d(width, height);
+	}
 }

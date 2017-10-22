@@ -126,19 +126,23 @@ public class SlotMachine implements IScene {
 		}
 		if (mode == Game.MODE_USE) {
 			if (Game.instance.getSelectedItem() == Item.COINS) {
-				Game.instance.removeItem(Item.COINS, 1);
-				currentResult = RESULTS[gameCount % RESULTS.length];
-				for (int i = 0; i < rolls.length; ++i) {
-					rolls[i].roll(currentResult[i]);
-					rolling = true;
-				}
-				Sounds.casinoRoll.play();
-				++gameCount;
+				roll();
 				Game.instance.showMessage("na dann mal viel glück");
 			} else {
 				Game.instance.showMessage("ich sollte eine münze einwerfen");
 			}
 		}
+	}
+
+	public void roll() {
+		Game.instance.removeItem(Item.COINS, 1);
+		currentResult = RESULTS[gameCount % RESULTS.length];
+		for (int i = 0; i < rolls.length; ++i) {
+			rolls[i].roll(currentResult[i]);
+			rolling = true;
+		}
+		Sounds.casinoRoll.play();
+		++gameCount;
 	}
 
 	@Override
