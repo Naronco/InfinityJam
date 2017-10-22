@@ -21,6 +21,7 @@ public class SlotMachine implements IScene {
 	private Sprite background;
 	private SpriteSheet slotsSheet;
 	private SlotMachineRoll[] rolls;
+	private boolean rolling = false;
 
 	private static final SlotMachineSymbol[][] RESULTS = {
 			{ SlotMachineSymbol.cherry, SlotMachineSymbol.cloverleaf, SlotMachineSymbol.bomb },
@@ -111,7 +112,9 @@ public class SlotMachine implements IScene {
 		}
 		for (int i = 0; i < rolls.length; ++i) {
 			rolls[i].roll(RESULTS[gameCount % RESULTS.length][i]);
+			rolling = true;
 		}
+		Sounds.casinoRoll.play();
 		++gameCount;
 	}
 
@@ -132,6 +135,17 @@ public class SlotMachine implements IScene {
 	public void update() {
 		for (SlotMachineRoll roll : rolls) {
 			roll.update();
+		}
+
+		if (rolling) {
+			rolling = false;
+			for (SlotMachineRoll roll : rolls) {
+				if (roll.isRolling())
+					rolling = true;
+			}
+			if (!rolling) {
+				Sounds.casinoWin.play();
+			}
 		}
 	}
 

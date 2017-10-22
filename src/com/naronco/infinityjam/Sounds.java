@@ -9,6 +9,8 @@ public class Sounds {
 	public static Sound cityTheme = load("citytheme.wav");
 	public static Sound home = load("home.wav");
 	public static Sound miniGame = load("minigame.wav");
+	public static Sound casinoWin = load("Samples/casinowin.wav");
+	public static Sound casinoRoll = load("Samples/casinoroll.wav");
 
 	private static Sound load(String name) {
 		try {

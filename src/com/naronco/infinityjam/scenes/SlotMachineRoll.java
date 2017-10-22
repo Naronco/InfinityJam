@@ -9,7 +9,7 @@ public class SlotMachineRoll {
 
 	private SlotMachineSymbol[] slots;
 	private SpriteSheet slotsSheet;
-	private double duration = 3.0;
+	private double duration = 4.0;
 	private double offset = 0;
 	private double startOffset = 0, targetOffset = 0;
 	private double time = 0;

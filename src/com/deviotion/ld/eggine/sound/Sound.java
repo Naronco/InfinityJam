@@ -1,5 +1,7 @@
 package com.deviotion.ld.eggine.sound;
 
+import com.naronco.infinityjam.Options;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +31,18 @@ public class Sound {
 		return result;
 	}
 
+	public void play() {
+		if (!Options.soundsEnabled) return;
+		if (clip.isActive() || clip.isRunning()) {
+			clip.stop();
+			clip.flush();
+		}
+		clip.setMicrosecondPosition(0);
+		clip.start();
+	}
+
 	public void playInfinitely() {
+		if (!Options.musicEnabled) return;
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 

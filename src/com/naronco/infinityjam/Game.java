@@ -57,10 +57,10 @@ public class Game extends Eggine {
 		street.load();
 		casino.load();
 
-		currentScene = elevator;
+		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
-		if (backgroundMusic != null && Options.musicEnabled) {
+		if (backgroundMusic != null) {
 			backgroundMusic.playInfinitely();
 		}
 
@@ -309,7 +309,7 @@ public class Game extends Eggine {
 			}
 
 			backgroundMusic = currentScene.getBackgroundMusic();
-			if (backgroundMusic != null && Options.musicEnabled) {
+			if (backgroundMusic != null) {
 				backgroundMusic.playInfinitely();
 			}
 		}
