@@ -64,7 +64,7 @@ public class Game extends Eggine {
 		casino.load();
 		alley.load();
 
-		currentScene = street;
+		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
@@ -517,9 +517,11 @@ public class Game extends Eggine {
 		for (int i = 0; i < itemsToAdd; i++)
 			items.add(item);
 
-		Item[] addedItems = new Item[itemsToAdd];
-		Arrays.fill(addedItems, item);
-		revealItems(addedItems);
+		if (itemsToAdd > 0) {
+			Item[] addedItems = new Item[itemsToAdd];
+			Arrays.fill(addedItems, item);
+			revealItems(addedItems);
+		}
 
 		return true;
 	}

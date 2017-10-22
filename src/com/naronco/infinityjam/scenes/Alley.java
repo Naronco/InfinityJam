@@ -71,18 +71,22 @@ public class Alley extends PointAndClickScene {
 	public void enter(IScene prev) {
 		switch (mode) {
 			case MODE_BAD_GUYS_CONFRONTATION:
-				Game.instance.pushDialog(new Dialog("Du Schuft!!",
-						new StaticAnswer("Was??",
-								new Dialog("Du hast eine Kreissäge aus dem 53. Stock geworfen und damit unser Zelt zerstört!",
-										new StaticAnswer("Das habe ich nicht!",
-												new Dialog("Naja ok... Wahrscheinlich hast du recht... Trotzdem schuldig!", (TextArea textArea) -> enterMinigame())
-										),
-										new StaticAnswer("Ich gebe es zu.",
-												new Dialog("Wir wussten es!", (TextArea textArea) -> enterMinigame())
-										)
-								)
-						)
-				));
+				if (Game.instance.giveItems(Item.KNIFE, 0, 1)) {
+					Game.instance.pushDialog(new Dialog("Das ist dafür,dass du unser Heim zerstört hast!", (TextArea area) -> Game.instance.die()));
+				} else {
+					Game.instance.pushDialog(new Dialog("Du Schuft!!",
+							new StaticAnswer("Was??",
+									new Dialog("Du hast eine Kreissäge aus dem 53. Stock geworfen und damit unser Zelt zerstört!",
+											new StaticAnswer("Das habe ich nicht!",
+													new Dialog("Naja ok... Wahrscheinlich hast du recht... Trotzdem schuldig!", (TextArea textArea) -> enterMinigame())
+											),
+											new StaticAnswer("Ich gebe es zu.",
+													new Dialog("Wir wussten es!", (TextArea textArea) -> enterMinigame())
+											)
+									)
+							)
+					));
+				}
 				break;
 			case MODE_BAD_GUYS_RUNAWAY:
 				Game.instance.animationPlaying = true;
