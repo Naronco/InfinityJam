@@ -445,10 +445,14 @@ public class Game extends Eggine {
 	}
 
 	public void finishQuest(IQuest quest) {
-		items.addAll(quest.getRewards());
+		List<Item> rewards = quest.getRewards();
+		items.addAll(rewards);
+
 		quests.remove(quest);
 		finishedQuests.add(quest);
-		revealItems((Item[]) quest.getRewards().toArray());
+
+		if (rewards.size() > 0)
+			revealItems((Item[]) rewards.toArray());
 	}
 
 	public <T> T getQuest(Class<T> t) {
