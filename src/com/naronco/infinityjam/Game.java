@@ -235,9 +235,10 @@ public class Game extends Eggine {
 		}
 
 		if (activeDialog == null) {
-			if (queuedDialogs.size() == 0)
+			if (queuedDialogs.size() == 0) {
 				screen.renderSprite(0, 0, ui);
-			else {
+				screen.renderSprite(200 - 21, 150 - 20, Sprites.SCROLL);
+			} else {
 				screen.renderSprite(0, 0, uiLite);
 				screen.renderSprite(180, (int)(125 + Math.sin(t) * 5), dialogIndicator);
 			}
