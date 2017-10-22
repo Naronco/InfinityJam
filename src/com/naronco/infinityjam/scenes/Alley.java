@@ -11,10 +11,8 @@ import com.naronco.infinityjam.Character;
 import com.naronco.infinityjam.*;
 import com.naronco.infinityjam.dialog.Dialog;
 import com.naronco.infinityjam.dialog.StaticAnswer;
-import com.naronco.infinityjam.interactables.DialogTrigger;
 import com.naronco.infinityjam.interactables.Walkway;
-import com.naronco.infinityjam.quests.DrugDealerQuest;
-import com.naronco.infinityjam.quests.DrugDealerVisitQuest;
+import com.naronco.infinityjam.quests.AlleyQuest;
 import com.naronco.infinityjam.transitions.BlackOverlayTransition;
 
 import java.io.File;
@@ -85,8 +83,16 @@ public class Alley extends PointAndClickScene {
 			case MODE_BAD_GUYS_RUNAWAY:
 				Game.instance.animationPlaying = true;
 				Game.instance.showMessage("Aaaaah! Er ist zu stark! Wir verschwinden");
+
 				for (Character guy : guys)
 					guy.walkTo(new Vector2d(270, 150));
+
+				AlleyQuest quest = Game.instance.getQuest(AlleyQuest.class);
+				if (quest == null) {
+					quest = new AlleyQuest();
+					Game.instance.addQuest(quest);
+				}
+				Game.instance.finishQuest(quest);
 				break;
 		}
 

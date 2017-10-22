@@ -372,10 +372,10 @@ public class Game extends Eggine {
 		finishedQuests.add(quest);
 	}
 
-	public IQuest getQuest(Class<?> t) {
+	public<T> T getQuest(Class<T> t) {
 		for (IQuest q : quests)
 			if (t.isInstance(q))
-				return q;
+				return (T)q;
 		return null;
 	}
 
