@@ -221,7 +221,7 @@ public class Game extends Eggine {
 
 				screen.renderSprite(itemX, itemY, itemSprites.get(i.ordinal()));
 
-				if (mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
+				if (!animationPlaying && mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
 					selectedItem = itemN;
 
 				itemY += 12;
