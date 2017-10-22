@@ -135,7 +135,7 @@ public class AlleyChallenge implements IScene {
 				playerRect.getSize().setWidth(playerRect.getSize().getWidth() * 0.5);
 
 				if (bulletRect.intersects(playerRect)) {
-					Game.instance.die();
+					Game.instance.die("Vielleicht sollte ich nächstes mal besser ausweichen...");
 				}
 			}
 		}

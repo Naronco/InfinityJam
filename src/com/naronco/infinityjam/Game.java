@@ -169,6 +169,7 @@ public class Game extends Eggine {
 				gameOverFrame--;
 			int f = 75 - gameOverFrame;
 			screen.renderSprite(0, gameOverFrame, 0, 75 - f, 200, f * 2, gameOverBG);
+			gameOverTipArea.render(screen);
 			return;
 		}
 		screen.fillScreen(0xF2F2F2);
@@ -315,8 +316,10 @@ public class Game extends Eggine {
 			return;
 		}
 
-		if (gameOver)
+		if (gameOver) {
+			gameOverTipArea.update();
 			return;
+		}
 
 		t += delta;
 
@@ -493,6 +496,7 @@ public class Game extends Eggine {
 	Sprite gameOverBG;
 	boolean gameOver = false;
 	int gameOverFrame;
+	TextArea gameOverTipArea = new TextArea(1, 106, 198, 100, Font.white);
 
 	private static final String[] WIN_TEXT_LINES = {
 		"Hallo",
@@ -593,12 +597,15 @@ public class Game extends Eggine {
 		queuedDialogs.add(child);
 	}
 
-	public void die() {
+	public void die(String tip) {
 		gameOver = true;
 		if (currentScene.getBackgroundMusic() != null)
 			currentScene.getBackgroundMusic().stop();
 		Sounds.death.play();
 		gameOverFrame = 75;
+		gameOverTipArea.setMaxLineCount(50);
+		gameOverTipArea.setAnimated(true);
+		gameOverTipArea.showText(tip);
 	}
 
 	public void win() {

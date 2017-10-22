@@ -72,7 +72,7 @@ public class Alley extends PointAndClickScene {
 		switch (mode) {
 			case MODE_BAD_GUYS_CONFRONTATION:
 				if (Game.instance.giveItems(Item.KNIFE, 0, 1)) {
-					Game.instance.pushDialog(new Dialog("Das ist dafür,dass du unser Heim zerstört hast!", (TextArea area) -> Game.instance.die()));
+					Game.instance.pushDialog(new Dialog("Das ist dafür,dass du unser Heim zerstört hast!", (TextArea area) -> Game.instance.die("Vielleicht sollte ich nicht unbewaffnet in eine dunkle Gasse treten...")));
 				} else {
 					Game.instance.pushDialog(new Dialog("Du Schuft!!",
 							new StaticAnswer("Was??",

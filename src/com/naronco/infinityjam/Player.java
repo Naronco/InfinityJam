@@ -67,14 +67,14 @@ public class Player extends Character implements Interactable {
 	@Override
 	public void interact(int x, int y, Item item) {
 		if (item == Item.KNIFE || item == Item.SAW)
-			Game.instance.die();
+			Game.instance.die("Vielleicht sollte ich das nächste mal vorsichtiger sein was ich mit scharfen Gegenständen anstelle...");
 		else if (item == Item.DRUG) {
 			if (safeDrug) {
 				drugged = true;
 				Game.instance.removeItem(Item.DRUG, 1);
 				Game.instance.showMessage("Alles kribbelt... Ich schmecke lila");
 			} else
-				Game.instance.die();
+				Game.instance.die("Vielleicht sollte ich das nächste mal bestimmte Pflanzen respektieren...");
 		} else if (item == Item.COINS) {
 			Game.instance.removeItem(Item.COINS, 1);
 			Game.instance.showMessage("Hmm das war lecker");
