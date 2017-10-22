@@ -5,6 +5,9 @@ public class Player extends Character implements Interactable {
 		super(x, y);
 	}
 
+	public boolean safeDrug = false;
+	public boolean drugged = false;
+
 	@Override
 	public String getName() {
 		return "Du";
@@ -65,6 +68,12 @@ public class Player extends Character implements Interactable {
 	public void interact(int x, int y, Item item) {
 		if (item == Item.KNIFE)
 			Game.instance.die();
+		else if (item == Item.DRUG) {
+			if (safeDrug)
+				drugged = true;
+			else
+				Game.instance.die();
+		}
 	}
 
 	@Override

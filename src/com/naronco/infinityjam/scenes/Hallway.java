@@ -214,19 +214,20 @@ class DrugDealerDoor implements Interactable {
 		IQuest visitQ = Game.instance.getQuest(DrugDealerVisitQuest.class);
 		IQuest collectQ = Game.instance.getQuest(DrugDealerQuest.class);
 		if (collectQ != null) {
-			if (Game.instance.giveItems(Item.LEAF, 0, 5)) {
+			if (!Game.instance.removeItem(Item.LEAF, 5)) {
 				Game.instance.showMessage("Du hast noch nicht genug Zutaten geernet");
 				return;
 			}
 			Game.instance.finishQuest(collectQ);
 			if (((DrugDealerQuest) collectQ).usedPunch) {
 				Game.instance.pushDialog(new Dialog("Argh! Ich hab dir doch gesagt du solltest vorsichtig sein!"));
-				Game.instance.pushDialog(new Dialog("Naja ok... hier hast du deine \"Spezialdroge\"", new TeleportAnswer("Danke", Game.instance.street)));
+				Game.instance.pushDialog(new Dialog("Naja ok... hier hast du deine \"Spezialdroge\""));
 			} else {
+				Game.instance.player.safeDrug = true;
 				Game.instance.pushDialog(new Dialog("Ok danke, mich nervt dieses ewige ernten schon ziemlich.",
 						new StaticAnswer("Was ist mit dem Aufzug?",
 								new Dialog("Ah ja, wenn du beim Aufzug bist musst du einfach nur den Code zum Entsperren eingeben"),
-								new Dialog("Mit dieser Droge kannst du die Fingerabdrücke auf dem Keypad erkennen", new TeleportAnswer("Danke", Game.instance.elevator))
+								new Dialog("Mit dieser Droge kannst du die Fingerabdrücke auf dem Keypad erkennen")
 						)
 				));
 			}

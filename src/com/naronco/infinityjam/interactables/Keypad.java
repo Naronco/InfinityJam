@@ -8,6 +8,7 @@ import com.naronco.infinityjam.quests.DrugDealerQuest;
 
 public class Keypad implements Interactable {
 	private Polygon2d outline;
+	public boolean drugUsed;
 
 	public Keypad(Polygon2d outline) {
 		this.outline = outline;
@@ -55,7 +56,7 @@ public class Keypad implements Interactable {
 
 	@Override
 	public void look(int x, int y) {
-		if (Game.instance.isQuestFinished(DrugDealerQuest.class)) {
+		if (Game.instance.player.drugged) {
 			Game.instance.showMessage("Wow ich kann ja wirklich klar den Code erkennen");
 		} else {
 			Game.instance.showMessage("Eine Tastenkombination scheint gefragt");
@@ -64,9 +65,10 @@ public class Keypad implements Interactable {
 
 	@Override
 	public void use(int x, int y) {
-		if (Game.instance.isQuestFinished(DrugDealerQuest.class)) {
+		if (Game.instance.player.drugged) {
 			Game.instance.showMessage("Kinderspiel");
 			Game.instance.elevator.unlocked = true;
+			Game.instance.player.drugged = false;
 		} else {
 			Game.instance.showMessage("Wie jetzt? Ich weiß nichtmal ob ich unendlich Versuche hab");
 		}
