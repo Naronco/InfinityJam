@@ -172,7 +172,7 @@ public class SlotMachine implements IScene {
 			if (!rolling) {
 				if (currentResult[0] == SlotMachineSymbol.seven && currentResult[1] == SlotMachineSymbol.seven && currentResult[2] == SlotMachineSymbol.seven) {
 					Game.instance.finishQuest(Game.instance.getQuest(TripleSevenQuest.class));
-					Game.instance.showMessage("3 mal die 7!Das ist der Hauptgewinn!");
+					Game.instance.showMessage("3 mal die 7!Das ist der Hauptgewinn!Sie haben soeben 500.000.000 Münzen gewonnen!");
 					won = true;
 				} else {
 					Game.instance.showMessage("Dadumm.Leider verloren.1 Münze pro Spiel");
