@@ -138,6 +138,26 @@ public class Screen {
 				(int) sprite.getDimension().getHeight(), sprite);
 	}
 
+	public void renderScaledSprite(int x, int y, int scale, Sprite sprite) {
+		BufferedImage spriteImage = sprite.getBufferedImage();
+
+		int w = (int)sprite.getDimension().getWidth();
+		int h = (int)sprite.getDimension().getHeight();
+
+		for (int yy = 0; yy < h; yy++) {
+			for (int xx = 0; xx < w; xx++) {
+				int pixelColor = spriteImage.getRGB(xx, yy);
+				if (pixelColor != sprite.getTransparentColor()) {
+					for (int yo = 0; yo < scale; ++yo) {
+						for (int xo = 0; xo < scale; ++xo) {
+							this.setPixel(xx * scale + xo + x, yy * scale + yo + y, pixelColor);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public void renderSprite(Vector2d location, Sprite sprite) {
 		this.renderSprite((int) location.getX(), (int) location.getY(), sprite);
 	}

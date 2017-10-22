@@ -12,6 +12,7 @@ import com.naronco.infinityjam.scenes.inventory.Inventory;
 import javax.sound.sampled.AudioFormat;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -82,6 +83,12 @@ public class Game extends Eggine {
 	static final int RIGHT_BUTTON_WIDTH = 119 - 63;
 	static final int BUTTON_HEIGHT = 123 - 100;
 
+	private void revealItems(Item... items) {
+		revealingItems = items;
+		timeSinceItemRevealStart = 0;
+		animationPlaying = true;
+	}
+
 	private void mixButton(Screen screen, int mode) {
 		switch (mode) {
 			case MODE_TAKE:
@@ -96,6 +103,37 @@ public class Game extends Eggine {
 			case MODE_USE:
 				screen.mixRectangle(LEFT_BUTTON_WIDTH, 106, RIGHT_BUTTON_WIDTH, BUTTON_HEIGHT, 0x40000000);
 				break;
+		}
+	}
+
+	private void renderItemReveal(Screen screen) {
+		String gainText = "Du bekamst";
+
+		int itemsWidth = revealingItems.length * 17 * 2 + 4;
+		int minimumTextWidth = gainText.length() * 6 + 5;
+
+		int width = Math.max(itemsWidth, minimumTextWidth);
+
+		int x0 = (int)(screen.getDimension().getWidth() * 0.5 - width * 0.5);
+		int y0 = 30;
+
+		int height = 16 * 2 + 4 + 8;
+
+		screen.mixOutlinedRectangle(x0, y0 - 10, width - 2, height, 0xE0121212);
+		screen.mixOutlinedRectangle(x0 + 1, y0 - 9, width - 2, height, 0xE0121212);
+		screen.mixRectangle(x0 + 1, y0 - 9, width - 4, height - 2, 0xE0F2F2F2);
+
+		screen.renderText((int)(screen.getDimension().getWidth() * 0.5 - gainText.length() * 6 * 0.5) - 1, y0 - 8, Font.standard, gainText);
+
+		double p = Math.min(1, timeSinceItemRevealStart);
+
+		for (int i = 0; i < revealingItems.length; ++i) {
+			Item item = revealingItems[i];
+
+			double x = screen.getDimension().getWidth() * 0.5 - revealingItems.length * 17 * 2 * 0.5 + i * 17 * 2;
+			double y = y0 + (1 - Math.sin(0.5 * Math.PI * p)) * 50;
+
+			screen.renderScaledSprite((int)x, (int)y, 2, item.getSprite());
 		}
 	}
 
@@ -153,6 +191,9 @@ public class Game extends Eggine {
 				showMessage(d.title, d.listener);
 				if (d.answers != null && d.answers.length > 0)
 					activeDialog = d;
+			} else if (revealingItems != null) {
+				revealingItems = null;
+				animationPlaying = false;
 			}
 
 			clickAnimation = new SpriteAnimation(clickSheet, 0, 7, 30);
@@ -212,6 +253,10 @@ public class Game extends Eggine {
 					itemX += 10;
 				}
 			}
+		}
+
+		if (revealingItems != null) {
+			renderItemReveal(screen);
 		}
 
 		if (clickAnimation != null) {
@@ -307,6 +352,9 @@ public class Game extends Eggine {
 			if (transitionTime >= transitionDuration)
 				currentTransition = null;
 		}
+
+		if (revealingItems != null)
+			timeSinceItemRevealStart += 1.0 / 30.0;
 	}
 
 	public void setScene(IScene scene, ISceneTransition transition) {
@@ -370,6 +418,7 @@ public class Game extends Eggine {
 		items.addAll(quest.getRewards());
 		quests.remove(quest);
 		finishedQuests.add(quest);
+		revealItems((Item[])quest.getRewards().toArray());
 	}
 
 	public<T> T getQuest(Class<T> t) {
@@ -423,8 +472,14 @@ public class Game extends Eggine {
 		if (existing >= max) {
 			return false;
 		}
-		for (int i = 0; i < Math.min(count, max - existing); i++)
+		int itemsToAdd = Math.min(count, max - existing);
+		for (int i = 0; i < itemsToAdd; i++)
 			items.add(item);
+
+		Item[] addedItems = new Item[itemsToAdd];
+		Arrays.fill(addedItems, item);
+		revealItems(addedItems);
+
 		return true;
 	}
 
@@ -475,4 +530,7 @@ public class Game extends Eggine {
 	SpriteSheet clickSheet;
 	SpriteAnimation clickAnimation;
 	int lastClickX, lastClickY;
+
+	Item revealingItems[] = null;
+	double timeSinceItemRevealStart = 0;
 }
