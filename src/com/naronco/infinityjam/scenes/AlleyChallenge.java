@@ -19,18 +19,18 @@ import java.util.Random;
 
 public class AlleyChallenge implements IScene {
 	private static final String[] MESSAGES = {
-			"HIER IRGENDWELCHE",
-			"BESCHIMPFUNGEN VON",
-			"DEN RAUDIES",
-			"ODER AUCH ASSIS",
-			"WIE AUCH IMMER",
-			"EINFÜGEN.",
-			"DIESE WERDEN IMMER MAL",
-			"WIEDER WÄHREND DES MINISPIELS",
-			"EINGEBLENDET.",
-			"ABER",
-			"IN GENAU DIESER",
-			"REIHENFOLGE"
+			"Du Dummkopf!",
+			"Du Schwachkopf!",
+			"Du hast uns Gerippengedömmelt!",
+			"Das ist zwar kein Wort, aber du hast vollkommen recht!",
+			"Du hörst bestimmt Nickelback!",
+			"Du über Vierziger!",
+			"Teetrinker!",
+			"Du Jura-Student!",
+			"Minispielspieler!",
+			"Du Bambusbauer!",
+			"Du Disney Fan!",
+			"Du elektrisiertes Bockwürstchen!"
 	};
 
 	private Dimension2d size;
