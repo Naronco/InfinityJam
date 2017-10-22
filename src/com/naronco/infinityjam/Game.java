@@ -190,6 +190,7 @@ public class Game extends Eggine {
 
 		boolean mouseDown = getMouse().isLeftClicking();
 		boolean mouseClick = mouseDown && !prevMouseDown;
+		boolean dialogActivatedNow = false;
 		if (mouseClick) {
 			if (!animationPlaying && queuedDialogs.size() == 0 && activeDialog == null) {
 				if (my < 86) {
@@ -224,6 +225,7 @@ public class Game extends Eggine {
 				showMessage(d.title, d.listener);
 				if (d.answers != null && d.answers.length > 0)
 					activeDialog = d;
+				dialogActivatedNow = true;
 			} else if (revealingItems != null) {
 				revealingItems = null;
 				animationPlaying = false;
@@ -250,7 +252,7 @@ public class Game extends Eggine {
 				if (hovered)
 					screen.mixRectangle(0, 106 + y * 10, 200, 10, 0x40000000);
 				screen.renderText(2, 107 + y++ * 10, Font.standard, ">" + answer.getTitle());
-				if (hovered && mouseDown && !prevMouseDown) {
+				if (hovered && mouseDown && !prevMouseDown && !dialogActivatedNow) {
 					activeDialog = null;
 					answer.run();
 					break;

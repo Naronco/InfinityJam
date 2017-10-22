@@ -80,7 +80,10 @@ public class DialogTrigger implements Interactable {
 
 	@Override
 	public void interact(int x, int y, Item item) {
-		Game.instance.showMessage("Das behalt ich lieber.");
+		if (item == Item.KNIFE || item == Item.SAW)
+			Game.instance.showMessage("Ich möchte keinen weh tun.");
+		else
+			Game.instance.showMessage("Das behalt ich lieber.");
 	}
 
 	@Override
