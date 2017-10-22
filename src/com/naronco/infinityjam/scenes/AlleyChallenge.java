@@ -129,7 +129,10 @@ public class AlleyChallenge implements IScene {
 				pos.setX(pos.getX() - 3.0);
 
 				Rectangle2d bulletRect = new Rectangle2d(pos, Sprites.BULLET.getDimension());
-				Rectangle2d playerRect = player.getRectangle();
+				Rectangle2d playerRect = player.getRectangle().copy();
+
+				playerRect.getPosition().setX(playerRect.getPosition().getX() + playerRect.getSize().getWidth() * 0.25);
+				playerRect.getSize().setWidth(playerRect.getSize().getWidth() * 0.5);
 
 				if (bulletRect.intersects(playerRect)) {
 					Game.instance.die();
@@ -142,7 +145,7 @@ public class AlleyChallenge implements IScene {
 		player.getPosition().setX(20);
 
 		velocity += 0.5;
-		player.getPosition().setY(Math.min(player.getPosition().getY() + velocity, (int)size.getHeight()));
+		player.getPosition().setY(Math.max((int)player.getSpriteSheet().getSpriteSize().getHeight() / 2, Math.min(player.getPosition().getY() + velocity, (int)size.getHeight())));
 	}
 
 	@Override

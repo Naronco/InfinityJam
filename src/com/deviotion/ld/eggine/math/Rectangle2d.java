@@ -40,4 +40,8 @@ public class Rectangle2d {
         if (position.getY() >= rect.position.getY() + rect.size.getHeight()) return false;
         return true;
     }
+
+	public Rectangle2d copy() {
+        return new Rectangle2d(position.copy(), size.copy());
+	}
 }
