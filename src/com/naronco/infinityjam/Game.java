@@ -76,15 +76,6 @@ public class Game extends Eggine {
 		messageTextArea = new TextArea(0, 87, 200, 18, Font.standard);
 		messageTextArea.setMaxLineCount(2);
 
-		itemSprites.add(new Sprite(new File("res/key.png")));
-		itemSprites.add(new Sprite(new File("res/leaf.png")));
-		itemSprites.add(new Sprite(new File("res/coin.png")));
-		itemSprites.add(new Sprite(new File("res/drug.png")));
-		itemSprites.add(new Sprite(new File("res/saw.png")));
-		itemSprites.add(new Sprite(new File("res/knife.png")));
-		if (itemSprites.size() != (int) Item.values().length)
-			throw new Error("Programmers were retards and didn't add sprites for every item");
-
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 	}
 
@@ -210,7 +201,7 @@ public class Game extends Eggine {
 				if (selectedItem == itemN)
 					screen.renderCircle(itemX + 8, itemY + 8, 7, 0xA0A0A0);
 
-				screen.renderSprite(itemX, itemY, itemSprites.get(i.ordinal()));
+				screen.renderSprite(itemX, itemY, i.getSprite());
 
 				if (!animationPlaying && mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
 					selectedItem = itemN;
@@ -442,7 +433,6 @@ public class Game extends Eggine {
 		queuedDialogs.add(child);
 	}
 
-	public List<Sprite> itemSprites = new ArrayList<>();
 	public List<Item> items = new ArrayList<>();
 	public List<IQuest> quests = new ArrayList<>();
 	public List<IQuest> finishedQuests = new ArrayList<>();
