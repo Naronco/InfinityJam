@@ -640,6 +640,7 @@ public class Game extends Eggine {
 		if (currentScene.getBackgroundMusic() != null)
 			currentScene.getBackgroundMusic().stop();
 		wonFrame = 150;
+		Sounds.endingTheme.play();
 	}
 
 	public List<Item> items = new ArrayList<>();
