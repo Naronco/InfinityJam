@@ -34,10 +34,10 @@ public class Street extends PointAndClickScene {
 		)));
 
 		interactables.add(new Walkway("Casino 29134239436854268469158942354684324891236445641256423156...", new Vector2d(138, 60), new Polygon2d(
-				new Vector2d(125, 32),
-				new Vector2d(162, 32),
-				new Vector2d(162, 66),
-				new Vector2d(125, 66)
+				new Vector2d(134, 28),
+				new Vector2d(159, 28),
+				new Vector2d(159, 56),
+				new Vector2d(134, 56)
 		)));
 
 		stepAreas.add(new ExitStepArea(new Polygon2d(new Vector2d(20, 57), new Vector2d(50, 57), new Vector2d(50, 66), new Vector2d(20, 66)), Game.instance.elevator));
