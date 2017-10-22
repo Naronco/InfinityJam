@@ -113,21 +113,32 @@ public class Game extends Eggine {
 	private void renderItemReveal(Screen screen) {
 		String gainText = "Du bekamst";
 
+		StringBuilder itemsTextBuilder = new StringBuilder();
+		for (int i = 0; i < revealingItems.length; ++i) {
+			if (i > 0)
+				itemsTextBuilder.append(",");
+			itemsTextBuilder.append(revealingItems[i].toString());
+		}
+
+		String itemsText = itemsTextBuilder.toString();
+
 		int itemsWidth = revealingItems.length * 17 * 2 + 4;
 		int minimumTextWidth = gainText.length() * 6 + 5;
+		int itemsTextWidth = itemsText.length() * 6 + 5;
 
-		int width = Math.max(itemsWidth, minimumTextWidth);
+		int width = Math.max(itemsWidth, Math.max(minimumTextWidth, itemsTextWidth));
 
 		int x0 = (int) (screen.getDimension().getWidth() * 0.5 - width * 0.5);
 		int y0 = 30;
 
-		int height = 16 * 2 + 4 + 8;
+		int height = 16 * 2 + 4 + 8 + 8 + 4;
 
 		screen.mixOutlinedRectangle(x0, y0 - 10, width - 2, height, 0xE0121212);
 		screen.mixOutlinedRectangle(x0 + 1, y0 - 9, width - 2, height, 0xE0121212);
 		screen.mixRectangle(x0 + 1, y0 - 9, width - 4, height - 2, 0xE0F2F2F2);
 
 		screen.renderText((int) (screen.getDimension().getWidth() * 0.5 - gainText.length() * 6 * 0.5) - 1, y0 - 8, Font.standard, gainText);
+		screen.renderText((int) (screen.getDimension().getWidth() * 0.5 - itemsText.length() * 6 * 0.5) - 1, y0 + height - 20, Font.standard, itemsText);
 
 		double p = Math.min(1, timeSinceItemRevealStart);
 
