@@ -388,7 +388,7 @@ public class Game extends Eggine {
 
 	IScene pendingScene, prevScene;
 	ISceneTransition currentTransition;
-	double transitionDuration = 1.0;
+	double transitionDuration = 0.5;
 	double transitionTime = 0;
 
 	TextArea messageTextArea;
