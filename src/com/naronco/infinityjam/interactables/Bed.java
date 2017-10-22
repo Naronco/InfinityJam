@@ -14,6 +14,7 @@ import static com.naronco.infinityjam.Item.KEY;
 
 public class Bed implements Interactable {
 	private Polygon2d outline;
+	private boolean hasKnife = true;
 
 	public Bed(Polygon2d outline) {
 		this.outline = outline;
@@ -71,8 +72,14 @@ public class Bed implements Interactable {
 
 	@Override
 	public void take(int x, int y) {
-		Game.instance.showMessage("Sehe ich aus wie Chuck Norris?");
-
+		if (hasKnife) {
+			Game.instance.showMessage("Ein Messer!");
+			hasKnife = false;
+			Game.instance.giveItems(Item.KNIFE, 1, 3);
+		}
+		else {
+			Game.instance.showMessage("Sehe ich aus wie Chuck Norris?");
+		}
 	}
 
 	@Override
@@ -99,7 +106,9 @@ public class Bed implements Interactable {
 				Game.instance.showMessage("Lieber nicht, ich muss noch drauf schlafen.");
 				break;
 			case KNIFE:
-				Game.instance.showMessage("Lieber nicht, ich muss noch drauf schlafen.");
+				if (Game.instance.removeItem(Item.KNIFE, 1)) {
+					hasKnife = true;
+				}
 				break;
 		}
 	}

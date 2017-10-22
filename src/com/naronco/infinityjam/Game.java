@@ -428,6 +428,23 @@ public class Game extends Eggine {
 		return selectedItem != -1 ? items.get(selectedItem) : null;
 	}
 
+	public boolean removeItem(Item item, int count) {
+		int existing = 0;
+		for (Item i : items)
+			if (i == item)
+				existing++;
+		if (existing < count)
+			return false;
+		for (int i = items.size() - 1; i >= 0; i--)
+			if (items.get(i) == item) {
+				items.remove(i);
+				count--;
+				if (count == 0)
+					return true;
+			}
+		throw new Error("Impossible to reach");
+	}
+
 	public void pushDialog(Dialog child) {
 		queuedDialogs.add(child);
 	}
