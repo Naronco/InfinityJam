@@ -63,13 +63,14 @@ public class Game extends Eggine {
 		casino.load();
 		alley.load();
 
-		currentScene = street;
+		currentScene = bedroom;
 
 		Sound backgroundMusic = currentScene.getBackgroundMusic();
 		if (backgroundMusic != null) {
 			backgroundMusic.playInfinitely();
 		}
 
+		gameOverBG = new Sprite(new File("res/dead.png"));
 		ui = new Sprite(new File("res/ui.png"));
 		uiLite = new Sprite(new File("res/ui-lite.png"));
 
@@ -114,7 +115,7 @@ public class Game extends Eggine {
 
 		int width = Math.max(itemsWidth, minimumTextWidth);
 
-		int x0 = (int)(screen.getDimension().getWidth() * 0.5 - width * 0.5);
+		int x0 = (int) (screen.getDimension().getWidth() * 0.5 - width * 0.5);
 		int y0 = 30;
 
 		int height = 16 * 2 + 4 + 8;
@@ -123,7 +124,7 @@ public class Game extends Eggine {
 		screen.mixOutlinedRectangle(x0 + 1, y0 - 9, width - 2, height, 0xE0121212);
 		screen.mixRectangle(x0 + 1, y0 - 9, width - 4, height - 2, 0xE0F2F2F2);
 
-		screen.renderText((int)(screen.getDimension().getWidth() * 0.5 - gainText.length() * 6 * 0.5) - 1, y0 - 8, Font.standard, gainText);
+		screen.renderText((int) (screen.getDimension().getWidth() * 0.5 - gainText.length() * 6 * 0.5) - 1, y0 - 8, Font.standard, gainText);
 
 		double p = Math.min(1, timeSinceItemRevealStart);
 
@@ -133,12 +134,19 @@ public class Game extends Eggine {
 			double x = screen.getDimension().getWidth() * 0.5 - revealingItems.length * 17 * 2 * 0.5 + i * 17 * 2;
 			double y = y0 + (1 - Math.sin(0.5 * Math.PI * p)) * 50;
 
-			screen.renderScaledSprite((int)x, (int)y, 2, item.getSprite());
+			screen.renderScaledSprite((int) x, (int) y, 2, item.getSprite());
 		}
 	}
 
 	@Override
 	public void render(Screen screen) {
+		if (gameOver) {
+			if (gameOverFrame > 0)
+				gameOverFrame--;
+			int f = 75 - gameOverFrame;
+			screen.renderSprite(0, gameOverFrame, 0, 75 - f, 200, f * 2, gameOverBG);
+			return;
+		}
 		screen.fillScreen(0xF2F2F2);
 
 		currentScene.renderBackground(screen);
@@ -271,6 +279,9 @@ public class Game extends Eggine {
 
 	@Override
 	public void update(double delta) {
+		if (gameOver)
+			return;
+
 		currentScene.update();
 
 		String lastDetail = currentDetail;
@@ -418,13 +429,13 @@ public class Game extends Eggine {
 		items.addAll(quest.getRewards());
 		quests.remove(quest);
 		finishedQuests.add(quest);
-		revealItems((Item[])quest.getRewards().toArray());
+		revealItems((Item[]) quest.getRewards().toArray());
 	}
 
-	public<T> T getQuest(Class<T> t) {
+	public <T> T getQuest(Class<T> t) {
 		for (IQuest q : quests)
 			if (t.isInstance(q))
-				return (T)q;
+				return (T) q;
 		return null;
 	}
 
@@ -436,6 +447,10 @@ public class Game extends Eggine {
 	}
 
 	public Random random;
+
+	Sprite gameOverBG;
+	boolean gameOver = false;
+	int gameOverFrame;
 
 	IScene currentScene;
 
@@ -518,6 +533,14 @@ public class Game extends Eggine {
 
 	public void pushDialog(Dialog child) {
 		queuedDialogs.add(child);
+	}
+
+	public void die() {
+		gameOver = true;
+		if (currentScene.getBackgroundMusic() != null)
+			currentScene.getBackgroundMusic().stop();
+		Sounds.death.play();
+		gameOverFrame = 75;
 	}
 
 	public List<Item> items = new ArrayList<>();

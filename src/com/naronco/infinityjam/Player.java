@@ -63,6 +63,8 @@ public class Player extends Character implements Interactable {
 
 	@Override
 	public void interact(int x, int y, Item item) {
+		if (item == Item.KNIFE)
+			Game.instance.die();
 	}
 
 	@Override

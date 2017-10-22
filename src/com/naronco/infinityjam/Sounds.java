@@ -11,6 +11,7 @@ public class Sounds {
 	public static Sound miniGame = load("minigame.wav");
 	public static Sound casinoWin = load("Samples/casinowin.wav");
 	public static Sound casinoRoll = load("Samples/casinoroll.wav");
+	public static Sound death = load("Samples/death.wav");
 
 	private static Sound load(String name) {
 		try {
