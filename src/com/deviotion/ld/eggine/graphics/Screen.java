@@ -321,6 +321,18 @@ public class Screen {
 		}
 	}
 
+	public void renderCircle(int x, int y, int radius, int color) {
+		for (int j = y - radius; j <= y + radius; j++) {
+			for (int i = x - radius; i <= x + radius; i++) {
+				int dx = i - x;
+				int dy = j - y;
+				if ((dx * dx) + (dy * dy) < radius * radius) {
+					this.setPixel(i, j, color);
+				}
+			}
+		}
+	}
+
 	public void renderMap(int x, int y, Map map, SpriteSheet spriteSheet) {
 		for (int j = 0; j < map.getDimension().getHeight(); j++) {
 			for (int i = 0; i < map.getDimension().getWidth(); i++) {

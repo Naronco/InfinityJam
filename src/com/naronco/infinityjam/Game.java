@@ -82,6 +82,14 @@ public class Game extends Eggine {
 			throw new Error("Programmers were retards and didn't add sprites for every item");
 
 		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
+		items.add(Item.KEY);
 
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
 	}
@@ -123,7 +131,8 @@ public class Game extends Eggine {
 		int my = (int) getMouse().getLocation().getY();
 
 		boolean mouseDown = getMouse().isLeftClicking();
-		if (mouseDown && !prevMouseDown) {
+		boolean mouseClick = mouseDown && !prevMouseDown;
+		if (mouseClick) {
 			if (!animationPlaying && queuedDialogs.size() == 0 && activeDialog == null) {
 				if (my < 86) {
 					currentScene.click(mx, my, mode);
@@ -199,7 +208,14 @@ public class Game extends Eggine {
 		int itemX = 124, itemY = 106;
 		int itemN = 0;
 		for (Item i : items) {
+			if (selectedItem == itemN)
+				screen.renderCircle(itemX + 8, itemY + 8, 7, 0xA0A0A0);
+
 			screen.renderSprite(itemX, itemY, itemSprites.get(i.valueOf()));
+
+			if (mouseClick && mx >= itemX && my >= itemY && mx < itemX + 16 && my < itemY + 16)
+				selectedItem = itemN;
+
 			itemY += 12;
 			itemN++;
 			if (itemN % 3 == 0) {
