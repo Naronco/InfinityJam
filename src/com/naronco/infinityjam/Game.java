@@ -6,6 +6,7 @@ import com.deviotion.ld.eggine.math.Dimension2d;
 import com.deviotion.ld.eggine.sound.Sound;
 import com.naronco.infinityjam.dialog.Dialog;
 import com.naronco.infinityjam.dialog.IAnswer;
+import com.naronco.infinityjam.quests.TripleSevenQuest;
 import com.naronco.infinityjam.scenes.*;
 import com.naronco.infinityjam.scenes.inventory.Inventory;
 
@@ -77,6 +78,8 @@ public class Game extends Eggine {
 		messageTextArea.setMaxLineCount(2);
 
 		clickSheet = new SpriteSheet(new Sprite(new File("res/click.png")), new Dimension2d(8, 8));
+
+		addQuest(new TripleSevenQuest());
 	}
 
 	static final int LEFT_BUTTON_WIDTH = 63;
