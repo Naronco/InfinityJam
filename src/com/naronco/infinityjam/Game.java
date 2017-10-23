@@ -223,9 +223,10 @@ public class Game extends Eggine {
 			} else if (queuedDialogs.size() > 0 && activeDialog == null) {
 				Dialog d = queuedDialogs.remove(0);
 				showMessage(d.title, d.listener);
-				if (d.answers != null && d.answers.length > 0)
+				if (d.answers != null && d.answers.length > 0) {
 					activeDialog = d;
-				dialogActivatedNow = true;
+					dialogActivatedNow = true;
+				}
 			} else if (revealingItems != null) {
 				revealingItems = null;
 				animationPlaying = false;
